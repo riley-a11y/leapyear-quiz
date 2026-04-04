@@ -1,0 +1,245 @@
+/* ===== ASSESSMENT SCREEN ===== */
+#assessment {
+  align-items: center;
+  padding: 0;
+  background: var(--cream);
+}
+.progress-bar-container {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  background: var(--cream);
+  padding: 1.25rem 1.5rem .75rem;
+}
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto 0.6rem;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--t3);
+}
+.progress-track {
+  max-width: 600px;
+  margin: 0 auto;
+  height: 3px;
+  background: var(--parchment);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+
+.question-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2.5rem 1.5rem 3rem;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.question-stem {
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--ink);
+  opacity: 0.55;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.question-text {
+  font-family: var(--display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--ink);
+  margin-bottom: 2.5rem;
+  min-height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-wrap: balance;
+}
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  width: 100%;
+}
+.option-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 14px 20px;
+  font-family: var(--body);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid rgba(42,37,35,.15);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: left;
+}
+.option-btn:hover {
+  border-color: rgba(42,37,35,.3);
+  background: rgba(42,37,35,.04);
+}
+.option-btn.selected {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--cream);
+  font-weight: 600;
+}
+.option-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 1px solid rgba(42,37,35,.15);
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+  color: var(--t3);
+}
+.option-btn.selected .option-num {
+  background: var(--cream);
+  border-color: var(--cream);
+  color: var(--ink);
+}
+
+.nav-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  width: 100%;
+}
+.btn-back {
+  font-family: var(--body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--t2);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease;
+}
+.btn-back:hover { color: var(--ink); }
+.btn-back:disabled { opacity: 0; cursor: default; }
+
+/* Fade transition */
+.fade-enter { opacity: 0; transform: translateY(12px); filter: blur(8px); }
+.fade-active { opacity: 1; transform: translateY(0); filter: blur(0); transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1), filter 0.4s cubic-bezier(0.16,1,0.3,1); }
+
+/* ===== EMAIL CAPTURE ===== */
+#email-capture {
+  background: var(--cream);
+  color: var(--text);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 1.5rem;
+}
+.email-capture-inner {
+  max-width: 480px;
+  width: 100%;
+}
+.email-capture-inner h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: 2.75rem;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+.email-capture-inner > p {
+  font-family: var(--body);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--t2);
+  margin-bottom: 2.5rem;
+}
+.email-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  text-align: left;
+}
+.email-field {
+  position: relative;
+}
+.email-field label {
+  display: block;
+  font-family: var(--display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--t3);
+  margin-bottom: 8px;
+}
+.email-form input {
+  font-family: var(--body);
+  font-size: 1rem;
+  padding: 12px 0;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--ink);
+  outline: none;
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+.email-form input::placeholder { color: var(--t3); }
+.email-form input:focus { border-bottom-color: var(--ink); }
+.email-form button {
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 16px 40px;
+  background: var(--ink);
+  color: var(--cream);
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+.email-form button:hover { box-shadow: 0 8px 32px rgba(42,37,35,.2); transform: translateY(-2px); }
+.email-form button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+.email-form-note {
+  font-size: 12px;
+  color: var(--t3);
+  margin-top: 1rem;
+  text-align: center;
+}
+
+/* ===== QUIZ MOBILE ===== */
+@media (max-width: 480px) {
+  .question-text { font-size: 1.25rem; }
+  .email-capture-inner h2 { font-size: 2.25rem; }
+}

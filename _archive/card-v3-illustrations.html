@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card V3 — Illustrations</title>
+<link rel="stylesheet" href="https://use.typekit.net/gxr6ytx.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+
+  :root {
+    --display: 'neulis-neue', sans-serif;
+    --body: 'area-normal', sans-serif;
+    --serif: 'Instrument Serif', 'Georgia', serif;
+
+    --cream: #F5F0E8;
+    --card: #FAF7F1;
+    --warm-white: #FDFCF9;
+    --ink: #2A2523;
+    --text-dark: #3A3532;
+    --text-mid: #7A7570;
+    --text-light: #A5A09A;
+    --rule: #D4CFC6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-font-smoothing: antialiased; }
+  body {
+    font-family: var(--body);
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  .page-header {
+    text-align: center; padding: 80px 24px 60px;
+  }
+  .page-header h1 {
+    font-family: var(--display); font-weight: 800; font-size: 13px;
+    letter-spacing: 4px; text-transform: uppercase; color: var(--text-light);
+  }
+
+  /* Card grid */
+  .card-row {
+    display: flex; justify-content: center; align-items: flex-start;
+    gap: 28px; flex-wrap: wrap; max-width: 1400px; margin: 0 auto;
+    padding: 0 24px 100px;
+  }
+
+  /* ═══════════════════════════════════════════
+     THE CARD
+     ═══════════════════════════════════════════ */
+
+  .card {
+    width: 320px;
+    background: var(--card);
+    border-radius: 0;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid var(--rule);
+  }
+
+  /* Image — illustration fills this area */
+  .card .card-image {
+    width: 100%;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    position: relative;
+  }
+  .card .card-image img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+
+  /* Hard line */
+  .card .card-rule {
+    height: 1.5px; background: var(--ink); margin: 0;
+  }
+
+  /* Text area */
+  .card .card-text {
+    padding: 20px 24px 26px;
+  }
+
+  .card .card-orient {
+    font-weight: 700; font-size: 8px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--text-light); margin-bottom: 4px;
+  }
+
+  .card .card-name {
+    font-family: var(--display); font-weight: 800; font-size: 34px;
+    line-height: .90; letter-spacing: -.03em; color: var(--ink);
+    margin-bottom: 10px;
+  }
+
+  .card .card-tagline {
+    font-family: var(--serif); font-style: italic; font-size: 15px;
+    line-height: 1.45; color: var(--text-mid);
+  }
+
+  .card .card-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 16px; padding-top: 14px;
+    border-top: 1px solid var(--rule);
+  }
+  .card .card-footer-label {
+    font-weight: 700; font-size: 7px; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--text-light);
+  }
+  .card .card-footer-num {
+    font-family: var(--serif); font-style: italic; font-size: 13px;
+    color: var(--text-light);
+  }
+
+  @media (max-width: 700px) {
+    .card-row { gap: 20px; }
+    .card { width: min(320px, 90vw); }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Card V3 &mdash; Illustrations</h1>
+</div>
+
+<div class="card-row">
+
+  <div class="card">
+    <div class="card-image">
+      <img src="Sample images/illustration.png" alt="">
+    </div>
+    <div class="card-rule"></div>
+    <div class="card-text">
+      <div class="card-orient">Doing</div>
+      <div class="card-name">Organizer</div>
+      <div class="card-tagline">You see the structure that should exist &mdash; and build it.</div>
+      <div class="card-footer">
+        <span class="card-footer-label">LeapYear</span>
+        <span class="card-footer-num">IV</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-image">
+      <img src="Sample images/illustration 2.png" alt="">
+    </div>
+    <div class="card-rule"></div>
+    <div class="card-text">
+      <div class="card-orient">Thinking</div>
+      <div class="card-name">Philosopher</div>
+      <div class="card-tagline">You ask the questions others are afraid to sit with.</div>
+      <div class="card-footer">
+        <span class="card-footer-label">LeapYear</span>
+        <span class="card-footer-num">I</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-image">
+      <img src="Sample images/illustration 3.png" alt="">
+    </div>
+    <div class="card-rule"></div>
+    <div class="card-text">
+      <div class="card-orient">Doing</div>
+      <div class="card-name">Builder</div>
+      <div class="card-tagline">You take what's imagined and make it real.</div>
+      <div class="card-footer">
+        <span class="card-footer-label">LeapYear</span>
+        <span class="card-footer-num">III</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-image">
+      <img src="Sample images/illustration 4.png" alt="">
+    </div>
+    <div class="card-rule"></div>
+    <div class="card-text">
+      <div class="card-orient">Experiencing</div>
+      <div class="card-name">Explorer</div>
+      <div class="card-tagline">The unknown is where you feel most alive.</div>
+      <div class="card-footer">
+        <span class="card-footer-label">LeapYear</span>
+        <span class="card-footer-num">VIII</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

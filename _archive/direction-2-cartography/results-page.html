@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Results — LeapYear Assessment</title>
+<link rel="stylesheet" href="https://use.typekit.net/gxr6ytx.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+
+  :root {
+    --display: 'neulis-neue', sans-serif;
+    --body: 'area-normal', sans-serif;
+    --serif: 'Instrument Serif', 'Georgia', serif;
+
+    --cream: #FAF7F1; --parchment: #F0EBE1; --alabaster: #F5F1EB;
+    --ink: #2A2523; --text-dark: #3A3532; --text-mid: #7A7570; --text-light: #A5A09A;
+    --deep-navy: #0B1623; --night: #0F1C30;
+    --border-light: rgba(42,37,35,.07); --border-dark: rgba(232,228,220,.06);
+
+    --primary: #C49A3B;
+    --secondary: #2E8B8B;
+
+    --philosopher: #3D4E8C; --analyst: #5E8A72; --builder: #C4724E; --organizer: #C49A3B;
+    --connector: #D4847A; --mobilizer: #B8453A; --creator: #7B5B8A; --explorer: #2E8B8B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--body); overflow-x: hidden; background: var(--cream); }
+
+  /* Grain */
+  body::after {
+    content: ''; position: fixed; inset: 0; z-index: 10000; pointer-events: none; opacity: .02;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ═══════════════════════════════════════════
+     LOADING SCREEN
+     ═══════════════════════════════════════════ */
+  .loading {
+    position: fixed; inset: 0; z-index: 500; background: var(--deep-navy);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    opacity: 1; transition: opacity 1s ease, visibility 1s ease;
+  }
+
+  /* Globe grid behind loading */
+  .loading-globe {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: min(55vw, 460px); height: min(55vw, 460px); opacity: .03; pointer-events: none;
+  }
+  .loading-globe svg { width: 100%; height: 100%; animation: globeSpin 80s linear infinite; }
+  @keyframes globeSpin { to { transform: rotate(360deg); } }
+
+  /* Canvas for the constellation animation */
+  .loading-canvas {
+    position: relative; width: 280px; height: 280px;
+  }
+  .loading-canvas canvas { width: 100%; height: 100%; }
+
+  .loading-text {
+    margin-top: 40px; text-align: center;
+    font-family: var(--serif); font-style: italic; font-size: 22px;
+    color: #E8E4DC; opacity: 0; transition: opacity .6s ease;
+  }
+  .loading-text.show { opacity: .5; }
+  .loading-sub {
+    margin-top: 10px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--primary); opacity: 0; transition: opacity .5s ease;
+  }
+  .loading-sub.show { opacity: .3; }
+
+  /* Stars in loading */
+  .loading-stars { position: absolute; inset: 0; pointer-events: none; }
+
+  /* ═══════════════════════════════════════════
+     NAV
+     ═══════════════════════════════════════════ */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 14px 32px; display: flex; align-items: center; justify-content: space-between;
+    transition: all .5s ease; opacity: 0;
+  }
+  .nav.show { opacity: 1; }
+  .nav.dark { background: rgba(11,22,35,.6); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-dark); }
+  .nav.light { background: rgba(250,247,241,.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-light); }
+  .nav-logo img { height: 20px; transition: filter .5s ease; }
+  .nav-logo-text {
+    font-family: var(--display); font-weight: 800; font-size: 16px; letter-spacing: -.02em;
+    text-decoration: none; display: none;
+  }
+  .nav-logo img[data-failed] { display: none; }
+  .nav-logo img[data-failed] + .nav-logo-text { display: inline; }
+  .nav-share {
+    font-family: var(--body); font-weight: 700; font-size: 12px; letter-spacing: .5px;
+    border: none; padding: 8px 24px; border-radius: 100px; cursor: pointer; transition: all .3s ease;
+  }
+
+  /* ═══════════════════════════════════════════
+     RESULTS CONTAINER
+     ═══════════════════════════════════════════ */
+  .results { position: relative; z-index: 2; opacity: 1; }
+
+  /* ═══════════════════════════════════════════
+     CARD SECTION — DARK
+     ═══════════════════════════════════════════ */
+  .card-zone {
+    background: linear-gradient(180deg, var(--deep-navy) 0%, var(--deep-navy) 70%, var(--night) 100%);
+    color: #E8E4DC; position: relative; overflow: hidden; z-index: 1;
+  }
+  .card-zone-stars { position: absolute; inset: 0; pointer-events: none; }
+  .cz-star { position: absolute; border-radius: 50%; background: #E8E4DC; }
+  @keyframes twinkle { 0%,100% { opacity: var(--so1); } 50% { opacity: var(--so2); } }
+
+  .card-section {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding: 100px 24px; position: relative;
+  }
+
+  .archetype-card {
+    width: min(340px, 82vw); aspect-ratio: 3/4; border-radius: 20px;
+    position: relative; overflow: hidden;
+    background: linear-gradient(160deg, #141E30 0%, var(--deep-navy) 40%, #0A1320 100%);
+    box-shadow: 0 24px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(232,228,220,.05);
+    opacity: 0;
+  }
+
+  /* Card globe grid */
+  .card-grid { position: absolute; inset: 0; opacity: .035; pointer-events: none; }
+  .card-grid svg { width: 100%; height: 100%; }
+  .card-glow {
+    position: absolute; top: -20%; right: -20%; width: 70%; height: 70%;
+    border-radius: 50%; background: var(--primary); filter: blur(60px); opacity: .1;
+  }
+
+  /* Constellation on card */
+  .card-const { position: absolute; top: 8%; left: 8%; right: 8%; bottom: 38%; }
+  .card-const canvas { width: 100%; height: 100%; }
+
+  .card-content {
+    position: absolute; bottom: 0; left: 0; right: 0; padding: 28px 24px;
+    background: linear-gradient(to top, rgba(11,22,35,.95) 0%, rgba(11,22,35,.5) 70%, transparent 100%);
+  }
+  .card-orient { font-weight: 700; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--primary); opacity: .6; margin-bottom: 4px; }
+  .card-name { font-family: var(--display); font-weight: 800; font-size: 40px; line-height: .95; letter-spacing: -.03em; margin-bottom: 8px; }
+  .card-tagline { font-family: var(--serif); font-style: italic; font-size: 16px; line-height: 1.35; opacity: .5; }
+  .card-numeral { position: absolute; top: 20px; right: 20px; font-family: var(--serif); font-style: italic; font-size: 18px; opacity: .12; color: #E8E4DC; }
+  .card-badge { position: absolute; top: 20px; left: 20px; font-weight: 700; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; opacity: .12; color: #E8E4DC; }
+
+  /* ═══════════════════════════════════════════
+     TRANSITION — DARK TO LIGHT
+     ═══════════════════════════════════════════ */
+  .dark-to-light {
+    height: 200px; position: relative; z-index: 2;
+    background: linear-gradient(180deg, var(--night) 0%, var(--cream) 100%);
+  }
+
+  /* ═══════════════════════════════════════════
+     PROFILE — LIGHT THEME
+     ═══════════════════════════════════════════ */
+  .profile-zone {
+    background: var(--cream); color: var(--text-dark);
+    position: relative; z-index: 3;
+  }
+  .profile { max-width: 680px; margin: 0 auto; padding: 0 24px 80px; }
+
+  .profile-section {
+    padding: 72px 0; border-top: 1px solid var(--border-light);
+  }
+  .reveal-target {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity .8s ease, transform .8s cubic-bezier(.2,.8,.3,1);
+  }
+  .reveal-target.visible { opacity: 1 !important; transform: translateY(0) !important; }
+  .profile-section:first-child { border-top: none; padding-top: 40px; }
+
+  .s-label { font-weight: 700; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-light); margin-bottom: 20px; }
+  .s-title { font-family: var(--display); font-weight: 800; font-size: clamp(26px,4vw,36px); line-height: 1.08; letter-spacing: -.03em; color: var(--ink); margin-bottom: 18px; }
+  .s-body { font-size: clamp(15px,1.5vw,17px); line-height: 1.8; color: var(--text-mid); max-width: 580px; }
+  .s-body + .s-body { margin-top: 14px; }
+
+  .pull-quote {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(20px,3vw,28px); line-height: 1.35; color: var(--ink);
+    padding-left: 20px; border-left: 2px solid var(--primary); margin: 36px 0;
+  }
+
+  /* Tension */
+  .tension-vis { display: flex; align-items: center; gap: 16px; margin: 28px 0; }
+  .tension-type {
+    flex: 1; text-align: center; padding: 20px 12px;
+    background: var(--alabaster); border-radius: 14px; border: 1px solid var(--border-light);
+  }
+  .tension-dot { width: 10px; height: 10px; border-radius: 50%; margin: 0 auto 10px; }
+  .tension-name { font-family: var(--display); font-weight: 700; font-size: 18px; letter-spacing: -.02em; color: var(--ink); }
+  .tension-orient { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-light); margin-top: 4px; }
+  .tension-vs { font-family: var(--serif); font-style: italic; font-size: 14px; color: var(--text-light); flex: 0 0 auto; }
+
+  /* ═══════════════════════════════════════════
+     RADAR CHART — clean canvas-based
+     ═══════════════════════════════════════════ */
+  .radar-section { text-align: center; }
+  .radar-wrap { position: relative; width: min(100%, 420px); margin: 36px auto 0; }
+  .radar-wrap canvas { width: 100%; aspect-ratio: 1; display: block; }
+
+  /* Score bars */
+  .score-bars { margin-top: 40px; }
+  .sb-row { display: flex; align-items: center; gap: 14px; padding: 8px 0; }
+  .sb-name { width: 90px; text-align: right; font-weight: 600; font-size: 13px; color: var(--text-mid); }
+  .sb-track { flex: 1; height: 4px; background: var(--parchment); border-radius: 2px; overflow: hidden; }
+  .sb-fill { height: 100%; border-radius: 2px; width: 0; transition: width 1.5s cubic-bezier(.2,.8,.3,1); }
+  .sb-num { width: 28px; font-family: var(--display); font-weight: 700; font-size: 14px; color: var(--text-mid); }
+
+  /* Shadow cards */
+  .shadow-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 28px; }
+  .shadow-card {
+    padding: 22px 18px; border-radius: 14px; background: var(--alabaster);
+    border: 1px solid var(--border-light); transition: border-color .3s ease;
+  }
+  .shadow-card:hover { border-color: rgba(42,37,35,.12); }
+  .shadow-card-t { font-family: var(--display); font-weight: 700; font-size: 14px; color: var(--ink); margin-bottom: 8px; }
+  .shadow-card-b { font-size: 13px; line-height: 1.65; color: var(--text-mid); }
+
+  /* Growth gauge */
+  .gauge { margin: 28px 0; }
+  .gauge-track {
+    height: 5px; border-radius: 3px; position: relative;
+    background: linear-gradient(90deg, rgba(184,69,58,.15) 0%, rgba(196,154,59,.2) 50%, rgba(94,138,114,.15) 100%);
+  }
+  .gauge-dot {
+    position: absolute; top: 50%; transform: translate(-50%,-50%);
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--primary); border: 3px solid var(--cream);
+    box-shadow: 0 0 0 1px rgba(196,154,59,.2), 0 2px 8px rgba(196,154,59,.2);
+    transition: left 1.5s cubic-bezier(.2,.8,.3,1);
+  }
+  .gauge-labels { display: flex; justify-content: space-between; margin-top: 10px; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-light); }
+
+  /* Commissioning */
+  .commissioning {
+    text-align: center; padding-top: 80px;
+    background: linear-gradient(180deg, var(--cream) 0%, var(--parchment) 100%);
+    margin: 0 -24px; padding-left: 24px; padding-right: 24px; padding-bottom: 80px;
+    border-top: 1px solid var(--border-light);
+  }
+  .comm-coord { font-weight: 700; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-light); margin-bottom: 28px; }
+  .comm-title { font-family: var(--display); font-weight: 800; font-size: clamp(30px,5vw,44px); line-height: 1.05; letter-spacing: -.03em; color: var(--ink); margin-bottom: 16px; }
+  .comm-title .accent { font-family: var(--serif); font-weight: 400; font-style: italic; }
+  .comm-body { font-size: clamp(15px,1.5vw,17px); line-height: 1.75; color: var(--text-mid); max-width: 440px; margin: 0 auto 36px; }
+  .comm-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: var(--body); font-weight: 700; font-size: 14px; letter-spacing: .3px;
+    color: var(--cream); background: var(--ink);
+    border: none; padding: 18px 44px; border-radius: 100px;
+    cursor: pointer; text-decoration: none; transition: all .4s cubic-bezier(.2,.8,.3,1);
+    box-shadow: 0 4px 20px rgba(42,37,35,.15);
+  }
+  .comm-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(42,37,35,.2); }
+  .comm-sub { margin-top: 14px; font-size: 12px; color: var(--text-light); }
+
+  .footer { padding: 40px 32px; text-align: center; font-size: 11px; letter-spacing: 1px; color: var(--text-light); background: var(--parchment); }
+
+  @media (max-width: 600px) {
+    .shadow-grid { grid-template-columns: 1fr; }
+    .tension-vis { flex-direction: column; }
+    .tension-vs { transform: rotate(90deg); }
+    .archetype-card { width: min(300px, 88vw); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ LOADING SCREEN ═══ -->
+<div class="loading" id="loading">
+  <div class="loading-stars" id="loadingStars"></div>
+  <div class="loading-globe">
+    <svg viewBox="0 0 400 400" fill="none">
+      <circle cx="200" cy="200" r="190" fill="none" stroke="#E8E4DC" stroke-width=".4"/>
+      <ellipse cx="200" cy="200" rx="190" ry="50" fill="none" stroke="#E8E4DC" stroke-width=".3"/>
+      <ellipse cx="200" cy="200" rx="190" ry="110" fill="none" stroke="#E8E4DC" stroke-width=".3"/>
+      <ellipse cx="200" cy="200" rx="50" ry="190" fill="none" stroke="#E8E4DC" stroke-width=".3"/>
+      <ellipse cx="200" cy="200" rx="110" ry="190" fill="none" stroke="#E8E4DC" stroke-width=".3"/>
+    </svg>
+  </div>
+  <div class="loading-canvas">
+    <canvas id="loadingCanvas" width="560" height="560"></canvas>
+  </div>
+  <div class="loading-text" id="loadingText"></div>
+  <div class="loading-sub" id="loadingSub"></div>
+</div>
+
+<!-- ═══ RESULTS ═══ -->
+<div class="results" id="results">
+
+  <nav class="nav dark" id="nav">
+    <div class="nav-logo"><img src="https://cdn.prod.website-files.com/6753b1f0c39489717e9a1b0e/6753c28d89e04ad11789bfa1_Frame%2011.svg" alt="LeapYear" id="navLogo" onerror="this.setAttribute('data-failed','1')"/><span class="nav-logo-text" id="navLogoText">LeapYear</span></div>
+    <button class="nav-share" id="navShare">Share Results</button>
+  </nav>
+
+  <!-- DARK ZONE — Card reveal -->
+  <div class="card-zone">
+    <div class="card-zone-stars" id="czStars"></div>
+    <section class="card-section">
+      <div class="archetype-card" id="card" style="transform: scale(.82) rotate(-3deg); opacity: 0;">
+        <div class="card-grid">
+          <svg viewBox="0 0 360 480" fill="none">
+            <ellipse cx="180" cy="240" rx="160" ry="40" stroke="#E8E4DC" stroke-width=".3" fill="none"/>
+            <ellipse cx="180" cy="240" rx="160" ry="100" stroke="#E8E4DC" stroke-width=".3" fill="none"/>
+            <ellipse cx="180" cy="240" rx="40" ry="160" stroke="#E8E4DC" stroke-width=".3" fill="none"/>
+            <ellipse cx="180" cy="240" rx="100" ry="160" stroke="#E8E4DC" stroke-width=".3" fill="none"/>
+          </svg>
+        </div>
+        <div class="card-glow"></div>
+        <div class="card-const"><canvas id="cardConst" width="560" height="400"></canvas></div>
+        <span class="card-badge">LeapYear Assessment</span>
+        <span class="card-numeral">II</span>
+        <div class="card-content">
+          <div class="card-orient">Doing</div>
+          <div class="card-name">Organizer</div>
+          <div class="card-tagline">You see the structure that should exist and build it.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- TRANSITION -->
+  <div class="dark-to-light"></div>
+
+  <!-- LIGHT ZONE — Profile -->
+  <div class="profile-zone">
+    <div class="profile">
+
+      <div class="profile-section reveal-target">
+        <div class="s-label">Your Core Type</div>
+        <h2 class="s-title">The Organizer</h2>
+        <p class="s-body">You walk into chaos and your mind is already reordering everything toward what it could be. This isn't a compulsion — it's a design. You see the structure that should exist, and something in you won't rest until it does.</p>
+        <p class="s-body">Where others feel overwhelmed, you feel invited. Complexity isn't your enemy — it's your raw material. You steward it into clarity, into systems that serve people, into order that makes flourishing possible.</p>
+        <div class="pull-quote">You don't just organize things. You organize <em>for</em> things — for people to move freely, for work to flow, for something beautiful to have the structure it needs to stand.</div>
+      </div>
+
+      <div class="profile-section reveal-target">
+        <div class="s-label">Your Secondary Type</div>
+        <h2 class="s-title">The Explorer</h2>
+        <p class="s-body">Underneath the Organizer's instinct for structure, there's a restless current. The Explorer in you is drawn to edges — of maps, of ideas, of what's been tried before. Comfort makes you suspicious. Routine without purpose feels like a cage.</p>
+        <p class="s-body">This isn't contradiction. This is your richness. You don't build systems for the sake of order — you build them so people can move into the unknown without falling apart. Your structures are launch pads, not prisons.</p>
+      </div>
+
+      <div class="profile-section reveal-target">
+        <div class="s-label">The Tension</div>
+        <h2 class="s-title">Structure vs. Freedom</h2>
+        <div class="tension-vis">
+          <div class="tension-type">
+            <div class="tension-dot" style="background:var(--organizer);"></div>
+            <div class="tension-name">Organizer</div>
+            <div class="tension-orient">Structure</div>
+          </div>
+          <div class="tension-vs">vs.</div>
+          <div class="tension-type">
+            <div class="tension-dot" style="background:var(--explorer);"></div>
+            <div class="tension-name">Explorer</div>
+            <div class="tension-orient">Freedom</div>
+          </div>
+        </div>
+        <p class="s-body">This is where your growth lives. Part of you wants to build the system. Part of you wants to burn the map and find a new route. The tension isn't a flaw — it's the engine. Your best work will come when you learn to hold both.</p>
+        <div class="pull-quote" style="border-color:var(--explorer);">The tension between structure and freedom isn't something to resolve. It's something to steward.</div>
+      </div>
+
+      <div class="profile-section radar-section reveal-target" id="radarSection">
+        <div class="s-label">Your Constellation</div>
+        <h2 class="s-title">The Full Map</h2>
+        <div class="radar-wrap"><canvas id="radarCanvas" width="840" height="840"></canvas></div>
+        <div class="score-bars" id="scoreBars"></div>
+      </div>
+
+      <div class="profile-section reveal-target">
+        <div class="s-label">The Shadows</div>
+        <h2 class="s-title">Where You'll Be Tested</h2>
+        <p class="s-body" style="margin-bottom:24px;">Every design has a shadow — the place where your strength, overextended or unchecked, becomes the thing that undermines you. Knowing your shadows isn't weakness. It's the beginning of freedom.</p>
+        <div class="shadow-grid">
+          <div class="shadow-card"><div class="shadow-card-t">The Micromanager</div><div class="shadow-card-b">When your instinct for structure becomes control, you stop stewarding and start suffocating. People need room to breathe inside the systems you build.</div></div>
+          <div class="shadow-card"><div class="shadow-card-t">The Restless Architect</div><div class="shadow-card-b">Your Explorer side can sabotage your Organizer side. You build something beautiful, then tear it down because you're bored. Not everything needs reinventing.</div></div>
+          <div class="shadow-card"><div class="shadow-card-t">The Efficiency Trap</div><div class="shadow-card-b">You can optimize so well that you optimize out the human. The best systems leave room for inefficiency — for laughter, for wandering, for grace.</div></div>
+          <div class="shadow-card"><div class="shadow-card-t">The Escape Artist</div><div class="shadow-card-b">When structure gets hard, the Explorer in you wants to run. Not every constraint is a cage. Some are trellis — the thing that helps you grow upward.</div></div>
+        </div>
+      </div>
+
+      <div class="profile-section reveal-target" id="gaugeSection">
+        <div class="s-label">Growth Orientation</div>
+        <h2 class="s-title">Mixed Mindset</h2>
+        <p class="s-body" style="margin-bottom:24px;">You believe growth is possible — in theory. In practice, you sometimes default to what you already know. The good news: awareness is the first step. You're closer to growth than you think.</p>
+        <div class="gauge">
+          <div class="gauge-track"><div class="gauge-dot" id="gaugeDot" style="left:5%;"></div></div>
+          <div class="gauge-labels"><span>Fixed</span><span>Mixed</span><span>Growth</span></div>
+        </div>
+      </div>
+
+      <div class="profile-section commissioning reveal-target">
+        <div class="comm-coord">Your Coordinates Have Been Found</div>
+        <h2 class="comm-title">This is where<br><span class="accent">it begins</span></h2>
+        <p class="comm-body">You've been located on the map. Now the question is: what do you do with what you carry? A 30-minute conversation with someone who knows how to read this.</p>
+        <a href="#" class="comm-btn">Book Your Coaching Call
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <p class="comm-sub">Free &middot; 30 minutes &middot; No obligation</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">LeapYear &middot; Austin, Texas</footer>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ════════════════════════════════════════════
+     DATA
+     ════════════════════════════════════════════ */
+  const scores = [
+    { name: 'Organizer',   score: 70, color: '#C49A3B' },
+    { name: 'Explorer',    score: 64, color: '#2E8B8B' },
+    { name: 'Creator',     score: 55, color: '#7B5B8A' },
+    { name: 'Analyst',     score: 53, color: '#5E8A72' },
+    { name: 'Connector',   score: 51, color: '#D4847A' },
+    { name: 'Mobilizer',   score: 50, color: '#B8453A' },
+    { name: 'Builder',     score: 50, color: '#C4724E' },
+    { name: 'Philosopher', score: 50, color: '#3D4E8C' },
+  ];
+  const N = scores.length;
+  const PRIMARY_COLOR = '#C49A3B';
+  const dpr = window.devicePixelRatio || 1;
+
+  /* ════════════════════════════════════════════
+     UTILITY
+     ════════════════════════════════════════════ */
+  function hexToRgb(hex) {
+    const h = parseInt(hex.slice(1), 16);
+    return [(h >> 16) & 0xff, (h >> 8) & 0xff, h & 0xff];
+  }
+
+  /* ════════════════════════════════════════════
+     STARS — for loading and card zone
+     ════════════════════════════════════════════ */
+  function makeStars(container, count) {
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement('div');
+      s.className = 'cz-star';
+      const sz = .3 + Math.random() * 1.6;
+      s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;`
+        + `--so1:${(.06+Math.random()*.12).toFixed(2)};--so2:${(.25+Math.random()*.4).toFixed(2)};`
+        + `animation:twinkle ${3+Math.random()*5}s ${Math.random()*4}s ease-in-out infinite;`;
+      container.appendChild(s);
+    }
+  }
+  makeStars(document.getElementById('loadingStars'), 150);
+  makeStars(document.getElementById('czStars'), 120);
+
+  /* ════════════════════════════════════════════
+     LOADING ANIMATION — Canvas-based constellation
+     ════════════════════════════════════════════ */
+  const loadCanvas = document.getElementById('loadingCanvas');
+  const loadCtx = loadCanvas.getContext('2d');
+  loadCanvas.width = 560 * dpr;
+  loadCanvas.height = 560 * dpr;
+  loadCtx.scale(dpr, dpr);
+
+  // Constellation vertices (in 560x560 space, will display at 280x280)
+  const constVerts = [
+    { x: 280, y: 60 },  { x: 400, y: 140 },
+    { x: 440, y: 280 }, { x: 380, y: 420 },
+    { x: 240, y: 440 }, { x: 130, y: 360 },
+    { x: 120, y: 200 },
+  ];
+  const constEdges = [
+    [0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,0],  // outer ring
+    [0,3],[1,5],[2,6],  // cross lines
+  ];
+
+  // Scattered particle positions
+  const particles = [];
+  for (let i = 0; i < 28; i++) {
+    particles.push({
+      x: 40 + Math.random() * 480,
+      y: 40 + Math.random() * 480,
+      targetX: constVerts[i % constVerts.length].x + (Math.random() - .5) * 40,
+      targetY: constVerts[i % constVerts.length].y + (Math.random() - .5) * 40,
+      size: 1 + Math.random() * 2.5,
+      speed: .02 + Math.random() * .02,
+    });
+  }
+
+  let loadPhase = 0;
+  let loadTime = 0;
+  let lineProgress = 0;  // 0 to 1 — how much of the constellation is drawn
+
+  function drawLoading(dt) {
+    loadTime += dt;
+    const W = 560, H = 560;
+    loadCtx.clearRect(0, 0, W, H);
+
+    // Move particles toward targets based on phase
+    const converge = loadPhase >= 1 ? Math.min(1, (loadPhase - 1) + lineProgress * .5) : 0;
+    particles.forEach(p => {
+      if (converge > 0) {
+        p.x += (p.targetX - p.x) * p.speed * converge * 2;
+        p.y += (p.targetY - p.y) * p.speed * converge * 2;
+      } else {
+        // Gentle drift
+        p.x += Math.sin(loadTime * .001 + p.size) * .3;
+        p.y += Math.cos(loadTime * .001 + p.x * .01) * .3;
+      }
+
+      // Draw particle
+      const alpha = loadPhase === 0 ? Math.min(1, loadTime / 1500) : 1;
+      loadCtx.beginPath();
+      loadCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      loadCtx.fillStyle = `rgba(196,154,59,${alpha * .4})`;
+      loadCtx.fill();
+    });
+
+    // Draw constellation lines
+    if (lineProgress > 0) {
+      constEdges.forEach((edge, i) => {
+        const edgeProgress = Math.max(0, Math.min(1, lineProgress * constEdges.length - i));
+        if (edgeProgress <= 0) return;
+
+        const a = constVerts[edge[0]], b = constVerts[edge[1]];
+        const ex = a.x + (b.x - a.x) * edgeProgress;
+        const ey = a.y + (b.y - a.y) * edgeProgress;
+
+        loadCtx.beginPath();
+        loadCtx.moveTo(a.x, a.y);
+        loadCtx.lineTo(ex, ey);
+        loadCtx.strokeStyle = `rgba(196,154,59,${i < 7 ? .35 : .12})`;
+        loadCtx.lineWidth = i < 7 ? 1 : .5;
+        loadCtx.stroke();
+      });
+
+      // Vertex glows
+      constVerts.forEach(v => {
+        const glow = Math.min(1, lineProgress * 2);
+        loadCtx.beginPath();
+        loadCtx.arc(v.x, v.y, 6, 0, Math.PI * 2);
+        loadCtx.fillStyle = `rgba(196,154,59,${glow * .15})`;
+        loadCtx.fill();
+        loadCtx.beginPath();
+        loadCtx.arc(v.x, v.y, 2.5, 0, Math.PI * 2);
+        loadCtx.fillStyle = `rgba(196,154,59,${glow * .6})`;
+        loadCtx.fill();
+      });
+    }
+  }
+
+  // Loading timeline
+  const loadTextEl = document.getElementById('loadingText');
+  const loadSubEl = document.getElementById('loadingSub');
+
+  function showLoadText(text, sub) {
+    loadTextEl.classList.remove('show');
+    loadSubEl.classList.remove('show');
+    setTimeout(() => {
+      loadTextEl.textContent = text;
+      if (sub) loadSubEl.textContent = sub;
+      loadTextEl.classList.add('show');
+      if (sub) loadSubEl.classList.add('show');
+    }, 100);
+  }
+
+  const timeline = [
+    { at: 200,  fn() { loadPhase = 0; showLoadText('Gathering your responses', 'Mapping coordinates'); } },
+    { at: 2200, fn() { loadPhase = 1; showLoadText('Finding patterns', 'Connecting the data'); } },
+    { at: 4000, fn() { loadPhase = 2; showLoadText('Something is taking shape', 'A constellation forming'); } },
+    { at: 6800, fn() { loadPhase = 3; showLoadText('Your coordinates have been found', ''); loadSubEl.classList.remove('show'); } },
+    { at: 8800, fn() {
+      const loadEl = document.getElementById('loading');
+      // Use direct style manipulation — bulletproof
+      loadEl.style.opacity = '0';
+      loadEl.style.visibility = 'hidden';
+      loadEl.style.pointerEvents = 'none';
+      document.getElementById('nav').classList.add('show');
+      setTimeout(() => {
+        const card = document.getElementById('card');
+        card.style.transition = 'transform 1.4s cubic-bezier(.16,1,.3,1), opacity .7s ease';
+        card.style.transform = 'scale(1) rotate(0deg)';
+        card.style.opacity = '1';
+      }, 400);
+      // Fully remove after transition
+      setTimeout(() => { loadEl.style.display = 'none'; }, 1200);
+    }},
+  ];
+
+  const t0 = performance.now();
+  let timelineIdx = 0;
+
+  function loadingLoop(now) {
+    const elapsed = now - t0;
+
+    // Process timeline
+    while (timelineIdx < timeline.length && elapsed >= timeline[timelineIdx].at) {
+      timeline[timelineIdx].fn();
+      timelineIdx++;
+    }
+
+    // Line progress ramp
+    if (loadPhase >= 2) {
+      lineProgress = Math.min(1, lineProgress + .008);
+    } else if (loadPhase >= 1) {
+      lineProgress = Math.min(.15, lineProgress + .002);
+    }
+
+    drawLoading(16);
+
+    if (timelineIdx < timeline.length || lineProgress < 1) {
+      requestAnimationFrame(loadingLoop);
+    }
+  }
+  requestAnimationFrame(loadingLoop);
+
+  /* ════════════════════════════════════════════
+     CARD CONSTELLATION — smaller static version
+     ════════════════════════════════════════════ */
+  const cardCanvas = document.getElementById('cardConst');
+  const cardCtx = cardCanvas.getContext('2d');
+  cardCanvas.width = 560 * dpr;
+  cardCanvas.height = 400 * dpr;
+  cardCtx.scale(dpr, dpr);
+
+  // Scale constellation to card canvas
+  const cardVerts = constVerts.map(v => ({
+    x: (v.x / 560) * 560 * .8 + 560 * .1,
+    y: (v.y / 560) * 400 * .8 + 400 * .05,
+  }));
+
+  function drawCardConstellation() {
+    const W = 560, H = 400;
+    cardCtx.clearRect(0, 0, W, H);
+
+    constEdges.forEach((edge, i) => {
+      const a = cardVerts[edge[0]], b = cardVerts[edge[1]];
+      cardCtx.beginPath();
+      cardCtx.moveTo(a.x, a.y);
+      cardCtx.lineTo(b.x, b.y);
+      cardCtx.strokeStyle = `rgba(196,154,59,${i < 7 ? .2 : .06})`;
+      cardCtx.lineWidth = i < 7 ? .8 : .4;
+      cardCtx.stroke();
+    });
+
+    cardVerts.forEach(v => {
+      cardCtx.beginPath();
+      cardCtx.arc(v.x, v.y, 4, 0, Math.PI * 2);
+      cardCtx.fillStyle = 'rgba(196,154,59,.1)';
+      cardCtx.fill();
+      cardCtx.beginPath();
+      cardCtx.arc(v.x, v.y, 1.8, 0, Math.PI * 2);
+      cardCtx.fillStyle = 'rgba(196,154,59,.4)';
+      cardCtx.fill();
+    });
+  }
+  drawCardConstellation();
+
+  /* ════════════════════════════════════════════
+     RADAR CHART — Canvas
+     ════════════════════════════════════════════ */
+  const radarCanvas = document.getElementById('radarCanvas');
+  const rCtx = radarCanvas.getContext('2d');
+  radarCanvas.width = 840 * dpr;
+  radarCanvas.height = 840 * dpr;
+  rCtx.scale(dpr, dpr);
+
+  const RCX = 420, RCY = 420, R_MAX = 180;
+  let radarAnimProgress = 0;
+  let radarAnimating = false;
+
+  function angleFor(i) {
+    return (i / N) * Math.PI * 2 - Math.PI / 2;
+  }
+
+  function drawRadar(progress) {
+    const W = 840, H = 840;
+    rCtx.clearRect(0, 0, W, H);
+
+    // Grid rings
+    [.33, .66, 1].forEach(r => {
+      rCtx.beginPath();
+      rCtx.arc(RCX, RCY, R_MAX * r, 0, Math.PI * 2);
+      rCtx.strokeStyle = 'rgba(42,37,35,.06)';
+      rCtx.lineWidth = .5;
+      rCtx.stroke();
+    });
+
+    // Axis lines
+    for (let i = 0; i < N; i++) {
+      const a = angleFor(i);
+      rCtx.beginPath();
+      rCtx.moveTo(RCX, RCY);
+      rCtx.lineTo(RCX + Math.cos(a) * R_MAX, RCY + Math.sin(a) * R_MAX);
+      rCtx.strokeStyle = 'rgba(42,37,35,.04)';
+      rCtx.lineWidth = .5;
+      rCtx.setLineDash([3, 5]);
+      rCtx.stroke();
+      rCtx.setLineDash([]);
+    }
+
+    // Labels
+    rCtx.font = '600 11px area-normal, sans-serif';
+    rCtx.textAlign = 'center';
+    rCtx.textBaseline = 'middle';
+    scores.forEach((s, i) => {
+      const a = angleFor(i);
+      const lx = RCX + Math.cos(a) * (R_MAX + 30);
+      const ly = RCY + Math.sin(a) * (R_MAX + 30);
+      rCtx.fillStyle = i < 2 ? 'rgba(42,37,35,.55)' : 'rgba(42,37,35,.3)';
+      rCtx.fillText(s.name, lx, ly);
+    });
+
+    if (progress <= 0) return;
+
+    // Compute points
+    const points = scores.map((s, i) => {
+      const a = angleFor(i);
+      const r = (s.score / 100) * R_MAX * Math.min(1, progress);
+      return { x: RCX + Math.cos(a) * r, y: RCY + Math.sin(a) * r, score: s.score, color: s.color };
+    });
+
+    // Fill
+    rCtx.beginPath();
+    points.forEach((p, i) => { i === 0 ? rCtx.moveTo(p.x, p.y) : rCtx.lineTo(p.x, p.y); });
+    rCtx.closePath();
+    const [pr, pg, pb] = hexToRgb(PRIMARY_COLOR);
+    rCtx.fillStyle = `rgba(${pr},${pg},${pb},.06)`;
+    rCtx.fill();
+
+    // Stroke
+    rCtx.beginPath();
+    points.forEach((p, i) => { i === 0 ? rCtx.moveTo(p.x, p.y) : rCtx.lineTo(p.x, p.y); });
+    rCtx.closePath();
+    rCtx.strokeStyle = `rgba(${pr},${pg},${pb},.5)`;
+    rCtx.lineWidth = 1.5;
+    rCtx.stroke();
+
+    // Nodes
+    if (progress > .5) {
+      const nodeAlpha = Math.min(1, (progress - .5) * 3);
+      points.forEach(p => {
+        const [r, g, b] = hexToRgb(p.color);
+        // Glow
+        rCtx.beginPath();
+        rCtx.arc(p.x, p.y, 8, 0, Math.PI * 2);
+        rCtx.fillStyle = `rgba(${r},${g},${b},${nodeAlpha * .12})`;
+        rCtx.fill();
+        // Dot
+        rCtx.beginPath();
+        rCtx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+        rCtx.fillStyle = `rgba(${r},${g},${b},${nodeAlpha * .8})`;
+        rCtx.fill();
+        rCtx.beginPath();
+        rCtx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+        rCtx.strokeStyle = `rgba(250,247,241,${nodeAlpha})`;
+        rCtx.lineWidth = 2;
+        rCtx.stroke();
+      });
+    }
+
+    // Score numbers
+    if (progress > .7) {
+      const numAlpha = Math.min(1, (progress - .7) * 4);
+      rCtx.font = '700 12px neulis-neue, sans-serif';
+      rCtx.textAlign = 'center';
+      points.forEach((p, i) => {
+        const a = angleFor(i);
+        const dist = (scores[i].score / 100) * R_MAX + 20;
+        const nx = RCX + Math.cos(a) * dist;
+        const ny = RCY + Math.sin(a) * dist;
+        rCtx.fillStyle = `rgba(42,37,35,${numAlpha * .4})`;
+        rCtx.fillText(scores[i].score, nx, ny);
+      });
+    }
+  }
+
+  // Initial draw (empty grid)
+  drawRadar(0);
+
+  function animateRadar() {
+    if (!radarAnimating) return;
+    radarAnimProgress = Math.min(1, radarAnimProgress + .012);
+    drawRadar(radarAnimProgress);
+    if (radarAnimProgress < 1) requestAnimationFrame(animateRadar);
+  }
+
+  /* ════════════════════════════════════════════
+     SCORE BARS
+     ════════════════════════════════════════════ */
+  const scoreBarsEl = document.getElementById('scoreBars');
+  const sorted = [...scores].sort((a, b) => b.score - a.score);
+  sorted.forEach(s => {
+    const row = document.createElement('div');
+    row.className = 'sb-row';
+    row.innerHTML = `<div class="sb-name">${s.name}</div>`
+      + `<div class="sb-track"><div class="sb-fill" style="background:${s.color};" data-w="${s.score}"></div></div>`
+      + `<div class="sb-num">0</div>`;
+    scoreBarsEl.appendChild(row);
+  });
+
+  /* ════════════════════════════════════════════
+     NAV THEME SWITCH ON SCROLL
+     ════════════════════════════════════════════ */
+  const nav = document.getElementById('nav');
+  const navLogo = document.getElementById('navLogo');
+  const navShare = document.getElementById('navShare');
+  const darkToLight = document.querySelector('.dark-to-light');
+
+  const navLogoText = document.getElementById('navLogoText');
+  function updateNav() {
+    const dtlRect = darkToLight.getBoundingClientRect();
+    const isLight = dtlRect.top < 60;
+    nav.classList.toggle('dark', !isLight);
+    nav.classList.toggle('light', isLight);
+    navLogo.style.filter = isLight ? 'brightness(0) invert(.12)' : 'brightness(0) invert(1)';
+    navLogoText.style.color = isLight ? '#2A2523' : '#E8E4DC';
+    navShare.style.background = isLight ? 'var(--ink)' : 'var(--cream)';
+    navShare.style.color = isLight ? 'var(--cream)' : 'var(--deep-navy)';
+  }
+
+  window.addEventListener('scroll', updateNav, { passive: true });
+
+  /* ════════════════════════════════════════════
+     SCROLL REVEALS
+     ════════════════════════════════════════════ */
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('visible');
+
+      // Radar chart
+      if (e.target.id === 'radarSection') {
+        setTimeout(() => {
+          radarAnimating = true;
+          requestAnimationFrame(animateRadar);
+          // Score bars
+          setTimeout(() => {
+            document.querySelectorAll('.sb-fill').forEach(b => { b.style.width = b.dataset.w + '%'; });
+            document.querySelectorAll('.sb-num').forEach((num, i) => {
+              const target = sorted[i].score;
+              let cur = 0;
+              const step = () => {
+                cur += Math.ceil((target - cur) * .06);
+                if (cur >= target) { num.textContent = target; return; }
+                num.textContent = cur;
+                requestAnimationFrame(step);
+              };
+              setTimeout(step, i * 60);
+            });
+          }, 400);
+        }, 200);
+      }
+
+      // Gauge
+      if (e.target.id === 'gaugeSection') {
+        setTimeout(() => { document.getElementById('gaugeDot').style.left = '45%'; }, 300);
+      }
+    });
+  }, { threshold: .12 });
+
+  document.querySelectorAll('.reveal-target').forEach(el => revealObs.observe(el));
+
+})();
+</script>
+</body>
+</html>

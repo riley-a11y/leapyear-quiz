@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeapYear — Come Alive</title>
+<link rel="stylesheet" href="https://use.typekit.net/gxr6ytx.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+
+  :root {
+    --display: 'neulis-neue', sans-serif;
+    --body: 'area-normal', sans-serif;
+    --serif: 'Instrument Serif', 'Georgia', serif;
+    --cream: #FAF7F1;
+    --ink: #1B1918;
+    --deep-navy: #0B1623;
+    --morning-green: #4A6741;
+    --amber: #C49A3B;
+    --flame: #DD5E32;
+    --philosopher: #3D4E8C;
+    --analyst: #5E8A72;
+    --builder: #C4724E;
+    --organizer: #C49A3B;
+    --connector: #D4847A;
+    --mobilizer: #B8453A;
+    --creator: #7B5B8A;
+    --explorer: #2E8B8B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-font-smoothing: antialiased; }
+  body {
+    font-family: var(--body);
+    overflow-x: hidden;
+    background: #5E5E5E;
+    cursor: default;
+    height: 1400vh;
+  }
+
+  /* ═══ GRAIN ═══ */
+  body::after {
+    content: ''; position: fixed; inset: 0; z-index: 10000; pointer-events: none;
+    opacity: .025; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ═══ ATMOSPHERE ═══ */
+  #atmosphere { position: fixed; inset: 0; z-index: 0; }
+
+  /* ═══ VIGNETTE ═══ */
+  #vignette {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(ellipse 80% 70% at 50% 50%, transparent 0%, rgba(0,0,0,.35) 100%);
+    opacity: .5;
+  }
+
+  /* ═══ PARTICLES ═══ */
+  #particles { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+  .particle {
+    position: absolute; border-radius: 50%; opacity: 0;
+    animation: pFloat linear infinite;
+  }
+  @keyframes pFloat {
+    0% { transform: translateY(110vh) translateX(0) scale(0); opacity: 0; }
+    8% { opacity: var(--po); transform: translateY(90vh) translateX(var(--px)) scale(1); }
+    88% { opacity: var(--po); }
+    100% { transform: translateY(-15vh) translateX(calc(var(--px) * -1.5)) scale(.3); opacity: 0; }
+  }
+
+  /* ═══ GEOMETRY ═══ */
+  #geometry { position: fixed; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; }
+  .geo-block {
+    position: absolute;
+    border: 1px solid rgba(255,255,255,.03);
+    backdrop-filter: blur(1px);
+  }
+  .geo-screen {
+    position: absolute;
+    background: rgba(60,60,60,.6);
+    border: 1px solid rgba(100,100,100,.15);
+    overflow: hidden;
+  }
+  .geo-screen::after {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,.015) 2px, rgba(255,255,255,.015) 4px);
+  }
+  .geo-screen .scanline {
+    position: absolute; left: 0; right: 0; height: 1px;
+    background: rgba(255,255,255,.06);
+    animation: scan 4s linear infinite;
+  }
+  @keyframes scan { 0% { top: -2px; } 100% { top: 102%; } }
+
+  /* ═══ LIGHT SOURCES ═══ */
+  #lightSources { position: fixed; inset: 0; z-index: 4; pointer-events: none; }
+  .light-orb {
+    position: absolute; border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0;
+    mix-blend-mode: screen;
+  }
+
+  /* ═══ ORGANIC GROWTH ═══ */
+  #organics { position: fixed; inset: 0; z-index: 4; pointer-events: none; }
+  .vine {
+    position: absolute; width: 3px;
+    background: linear-gradient(to top, rgba(74,103,65,.5), transparent);
+    transform-origin: bottom center;
+    border-radius: 2px;
+    opacity: 0;
+  }
+  .leaf {
+    position: absolute;
+    width: 20px; height: 12px;
+    background: radial-gradient(ellipse at 30% 50%, rgba(107,125,90,.6) 0%, rgba(74,103,65,.3) 100%);
+    border-radius: 0 80% 0 80%;
+    opacity: 0;
+  }
+
+  /* ═══ STARS ═══ */
+  #stars { position: fixed; inset: 0; z-index: 4; pointer-events: none; opacity: 0; }
+  .star {
+    position: absolute; border-radius: 50%;
+    background: var(--cream);
+    animation: twinkle var(--dur) var(--del) ease-in-out infinite;
+  }
+  @keyframes twinkle { 0%,100% { opacity: var(--o1); } 50% { opacity: var(--o2); } }
+
+  /* ═══ FIGURE ═══ */
+  #figure {
+    position: fixed; bottom: 18vh; left: 50%; transform: translateX(-50%);
+    z-index: 8; pointer-events: none; will-change: transform;
+  }
+  #figure svg { width: 60px; height: 170px; overflow: visible; filter: drop-shadow(0 0 12px rgba(160,150,130,.15)) drop-shadow(0 6px 24px rgba(0,0,0,.5)); }
+
+  /* ═══ COPY ═══ */
+  .copy-line {
+    position: fixed; left: 50%; top: 45%;
+    transform: translate(-50%, -50%);
+    text-align: center; opacity: 0;
+    will-change: opacity, transform;
+    pointer-events: none; max-width: 88vw;
+    z-index: 10;
+  }
+  .copy-line.label-text {
+    font-family: var(--body); font-weight: 600;
+    font-size: clamp(13px, 1.8vw, 17px);
+    letter-spacing: 8px; text-transform: uppercase;
+    color: rgba(160,160,160,.6);
+  }
+  .copy-line.pivot-text {
+    font-family: var(--display); font-weight: 800;
+    font-size: clamp(42px, 8vw, 88px);
+    line-height: .95; letter-spacing: -.04em;
+    color: #E8E4DC;
+    text-shadow: 0 2px 40px rgba(196,154,59,.15);
+  }
+  .copy-line.voice-text {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(26px, 5vw, 54px);
+    line-height: 1.2; color: rgba(232,228,220,.75);
+  }
+  .copy-line.warm-text {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(24px, 4.5vw, 50px);
+    line-height: 1.25;
+    color: rgba(250,247,241,.85);
+    text-shadow: 0 2px 30px rgba(74,103,65,.2);
+  }
+  .copy-line.commission-text {
+    font-family: var(--display); font-weight: 800;
+    font-size: clamp(32px, 6vw, 64px);
+    line-height: 1.05; letter-spacing: -.03em;
+    color: var(--cream);
+    text-shadow: 0 2px 40px rgba(74,103,65,.15);
+  }
+  .copy-line .accent {
+    font-family: var(--serif); font-weight: 400;
+    font-style: italic; letter-spacing: 0;
+  }
+  .copy-line strong {
+    font-family: var(--display); font-weight: 800;
+    font-style: normal;
+  }
+
+  /* ═══ CTA ═══ */
+  #ctaWrap {
+    position: fixed; bottom: 10vh; left: 50%; transform: translateX(-50%);
+    z-index: 15; opacity: 0; pointer-events: none; text-align: center;
+    transition: opacity .8s ease, transform .8s cubic-bezier(.2,.8,.3,1);
+  }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-family: var(--body); font-weight: 700; font-size: 16px; letter-spacing: .5px;
+    color: var(--deep-navy); background: var(--cream);
+    border: none; padding: 22px 56px; border-radius: 100px;
+    cursor: pointer; text-decoration: none;
+    transition: all .4s cubic-bezier(.2,.8,.3,1);
+    box-shadow: 0 4px 40px rgba(250,247,241,.12), 0 0 80px rgba(250,247,241,.06);
+    position: relative; overflow: hidden;
+  }
+  .cta-btn::before {
+    content: ''; position: absolute; inset: -2px;
+    border-radius: 100px;
+    background: conic-gradient(from 0deg, var(--builder), var(--organizer), var(--connector), var(--mobilizer), var(--philosopher), var(--analyst), var(--creator), var(--explorer), var(--builder));
+    z-index: -1; opacity: 0;
+    animation: btnGlow 4s linear infinite;
+    transition: opacity .6s ease;
+  }
+  .cta-btn:hover::before { opacity: .6; }
+  @keyframes btnGlow { to { transform: rotate(360deg); } }
+  .cta-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 60px rgba(250,247,241,.2), 0 0 100px rgba(250,247,241,.08);
+  }
+  .cta-btn svg { transition: transform .3s ease; }
+  .cta-btn:hover svg { transform: translateX(4px); }
+  .cta-detail {
+    margin-top: 16px; font-size: 12px;
+    color: rgba(250,247,241,.25); letter-spacing: .5px;
+  }
+
+  /* ═══ NAV ═══ */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    padding: 22px 36px; display: flex; align-items: center; justify-content: space-between;
+    transition: all .5s ease;
+  }
+  .nav.scrolled {
+    padding: 14px 36px;
+    backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+    border-bottom: 1px solid rgba(255,255,255,.04);
+  }
+  .nav-logo img {
+    height: 20px; filter: brightness(0) invert(.55); transition: filter .6s ease;
+  }
+  .nav-cta {
+    font-family: var(--body); font-weight: 700; font-size: 11px; letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none; padding: 10px 28px; border-radius: 100px;
+    transition: all .4s ease; cursor: pointer; border: none;
+    background: rgba(250,247,241,.08); color: rgba(250,247,241,.45);
+  }
+  .nav-cta:hover { background: rgba(250,247,241,.15); color: rgba(250,247,241,.8); }
+
+  /* ═══ SCROLL HINT ═══ */
+  #scrollHint {
+    position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%);
+    z-index: 15; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity: 0; animation: fadeIn 1.2s ease 2s forwards;
+  }
+  #scrollHint span {
+    font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+    color: rgba(180,180,180,.35); font-weight: 600;
+  }
+  .scroll-bar {
+    width: 1px; height: 36px;
+    background: linear-gradient(to bottom, rgba(180,180,180,.3), transparent);
+    animation: pulse 3s ease infinite;
+  }
+  @keyframes fadeIn { to { opacity: 1; } }
+  @keyframes pulse { 0%,100% { opacity:.15; } 50% { opacity:.6; } }
+
+  /* ═══ PROGRESS BAR ═══ */
+  #progressBar {
+    position: fixed; top: 0; left: 0; height: 2px;
+    z-index: 300; width: 0%;
+    background: linear-gradient(90deg, rgba(160,160,160,.3), var(--amber), var(--morning-green));
+    transition: none;
+  }
+
+  /* ═══ REVEAL OVERLAY ═══ */
+  #revealOverlay {
+    position: fixed; inset: 0; z-index: 9000;
+    background: rgba(8,14,22,.95);
+    backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    /* Transition driven by JS inline styles — CSS class transitions unreliable */
+  }
+
+  .reveal-ring {
+    position: relative;
+    width: min(82vw, 680px); height: min(82vw, 680px);
+  }
+  .reveal-archetype {
+    position: absolute; top: 50%; left: 50%;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    transition: transform .7s cubic-bezier(.34,1.56,.64,1), opacity .5s ease;
+    cursor: pointer;
+  }
+  .reveal-archetype.show { opacity: 1; }
+  .reveal-circle {
+    width: clamp(72px, 11vw, 110px); height: clamp(72px, 11vw, 110px);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .35s cubic-bezier(.2,.8,.3,1), box-shadow .35s ease;
+    position: relative;
+  }
+  .reveal-circle::after {
+    content: ''; position: absolute; inset: -4px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.1);
+    transition: all .35s ease;
+  }
+  .reveal-archetype:hover .reveal-circle {
+    transform: scale(1.15);
+  }
+  .reveal-archetype:hover .reveal-circle::after {
+    inset: -8px; border-color: rgba(255,255,255,.2);
+  }
+  .reveal-orient {
+    font-family: var(--body); font-weight: 700;
+    font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(250,247,241,.2);
+  }
+  .reveal-name {
+    font-family: var(--display); font-weight: 800;
+    font-size: clamp(12px, 1.5vw, 16px); letter-spacing: .3px;
+    color: var(--cream); white-space: nowrap;
+  }
+  .reveal-line {
+    font-family: var(--serif); font-style: italic;
+    font-size: 11px; color: rgba(250,247,241,.3);
+    max-width: 130px; text-align: center; line-height: 1.35;
+    opacity: 0; transform: translateY(4px);
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  .reveal-archetype:hover .reveal-line { opacity: 1; transform: translateY(0); }
+
+  .reveal-center {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; opacity: 0;
+    transition: opacity .7s ease .6s;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .reveal-center.show { opacity: 1; pointer-events: auto; }
+  .reveal-headline {
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(16px, 2.5vw, 24px);
+    color: rgba(250,247,241,.4); margin-bottom: 32px; line-height: 1.4;
+  }
+  .reveal-cta {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: var(--body); font-weight: 700; font-size: 14px; letter-spacing: .3px;
+    color: var(--deep-navy); background: var(--cream);
+    border: none; padding: 20px 48px; border-radius: 100px; cursor: pointer;
+    transition: all .4s cubic-bezier(.2,.8,.3,1);
+    box-shadow: 0 4px 40px rgba(250,247,241,.1);
+  }
+  .reveal-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 60px rgba(250,247,241,.18);
+  }
+  .reveal-close {
+    position: absolute; top: 28px; right: 32px;
+    background: none; border: none; cursor: pointer;
+    color: rgba(250,247,241,.2); font-size: 24px;
+    transition: color .3s ease; z-index: 10;
+    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+  }
+  .reveal-close:hover { color: rgba(250,247,241,.6); background: rgba(250,247,241,.05); }
+
+  /* Radial glow behind each archetype in reveal */
+  .reveal-glow {
+    position: absolute; top: 50%; left: 50%;
+    width: 200%; height: 200%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%; filter: blur(40px);
+    opacity: .15; pointer-events: none;
+  }
+
+  .footer {
+    position: fixed; bottom: 8px; left: 0; right: 0;
+    text-align: center; font-size: 10px; letter-spacing: 1.5px;
+    color: rgba(180,180,180,.08); z-index: 3; pointer-events: none;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 600px) {
+    #figure svg { width: 44px; height: 130px; }
+    .reveal-ring { width: 92vw; height: 92vw; }
+    .reveal-line { display: none; }
+    .reveal-orient { display: none; }
+    .reveal-circle { width: 56px !important; height: 56px !important; }
+    .reveal-name { font-size: 10px; }
+    .copy-line.label-text { letter-spacing: 5px; font-size: 11px; }
+    .cta-btn { padding: 18px 40px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="atmosphere"></div>
+<div id="groundPlane" style="position:fixed;bottom:0;left:0;right:0;height:22vh;z-index:2;pointer-events:none;
+  background:linear-gradient(to top, rgba(40,40,40,.6) 0%, rgba(50,50,50,.3) 40%, transparent 100%);"></div>
+<div id="horizonGlow" style="position:fixed;bottom:18vh;left:50%;transform:translateX(-50%);width:200px;height:60px;z-index:7;pointer-events:none;
+  border-radius:50%;filter:blur(40px);opacity:0;background:rgba(196,154,59,.3);"></div>
+<div id="vignette"></div>
+<div id="particles"></div>
+<div id="geometry"></div>
+<div id="lightSources"></div>
+<div id="organics"></div>
+<div id="stars"></div>
+<div id="progressBar"></div>
+
+<!-- ═══ FIGURE ═══ -->
+<div id="figure">
+  <svg viewBox="0 0 60 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="figGlow" cx="50%" cy="45%" r="60%">
+        <stop offset="0%" stop-color="#C49A3B" stop-opacity=".4"/>
+        <stop offset="100%" stop-color="#C49A3B" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="figBody" x1="30" y1="0" x2="30" y2="180" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" id="figGrad1" stop-color="#2E2E2E"/>
+        <stop offset="100%" id="figGrad2" stop-color="#222222"/>
+      </linearGradient>
+    </defs>
+    <!-- Ambient glow -->
+    <circle cx="30" cy="80" r="70" fill="url(#figGlow)" opacity="0" id="figGlowEl"/>
+    <!-- Head -->
+    <ellipse cx="30" cy="22" rx="11" ry="12.5" fill="url(#figBody)" stroke="rgba(140,135,125,.2)" stroke-width=".7" id="figHead"/>
+    <!-- Neck -->
+    <rect x="26" y="34" width="8" height="8" rx="3" fill="url(#figBody)"/>
+    <!-- Shoulders + Torso — organic shape -->
+    <path d="M12 46 C12 42, 20 40, 30 40 C40 40, 48 42, 48 46 L46 95 C46 98, 42 100, 30 100 C18 100, 14 98, 14 95 Z" fill="url(#figBody)" stroke="rgba(140,135,125,.15)" stroke-width=".7" id="figTorso"/>
+    <!-- Left arm -->
+    <path d="M14 48 C8 58, 6 72, 10 82" stroke="url(#figBody)" stroke-width="6" stroke-linecap="round" fill="none" id="figArmL"/>
+    <!-- Right arm -->
+    <path d="M46 48 C52 58, 54 72, 50 82" stroke="url(#figBody)" stroke-width="6" stroke-linecap="round" fill="none" id="figArmR"/>
+    <!-- Left leg -->
+    <path d="M22 98 L18 148 L14 156" stroke="url(#figBody)" stroke-width="7" stroke-linecap="round" fill="none" id="figLegL"/>
+    <!-- Right leg -->
+    <path d="M38 98 L42 148 L46 156" stroke="url(#figBody)" stroke-width="7" stroke-linecap="round" fill="none" id="figLegR"/>
+    <!-- Feet -->
+    <ellipse cx="12" cy="158" rx="8" ry="3.5" fill="url(#figBody)" id="figFootL"/>
+    <ellipse cx="48" cy="158" rx="8" ry="3.5" fill="url(#figBody)" id="figFootR"/>
+  </svg>
+</div>
+
+<!-- ═══ COPY ═══ -->
+<!-- Act 1: The Gray World — labels the world has given you -->
+<div class="copy-line label-text" data-enter=".02" data-peak=".035" data-exit=".05">They said you were anxious.</div>
+<div class="copy-line label-text" data-enter=".055" data-peak=".07" data-exit=".085">Distracted.</div>
+<div class="copy-line label-text" data-enter=".09" data-peak=".105" data-exit=".12">Not ready.</div>
+
+<!-- Act 1.5: Pause — weight -->
+<div class="copy-line voice-text" data-enter=".14" data-peak=".165" data-exit=".19" style="font-size:clamp(18px,3vw,36px); color:rgba(200,200,200,.35);">And maybe you started to believe it.</div>
+
+<!-- Act 2: The Stirring -->
+<div class="copy-line pivot-text" data-enter=".22" data-peak=".255" data-exit=".29">They were wrong.</div>
+<div class="copy-line voice-text" data-enter=".32" data-peak=".36" data-exit=".40">There is something underneath.</div>
+<div class="copy-line voice-text" data-enter=".42" data-peak=".455" data-exit=".49">A design. A drive.</div>
+<div class="copy-line warm-text" data-enter=".50" data-peak=".535" data-exit=".57">It was there before the screens.<br>Before the labels.</div>
+
+<!-- Act 3: Color Breaks Through -->
+<div class="copy-line warm-text" data-enter=".60" data-peak=".635" data-exit=".67">Something in you is ready to <strong>come alive.</strong></div>
+<div class="copy-line commission-text" data-enter=".70" data-peak=".74" data-exit=".78">Eight core expressions<br><span class="accent">of what it means to be human.</span></div>
+
+<!-- Act 4: The Invitation -->
+<div class="copy-line commission-text" data-enter=".82" data-peak=".855" data-exit=".89">The world doesn't need<br>another label.</div>
+<div class="copy-line commission-text" data-enter=".90" data-peak=".945" data-exit=".98">It needs you —<br><span class="accent">awake, equipped, alive.</span></div>
+
+<!-- ═══ CTA ═══ -->
+<div id="ctaWrap">
+  <button class="cta-btn" id="ctaBtn">
+    Come Alive
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <p class="cta-detail">85 questions &middot; 13 minutes &middot; Free</p>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav" id="nav">
+  <div class="nav-logo"><img src="https://cdn.prod.website-files.com/6753b1f0c39489717e9a1b0e/6753c28d89e04ad11789bfa1_Frame%2011.svg" alt="LeapYear" onerror="this.parentElement.innerHTML='<span style=\'font-family:var(--display);font-weight:800;font-size:15px;color:rgba(250,247,241,.55);letter-spacing:1px\'>LEAPYEAR</span>'"/></div>
+  <a href="#" class="nav-cta" id="navCta">Take the Assessment</a>
+</nav>
+
+<div id="scrollHint"><span>Scroll</span><div class="scroll-bar"></div></div>
+
+<!-- ═══ REVEAL ═══ -->
+<div id="revealOverlay">
+  <button class="reveal-close" id="revealClose">&times;</button>
+  <div class="reveal-ring" id="revealRing"></div>
+  <div class="reveal-center" id="revealCenter">
+    <p class="reveal-headline">Eight ways to come alive.</p>
+    <button class="reveal-cta" id="revealCta">
+      Find Your Core Expression
+      <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M10 5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="footer">LeapYear &middot; Austin, Texas</div>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ════════════════════════════════════════
+     ARCHETYPE DATA
+     ════════════════════════════════════════ */
+  const archetypes = [
+    { id:'builder',     name:'Builder',     orient:'Doing',        color:'#C4724E', line:'You take what\'s imagined and make it real.' },
+    { id:'organizer',   name:'Organizer',   orient:'Doing',        color:'#C49A3B', line:'You see the structure that should exist and build it.' },
+    { id:'connector',   name:'Connector',   orient:'Relating',     color:'#D4847A', line:'People feel known in your presence.' },
+    { id:'mobilizer',   name:'Mobilizer',   orient:'Relating',     color:'#B8453A', line:'You rally people around something bigger.' },
+    { id:'philosopher', name:'Philosopher', orient:'Thinking',     color:'#3D4E8C', line:'You ask the questions others are afraid to sit with.' },
+    { id:'analyst',     name:'Analyst',     orient:'Thinking',     color:'#5E8A72', line:'You see the systems underneath.' },
+    { id:'creator',     name:'Creator',     orient:'Experiencing', color:'#7B5B8A', line:'You make beauty from nothing.' },
+    { id:'explorer',    name:'Explorer',    orient:'Experiencing', color:'#2E8B8B', line:'The unknown is where you feel most alive.' },
+  ];
+
+  /* ════════════════════════════════════════
+     PARTICLES
+     ════════════════════════════════════════ */
+  const particlesEl = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const sz = 1.5 + Math.random() * 4;
+    const grayColors = ['rgba(120,120,120,.08)','rgba(100,100,100,.06)','rgba(140,140,140,.07)'];
+    p.style.cssText = `width:${sz}px;height:${sz}px;left:${5+Math.random()*90}%;`
+      + `background:${grayColors[i%3]};--po:${(.04+Math.random()*.08).toFixed(3)};--px:${-40+Math.random()*80}px;`
+      + `animation-duration:${18+Math.random()*24}s;animation-delay:${Math.random()*18}s;`;
+    p.dataset.grayColor = grayColors[i%3];
+    p.dataset.warmColor = ['rgba(196,154,59,.12)','rgba(74,103,65,.1)','rgba(196,114,78,.08)'][i%3];
+    particlesEl.appendChild(p);
+  }
+
+  /* ════════════════════════════════════════
+     GEOMETRY — brutalist cityscape
+     ════════════════════════════════════════ */
+  const geoEl = document.getElementById('geometry');
+  const blockData = [];
+
+  // Buildings — skyline clustered left and right, clearing in center for figure
+  const buildings = [
+    // Left cluster
+    { x:0, w:50, h:40, g:50 }, { x:3, w:35, h:55, g:40 }, { x:7, w:45, h:35, g:55 },
+    { x:12, w:30, h:60, g:36 }, { x:16, w:40, h:38, g:52 }, { x:20, w:35, h:50, g:42 },
+    { x:25, w:30, h:42, g:48 },
+    // Right cluster
+    { x:62, w:35, h:45, g:46 }, { x:67, w:40, h:55, g:38 }, { x:72, w:50, h:38, g:54 },
+    { x:77, w:30, h:62, g:34 }, { x:82, w:45, h:42, g:50 }, { x:87, w:35, h:52, g:40 },
+    { x:92, w:40, h:35, g:56 }, { x:96, w:45, h:48, g:44 },
+    // Background taller buildings (farther away, dimmer)
+    { x:30, w:25, h:28, g:62 }, { x:36, w:20, h:32, g:58 },
+    { x:52, w:22, h:30, g:60 }, { x:57, w:25, h:26, g:64 },
+  ];
+
+  buildings.forEach((b, i) => {
+    const el = document.createElement('div');
+    el.className = 'geo-block';
+    const y = 100 - b.h;
+    el.style.cssText = `left:${b.x}%;bottom:0;width:${b.w}px;height:${b.h}%;background:rgba(${b.g},${b.g},${b.g},.55);`;
+    geoEl.appendChild(el);
+    blockData.push({ el, spd: .15 + Math.random() * .25, rot: (-8 + Math.random() * 16), origH: b.h });
+  });
+
+  // Screens — glowing rectangles with scanlines
+  for (let i = 0; i < 6; i++) {
+    const el = document.createElement('div');
+    el.className = 'geo-screen';
+    const w = 30 + Math.random() * 40;
+    const h = 20 + Math.random() * 25;
+    el.style.cssText = `left:${10+Math.random()*80}%;top:${15+Math.random()*50}%;width:${w}px;height:${h}px;`;
+    const scan = document.createElement('div');
+    scan.className = 'scanline';
+    scan.style.animationDelay = `${Math.random()*4}s`;
+    el.appendChild(scan);
+    geoEl.appendChild(el);
+    blockData.push({ el, spd: .08 + Math.random() * .12, rot: 0, isScreen: true });
+  }
+
+  /* ════════════════════════════════════════
+     LIGHT SOURCES — color breaking through
+     ════════════════════════════════════════ */
+  const lightsEl = document.getElementById('lightSources');
+  const lightOrbs = [
+    { x:'55%', y:'40%', w:500, color:'rgba(196,154,59,.25)', delay:0 },
+    { x:'20%', y:'60%', w:400, color:'rgba(74,103,65,.2)', delay:.05 },
+    { x:'70%', y:'25%', w:450, color:'rgba(196,114,78,.18)', delay:.03 },
+    { x:'35%', y:'75%', w:350, color:'rgba(212,132,122,.15)', delay:.07 },
+    { x:'80%', y:'55%', w:380, color:'rgba(46,139,139,.15)', delay:.04 },
+    { x:'10%', y:'30%', w:300, color:'rgba(123,91,138,.12)', delay:.06 },
+  ].map(l => {
+    const el = document.createElement('div');
+    el.className = 'light-orb';
+    el.style.cssText = `left:${l.x};top:${l.y};width:${l.w}px;height:${l.w}px;background:${l.color};`;
+    lightsEl.appendChild(el);
+    return { el, delay: l.delay };
+  });
+
+  /* ════════════════════════════════════════
+     ORGANIC GROWTH — vines & leaves
+     ════════════════════════════════════════ */
+  const organicsEl = document.getElementById('organics');
+  const vineData = [];
+  for (let i = 0; i < 12; i++) {
+    const vine = document.createElement('div');
+    vine.className = 'vine';
+    const h = 80 + Math.random() * 200;
+    const x = 3 + Math.random() * 94;
+    vine.style.cssText = `left:${x}%;bottom:0;height:${h}px;transform:scaleY(0);`;
+    organicsEl.appendChild(vine);
+    vineData.push({ el: vine, delay: Math.random() * .15, maxH: h });
+
+    // Leaves on vine
+    for (let j = 0; j < 2 + Math.floor(Math.random()*3); j++) {
+      const leaf = document.createElement('div');
+      leaf.className = 'leaf';
+      const ly = 20 + Math.random() * (h - 30);
+      const side = Math.random() > .5 ? 8 : -22;
+      const rot = -20 + Math.random() * 40;
+      leaf.style.cssText = `left:${x}%;bottom:${ly}px;margin-left:${side}px;transform:rotate(${rot}deg) scale(0);`;
+      organicsEl.appendChild(leaf);
+      vineData.push({ el: leaf, delay: Math.random() * .2, isLeaf: true });
+    }
+  }
+
+  /* ════════════════════════════════════════
+     STARS — appear in the color world
+     ════════════════════════════════════════ */
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = .5 + Math.random() * 2;
+    s.style.cssText = `width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;`
+      + `--o1:${(.05+Math.random()*.15).toFixed(2)};--o2:${(.3+Math.random()*.5).toFixed(2)};`
+      + `--dur:${3+Math.random()*5}s;--del:${Math.random()*4}s;`;
+    starsEl.appendChild(s);
+  }
+
+  /* ════════════════════════════════════════
+     COPY LINES
+     ════════════════════════════════════════ */
+  const copyLines = document.querySelectorAll('.copy-line');
+
+  /* ════════════════════════════════════════
+     SCROLL & COLOR UTILS
+     ════════════════════════════════════════ */
+  function pageProgress() {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    return h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)) : 0;
+  }
+
+  function lerp(a, b, t) {
+    const ah = parseInt(a.slice(1),16), bh = parseInt(b.slice(1),16);
+    const r = Math.round(((ah>>16)&0xff)+(((bh>>16)&0xff)-((ah>>16)&0xff))*t);
+    const g = Math.round(((ah>>8)&0xff)+(((bh>>8)&0xff)-((ah>>8)&0xff))*t);
+    const bl = Math.round((ah&0xff)+((bh&0xff)-(ah&0xff))*t);
+    return `rgb(${r},${g},${bl})`;
+  }
+
+  function lerpN(a, b, t) { return a + (b - a) * Math.max(0, Math.min(1, t)); }
+
+  function smoothstep(lo, hi, x) {
+    const t = Math.max(0, Math.min(1, (x - lo) / (hi - lo)));
+    return t * t * (3 - 2 * t);
+  }
+
+  /* ════════════════════════════════════════
+     ATMOSPHERE GRADIENT
+     ════════════════════════════════════════ */
+  const atmo = [
+    { at:0,   c:['#686868','#5C5C5C','#4E4E4E'] },
+    { at:.15, c:['#686868','#5C5C5C','#4E4E4E'] },
+    { at:.25, c:['#5A5248','#504840','#484038'] },
+    { at:.35, c:['#6A5C44','#5E5038','#524830'] },
+    { at:.45, c:['#6E6040','#625438','#564A30'] },
+    { at:.55, c:['#5A6848','#4E5C3C','#425030'] },
+    { at:.65, c:['#4A6441','#3E5835','#324C2A'] },
+    { at:.75, c:['#3E5838','#34502E','#2A4424'] },
+    { at:.85, c:['#344E30','#2C4628','#243E20'] },
+    { at:.95, c:['#2C4428','#263E22','#20361C'] },
+    { at:1,   c:['#263E22','#22381E','#1E321A'] },
+  ];
+
+  function atmoAt(p) {
+    let lo = atmo[0], hi = atmo[atmo.length-1];
+    for (let i = 0; i < atmo.length-1; i++) {
+      if (p >= atmo[i].at && p <= atmo[i+1].at) { lo = atmo[i]; hi = atmo[i+1]; break; }
+    }
+    const t = (lo.at === hi.at) ? 0 : (p - lo.at) / (hi.at - lo.at);
+    return lo.c.map((c,j) => lerp(c, hi.c[j], t));
+  }
+
+  /* ════════════════════════════════════════
+     FIGURE REFS
+     ════════════════════════════════════════ */
+  const figWrap = document.getElementById('figure');
+  const figGlow = document.getElementById('figGlowEl');
+  const figGrad1 = document.getElementById('figGrad1');
+  const figGrad2 = document.getElementById('figGrad2');
+  const figArmL = document.getElementById('figArmL');
+  const figArmR = document.getElementById('figArmR');
+
+  /* ════════════════════════════════════════
+     DOM REFS
+     ════════════════════════════════════════ */
+  const atmosphere = document.getElementById('atmosphere');
+  const vignette = document.getElementById('vignette');
+  const nav = document.getElementById('nav');
+  const scrollHint = document.getElementById('scrollHint');
+  const ctaWrap = document.getElementById('ctaWrap');
+  const progressBar = document.getElementById('progressBar');
+
+  /* ════════════════════════════════════════
+     MAIN LOOP
+     ════════════════════════════════════════ */
+  function frame() {
+    const p = pageProgress();
+
+    // ── Progress bar ──
+    progressBar.style.width = `${p * 100}%`;
+
+    // ── Atmosphere ──
+    const cols = atmoAt(p);
+    atmosphere.style.background = `linear-gradient(180deg,${cols[0]} 0%,${cols[1]} 50%,${cols[2]} 100%)`;
+
+    // ── Vignette — stronger in gray, softer in color ──
+    vignette.style.opacity = lerpN(.7, .3, smoothstep(.3, .7, p));
+
+    // ── Geometry ──
+    const geoFade = smoothstep(.35, .65, p);
+    blockData.forEach((b, i) => {
+      const yOff = p * b.spd * -600;
+      const rot = geoFade * b.rot;
+      const scale = lerpN(1, .2, geoFade);
+      const opacity = lerpN(.55, 0, geoFade);
+      b.el.style.transform = `translateY(${yOff}px) rotate(${rot}deg) scale(${scale})`;
+      b.el.style.opacity = opacity;
+    });
+
+    // ── Particles — shift color ──
+    const allP = particlesEl.children;
+    if (p > .3) {
+      for (let i = 0; i < allP.length; i++) {
+        const warmT = smoothstep(.3, .6, p);
+        const po = lerpN(.05, .12, warmT);
+        allP[i].style.setProperty('--po', po.toFixed(3));
+      }
+    }
+
+    // ── Light sources ──
+    lightOrbs.forEach(l => {
+      const o = smoothstep(.2 + l.delay, .45 + l.delay, p);
+      const drift = Math.sin(Date.now() / 4000 + l.delay * 20) * 15;
+      l.el.style.opacity = o * .8;
+      l.el.style.transform = `translate(${drift}px, ${Math.cos(Date.now()/5000 + l.delay*15)*10}px)`;
+    });
+
+    // ── Organics ──
+    vineData.forEach(v => {
+      const o = smoothstep(.55 + v.delay, .75 + v.delay, p);
+      if (v.isLeaf) {
+        v.el.style.opacity = o;
+        v.el.style.transform = v.el.style.transform.replace(/scale\([^)]*\)/, `scale(${o})`);
+      } else {
+        v.el.style.opacity = o * .6;
+        v.el.style.transform = `scaleY(${o})`;
+      }
+    });
+
+    // ── Stars ──
+    starsEl.style.opacity = smoothstep(.6, .8, p) * .5;
+
+    // ── Figure ──
+    const figColorT = smoothstep(.2, .55, p);
+    // Start dark silhouette (#2E2E2E), warm up to amber/brown
+    const grayVal = Math.round(lerpN(46, 100, figColorT));
+    const figC1 = figColorT < .4
+      ? `rgb(${grayVal},${grayVal},${grayVal})`
+      : lerp('#646464', '#A08050', Math.min(1, (figColorT - .4) / .6));
+    const figC2 = figColorT < .4
+      ? `rgb(${Math.max(20, grayVal-12)},${Math.max(20, grayVal-12)},${Math.max(20, grayVal-12)})`
+      : lerp('#585858', '#7A6030', Math.min(1, (figColorT - .4) / .6));
+    figGrad1.setAttribute('stop-color', figC1);
+    figGrad2.setAttribute('stop-color', figC2);
+    figGlow.style.opacity = smoothstep(.25, .55, p) * .6;
+
+    // Figure bob & scale
+    const bob = Math.sin(p * Math.PI * 12) * 2;
+    const figScale = lerpN(.92, 1.06, smoothstep(0, .8, p));
+    figWrap.style.transform = `translateX(-50%) translateY(${bob}px) scale(${figScale})`;
+
+    // Arms opening
+    const armT = smoothstep(.4, .75, p);
+    if (figArmL) figArmL.setAttribute('d', `M14 48 C${8-armT*6} ${58-armT*4}, ${6-armT*8} ${72-armT*8}, ${10-armT*6} ${82-armT*10}`);
+    if (figArmR) figArmR.setAttribute('d', `M46 48 C${52+armT*6} ${58-armT*4}, ${54+armT*8} ${72-armT*8}, ${50+armT*6} ${82-armT*10}`);
+
+    // Figure visibility — always visible unless overlay is up
+    figWrap.style.opacity = document.getElementById('revealOverlay').classList.contains('active') ? 0 : 1;
+
+    // ── Horizon glow (behind figure, warm light rising) ──
+    const hGlow = document.getElementById('horizonGlow');
+    if (hGlow) {
+      const glowT = smoothstep(.15, .45, p);
+      hGlow.style.opacity = glowT * .6;
+      const glowScale = 1 + glowT * 4;
+      hGlow.style.transform = `translateX(-50%) scale(${glowScale})`;
+    }
+
+    // ── Ground plane color shift ──
+    const ground = document.getElementById('groundPlane');
+    if (ground) {
+      const gT = smoothstep(.4, .7, p);
+      const gR = Math.round(lerpN(40, 38, gT));
+      const gG = Math.round(lerpN(40, 52, gT));
+      const gB = Math.round(lerpN(40, 32, gT));
+      ground.style.background = `linear-gradient(to top, rgba(${gR},${gG},${gB},.6) 0%, rgba(${gR+10},${gG+10},${gB+10},.3) 40%, transparent 100%)`;
+    }
+
+    // ── Copy ──
+    copyLines.forEach(el => {
+      const enter = parseFloat(el.dataset.enter);
+      const peak = parseFloat(el.dataset.peak);
+      const exit = parseFloat(el.dataset.exit);
+      const fadeD = .015;
+
+      let opacity = 0, yOff = 25, scale = .97;
+      if (p >= enter && p <= exit) {
+        if (p < peak) {
+          const t = smoothstep(enter, enter + fadeD, p);
+          opacity = t; yOff = 25 * (1 - t); scale = lerpN(.97, 1, t);
+        } else {
+          const t = smoothstep(exit - fadeD, exit, p);
+          opacity = 1 - t; yOff = -15 * t; scale = lerpN(1, 1.01, t);
+        }
+      }
+      el.style.opacity = opacity;
+      el.style.transform = `translate(-50%, calc(-50% + ${yOff}px)) scale(${scale})`;
+    });
+
+    // ── CTA ──
+    const ctaShow = p > .92;
+    ctaWrap.style.opacity = ctaShow ? 1 : 0;
+    ctaWrap.style.pointerEvents = ctaShow ? 'auto' : 'none';
+    ctaWrap.style.transform = `translateX(-50%) translateY(${ctaShow ? 0 : 30}px)`;
+
+    // ── Nav ──
+    const navBg = p > .04 ? `rgba(${Math.round(lerpN(60,30,smoothstep(.04,.6,p)))},${Math.round(lerpN(60,40,smoothstep(.04,.6,p)))},${Math.round(lerpN(60,28,smoothstep(.04,.6,p)))},.5)` : 'transparent';
+    if (window.scrollY > 60) {
+      nav.classList.add('scrolled');
+      nav.style.background = navBg;
+    } else {
+      nav.classList.remove('scrolled');
+      nav.style.background = 'transparent';
+      nav.style.borderBottom = 'none';
+    }
+
+    // Logo brightness based on scene
+    const logoBright = lerpN(.55, .75, smoothstep(.3, .7, p));
+    nav.querySelector('img')?.style && (nav.querySelector('img').style.filter = `brightness(0) invert(${logoBright})`);
+
+    // ── Scroll hint ──
+    scrollHint.style.opacity = p < .02 ? 1 : Math.max(0, 1 - (p - .02) / .03);
+
+    requestAnimationFrame(frame);
+  }
+
+  // Start animation loop + scroll fallback
+  requestAnimationFrame(frame);
+  window.addEventListener('scroll', frame, { passive: true });
+  frame(); // Run once immediately
+  window.__frame = frame; // Expose for debugging
+
+  /* ════════════════════════════════════════
+     REVEAL OVERLAY
+     ════════════════════════════════════════ */
+  const overlay = document.getElementById('revealOverlay');
+  const ring = document.getElementById('revealRing');
+  const revealCenter = document.getElementById('revealCenter');
+
+  archetypes.forEach(a => {
+    const el = document.createElement('div');
+    el.className = 'reveal-archetype';
+    el.innerHTML = `
+      <div class="reveal-glow" style="background:${a.color};"></div>
+      <div class="reveal-circle" style="background:radial-gradient(circle at 35% 35%, ${a.color}dd, ${a.color}88);box-shadow:0 8px 40px ${a.color}44, inset 0 1px 0 rgba(255,255,255,.15);">
+      </div>
+      <span class="reveal-orient">${a.orient}</span>
+      <span class="reveal-name">${a.name}</span>
+      <span class="reveal-line">${a.line}</span>
+    `;
+    ring.appendChild(el);
+  });
+
+  const revealItems = ring.querySelectorAll('.reveal-archetype');
+
+  function positionRevealItems() {
+    const R = Math.min(ring.offsetWidth, ring.offsetHeight) * .38;
+    revealItems.forEach((el, i) => {
+      const angle = (i / archetypes.length) * Math.PI * 2 - Math.PI / 2;
+      el.dataset.tx = Math.cos(angle) * R;
+      el.dataset.ty = Math.sin(angle) * R;
+    });
+  }
+
+  function openReveal() {
+    positionRevealItems();
+    document.body.style.overflow = 'hidden';
+    // Use JS inline styles — CSS class transitions are unreliable
+    overlay.style.transition = 'opacity .7s cubic-bezier(.2,.8,.3,1)';
+    overlay.style.opacity = '1';
+    overlay.style.pointerEvents = 'auto';
+    overlay.classList.add('active');
+    revealItems.forEach((el, i) => {
+      setTimeout(() => {
+        el.style.transition = 'transform .7s cubic-bezier(.34,1.56,.64,1), opacity .5s ease';
+        el.style.transform = `translate(calc(-50% + ${el.dataset.tx}px), calc(-50% + ${el.dataset.ty}px)) scale(1)`;
+        el.style.opacity = '1';
+      }, 120 + i * 90);
+    });
+    setTimeout(() => {
+      revealCenter.style.transition = 'opacity .7s ease';
+      revealCenter.style.opacity = '1';
+      revealCenter.style.pointerEvents = 'auto';
+    }, 120 + archetypes.length * 90 + 250);
+  }
+
+  function closeReveal() {
+    revealItems.forEach(el => {
+      el.style.transition = 'transform .4s ease, opacity .3s ease';
+      el.style.transform = 'translate(-50%, -50%) scale(0)';
+      el.style.opacity = '0';
+    });
+    revealCenter.style.transition = 'opacity .3s ease';
+    revealCenter.style.opacity = '0';
+    revealCenter.style.pointerEvents = 'none';
+    setTimeout(() => {
+      overlay.style.transition = 'opacity .4s ease';
+      overlay.style.opacity = '0';
+      overlay.style.pointerEvents = 'none';
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }, 300);
+  }
+
+  document.getElementById('ctaBtn').addEventListener('click', openReveal);
+  document.getElementById('navCta').addEventListener('click', e => { e.preventDefault(); openReveal(); });
+  document.getElementById('revealClose').addEventListener('click', closeReveal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeReveal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('active')) closeReveal(); });
+  document.getElementById('revealCta').addEventListener('click', () => { closeReveal(); window.scrollTo({top:0,behavior:'instant'}); });
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card Explorations — LeapYear</title>
+<link rel="stylesheet" href="https://use.typekit.net/gxr6ytx.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+
+  :root {
+    --display: 'neulis-neue', sans-serif;
+    --body: 'area-normal', sans-serif;
+    --serif: 'Instrument Serif', 'Georgia', serif;
+
+    --cream: #FAF7F1; --parchment: #F0EBE1; --alabaster: #F5F1EB;
+    --ink: #2A2523; --text-dark: #3A3532; --text-mid: #7A7570; --text-light: #A5A09A;
+    --deep-navy: #0B1623;
+
+    --philosopher: #3D4E8C; --analyst: #5E8A72; --builder: #C4724E; --organizer: #C49A3B;
+    --connector: #D4847A; --mobilizer: #B8453A; --creator: #7B5B8A; --explorer: #2E8B8B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--body); background: #1a1a1a; color: #E8E4DC; overflow-x: hidden; }
+
+  /* Grain */
+  body::after {
+    content: ''; position: fixed; inset: 0; z-index: 10000; pointer-events: none; opacity: .025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Page structure */
+  .page-header {
+    text-align: center; padding: 80px 24px 20px;
+  }
+  .page-header h1 {
+    font-family: var(--display); font-weight: 800; font-size: 14px;
+    letter-spacing: 4px; text-transform: uppercase; color: var(--text-light);
+  }
+
+  .direction {
+    padding: 60px 24px 100px;
+    border-top: 1px solid rgba(232,228,220,.06);
+  }
+  .direction-header {
+    max-width: 680px; margin: 0 auto 60px; text-align: center;
+  }
+  .direction-num {
+    font-family: var(--serif); font-style: italic; font-size: 16px;
+    color: var(--organizer); opacity: .6; margin-bottom: 8px;
+  }
+  .direction-title {
+    font-family: var(--display); font-weight: 800; font-size: clamp(28px,4vw,40px);
+    line-height: 1.05; letter-spacing: -.03em; margin-bottom: 12px;
+  }
+  .direction-sub {
+    font-family: var(--serif); font-style: italic; font-size: 18px;
+    color: var(--text-light); line-height: 1.5; margin-bottom: 20px;
+  }
+  .direction-desc {
+    font-size: 14px; line-height: 1.75; color: var(--text-mid); max-width: 520px; margin: 0 auto;
+  }
+
+  /* Card display area */
+  .card-display {
+    display: flex; justify-content: center; align-items: flex-start;
+    gap: 40px; flex-wrap: wrap; max-width: 1100px; margin: 0 auto;
+  }
+
+  /* ═══════════════════════════════════════════
+     DIRECTION A: THE FIGURE — Character Cards
+     ═══════════════════════════════════════════ */
+
+  .card-a {
+    width: 320px; aspect-ratio: 3/4; border-radius: 20px;
+    position: relative; overflow: hidden; flex-shrink: 0;
+    box-shadow: 0 24px 80px rgba(0,0,0,.4), 0 0 0 1px rgba(232,228,220,.06);
+  }
+
+  /* Card background — archetype color */
+  .card-a .card-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(170deg, var(--bg-top) 0%, var(--bg-bot) 100%);
+  }
+
+  /* Image area — top 60% */
+  .card-a .card-image {
+    position: absolute; top: 0; left: 0; right: 0; height: 65%;
+    background: var(--bg-top); overflow: hidden;
+  }
+  .card-a .card-image-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(170deg, rgba(0,0,0,.1) 0%, rgba(0,0,0,.3) 100%);
+    font-family: var(--serif); font-style: italic; font-size: 14px;
+    color: rgba(255,255,255,.3); text-align: center; padding: 20px;
+  }
+
+  /* Bottom content panel */
+  .card-a .card-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 24px 28px 28px;
+    background: linear-gradient(to top, rgba(15,15,15,.97) 0%, rgba(15,15,15,.92) 60%, rgba(15,15,15,.75) 85%, transparent 100%);
+  }
+  .card-a .card-orient {
+    font-weight: 700; font-size: 8px; letter-spacing: 3.5px;
+    text-transform: uppercase; opacity: .4; margin-bottom: 6px;
+  }
+  .card-a .card-name {
+    font-family: var(--display); font-weight: 800; font-size: 38px;
+    line-height: .92; letter-spacing: -.03em; margin-bottom: 8px;
+  }
+  .card-a .card-tagline {
+    font-family: var(--serif); font-style: italic; font-size: 15px;
+    line-height: 1.4; opacity: .45;
+  }
+
+  /* Corner marks */
+  .card-a .card-numeral {
+    position: absolute; top: 20px; right: 22px;
+    font-family: var(--serif); font-style: italic; font-size: 17px;
+    opacity: .15; color: #fff;
+  }
+  .card-a .card-badge-top {
+    position: absolute; top: 20px; left: 22px;
+    font-weight: 700; font-size: 7px; letter-spacing: 2.5px;
+    text-transform: uppercase; opacity: .15; color: #fff;
+  }
+
+  /* Color dot accent */
+  .card-a .card-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    margin-bottom: 14px; opacity: .7;
+  }
+
+
+  /* ═══════════════════════════════════════════
+     DIRECTION B: THE ARTIFACT — Object Cards
+     ═══════════════════════════════════════════ */
+
+  .card-b {
+    width: 340px; aspect-ratio: 4/5; border-radius: 16px;
+    position: relative; overflow: hidden; flex-shrink: 0;
+    background: #0e0e0e;
+    box-shadow: 0 24px 80px rgba(0,0,0,.4), 0 0 0 1px rgba(232,228,220,.06);
+  }
+
+  /* Thin colored top stripe */
+  .card-b .card-stripe {
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+
+  /* Frame border — like a museum label */
+  .card-b .card-frame {
+    position: absolute; inset: 14px; border: 1px solid rgba(232,228,220,.06);
+    border-radius: 8px; pointer-events: none;
+  }
+
+  /* Image area — centered square */
+  .card-b .card-image {
+    position: absolute; top: 40px; left: 32px; right: 32px; bottom: 160px;
+    overflow: hidden; border-radius: 6px;
+  }
+  .card-b .card-image-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(145deg, rgba(255,255,255,.03) 0%, rgba(255,255,255,.01) 100%);
+    font-family: var(--serif); font-style: italic; font-size: 13px;
+    color: rgba(255,255,255,.2); text-align: center; padding: 20px;
+    border: 1px solid rgba(232,228,220,.04);
+  }
+
+  /* Bottom text — museum placard style */
+  .card-b .card-bottom {
+    position: absolute; bottom: 28px; left: 32px; right: 32px;
+  }
+  .card-b .card-orient {
+    font-weight: 700; font-size: 8px; letter-spacing: 3.5px;
+    text-transform: uppercase; color: var(--text-mid); margin-bottom: 10px;
+  }
+  .card-b .card-name {
+    font-family: var(--display); font-weight: 800; font-size: 32px;
+    line-height: .92; letter-spacing: -.03em; margin-bottom: 6px;
+  }
+  .card-b .card-tagline {
+    font-family: var(--serif); font-style: italic; font-size: 14px;
+    line-height: 1.45; color: var(--text-mid);
+  }
+  .card-b .card-divider {
+    width: 24px; height: 1px; margin: 12px 0;
+    opacity: .15;
+  }
+
+  /* Top-right coordinates */
+  .card-b .card-coords {
+    position: absolute; top: 22px; right: 30px;
+    font-weight: 600; font-size: 8px; letter-spacing: 2px;
+    text-transform: uppercase; opacity: .15;
+    text-align: right;
+  }
+  .card-b .card-badge-left {
+    position: absolute; top: 22px; left: 30px;
+    font-family: var(--serif); font-style: italic; font-size: 12px;
+    opacity: .12;
+  }
+
+
+  /* ═══════════════════════════════════════════
+     DIRECTION C: THE LANDSCAPE — Full-Bleed Scene
+     ═══════════════════════════════════════════ */
+
+  .card-c {
+    width: 320px; aspect-ratio: 3/4; border-radius: 20px;
+    position: relative; overflow: hidden; flex-shrink: 0;
+    box-shadow: 0 24px 80px rgba(0,0,0,.4), 0 0 0 1px rgba(232,228,220,.06);
+  }
+
+  .card-c .card-scene {
+    position: absolute; inset: 0; overflow: hidden;
+  }
+  .card-c .card-image-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--serif); font-style: italic; font-size: 13px;
+    color: rgba(255,255,255,.25); text-align: center; padding: 20px;
+  }
+
+  /* Gradient overlay at bottom for text legibility */
+  .card-c .card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(10,10,10,.92) 0%,
+      rgba(10,10,10,.65) 25%,
+      rgba(10,10,10,.15) 50%,
+      rgba(10,10,10,.05) 70%,
+      transparent 100%
+    );
+  }
+
+  /* Top — subtle cartographic elements */
+  .card-c .card-top-mark {
+    position: absolute; top: 20px; left: 24px; right: 24px;
+    display: flex; justify-content: space-between; align-items: flex-start;
+  }
+  .card-c .card-lat {
+    font-weight: 700; font-size: 8px; letter-spacing: 3px;
+    text-transform: uppercase; opacity: .2; color: #fff;
+  }
+  .card-c .card-num-c {
+    font-family: var(--serif); font-style: italic; font-size: 16px;
+    opacity: .12; color: #fff;
+  }
+
+  /* Bottom — big type */
+  .card-c .card-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 28px 24px 30px;
+  }
+  .card-c .card-orient {
+    font-weight: 700; font-size: 8px; letter-spacing: 3.5px;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .card-c .card-name {
+    font-family: var(--display); font-weight: 800; font-size: 44px;
+    line-height: .88; letter-spacing: -.03em; color: #fff; margin-bottom: 8px;
+  }
+  .card-c .card-tagline {
+    font-family: var(--serif); font-style: italic; font-size: 15px;
+    line-height: 1.4; opacity: .5; color: #fff;
+  }
+
+  /* Thin colored line at very bottom */
+  .card-c .card-line-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  }
+
+  /* ═══════════════════════════════════════════
+     MIDJOURNEY PROMPTS SECTION
+     ═══════════════════════════════════════════ */
+
+  .prompts-section {
+    max-width: 780px; margin: 0 auto;
+    padding: 80px 24px 120px;
+    border-top: 1px solid rgba(232,228,220,.06);
+  }
+  .prompts-section h2 {
+    font-family: var(--display); font-weight: 800; font-size: 22px;
+    letter-spacing: -.02em; margin-bottom: 40px;
+  }
+  .prompt-block {
+    margin-bottom: 40px; padding: 28px;
+    background: rgba(255,255,255,.03); border-radius: 12px;
+    border: 1px solid rgba(232,228,220,.06);
+  }
+  .prompt-block h3 {
+    font-family: var(--display); font-weight: 700; font-size: 15px;
+    margin-bottom: 6px;
+  }
+  .prompt-block .prompt-type {
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-mid); margin-bottom: 14px;
+  }
+  .prompt-block p {
+    font-family: var(--body); font-size: 13px; line-height: 1.7;
+    color: var(--text-light);
+  }
+  .prompt-block code {
+    display: block; margin-top: 12px; padding: 16px;
+    background: rgba(0,0,0,.4); border-radius: 8px;
+    font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px;
+    line-height: 1.65; color: #c8c0b4; white-space: pre-wrap; word-break: break-word;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .card-display { gap: 24px; }
+    .card-a, .card-b, .card-c { width: min(300px, 88vw); }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Archetype Card Explorations</h1>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     DIRECTION A: THE FIGURE
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="direction">
+  <div class="direction-header">
+    <div class="direction-num">Direction I</div>
+    <div class="direction-title">The Figure</div>
+    <div class="direction-sub">A character for each archetype &mdash; someone you recognize in yourself</div>
+    <div class="direction-desc">Each card features a stylized human figure rendered in the mixed-media collage style. Not a portrait of a real person, but a constructed character made from the materials and textures of their archetype. The Organizer is composed of golden grids and architectural blueprints. The Explorer is woven from topographic lines and horizon light. The figure is slightly abstracted &mdash; you see yourself in the posture, the gesture, the energy. Not the face.</div>
+  </div>
+
+  <div class="card-display">
+    <!-- Organizer -->
+    <div class="card-a" style="--bg-top: #9A7A2E; --bg-bot: #5C4A1C;">
+      <div class="card-bg"></div>
+      <div class="card-image" style="background: linear-gradient(170deg, #B8922F 0%, #7A6020 100%);">
+        <div class="card-image-placeholder">
+          [Organizer Figure]<br><br>
+          <span style="font-size:11px; opacity:.6;">Collage character: a figure whose torso dissolves into architectural blueprints, hands resting on a geometric grid. Golden amber light behind. Head slightly turned, looking at something being built. Fragments of graph paper and compass roses layered in. Confident, deliberate posture.</span>
+        </div>
+      </div>
+      <span class="card-badge-top">LeapYear</span>
+      <span class="card-numeral">IV</span>
+      <div class="card-bottom">
+        <div class="card-dot" style="background: var(--organizer);"></div>
+        <div class="card-orient">Doing</div>
+        <div class="card-name">Organizer</div>
+        <div class="card-tagline">You see the structure that should exist &mdash; and build it.</div>
+      </div>
+    </div>
+
+    <!-- Explorer -->
+    <div class="card-a" style="--bg-top: #1E6B6B; --bg-bot: #0F3D3D;">
+      <div class="card-bg"></div>
+      <div class="card-image" style="background: linear-gradient(170deg, #2E8B8B 0%, #1A5A5A 100%);">
+        <div class="card-image-placeholder">
+          [Explorer Figure]<br><br>
+          <span style="font-size:11px; opacity:.6;">Collage character: a figure mid-stride, body dissolving into topographic map lines and desert landscape fragments. Orange sun disc behind the head like a halo. Film grain, torn paper edges. Looking toward a far horizon. Adventurous, forward-leaning energy.</span>
+        </div>
+      </div>
+      <span class="card-badge-top">LeapYear</span>
+      <span class="card-numeral">VIII</span>
+      <div class="card-bottom">
+        <div class="card-dot" style="background: var(--explorer);"></div>
+        <div class="card-orient">Experiencing</div>
+        <div class="card-name">Explorer</div>
+        <div class="card-tagline">The unknown is where you feel most alive.</div>
+      </div>
+    </div>
+
+    <!-- Philosopher -->
+    <div class="card-a" style="--bg-top: #2E3C6E; --bg-bot: #1A2240;">
+      <div class="card-bg"></div>
+      <div class="card-image" style="background: linear-gradient(170deg, #3D4E8C 0%, #242F5A 100%);">
+        <div class="card-image-placeholder">
+          [Philosopher Figure]<br><br>
+          <span style="font-size:11px; opacity:.6;">Collage character: a seated figure, head slightly bowed in thought, body composed of fragmented Renaissance sculpture and old parchment text. Deep indigo/teal tones. Stone textures. One hand supporting the chin. Fragments of starfield visible through the body. Contemplative, still, ancient weight.</span>
+        </div>
+      </div>
+      <span class="card-badge-top">LeapYear</span>
+      <span class="card-numeral">I</span>
+      <div class="card-bottom">
+        <div class="card-dot" style="background: var(--philosopher);"></div>
+        <div class="card-orient">Thinking</div>
+        <div class="card-name">Philosopher</div>
+        <div class="card-tagline">You ask the questions others are afraid to sit with.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     DIRECTION B: THE ARTIFACT
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="direction">
+  <div class="direction-header">
+    <div class="direction-num">Direction II</div>
+    <div class="direction-title">The Artifact</div>
+    <div class="direction-sub">Objects that hold meaning &mdash; tools, relics, instruments</div>
+    <div class="direction-desc">Instead of a character, each archetype is represented by a still life of meaningful objects. The Organizer gets a brass compass on blueprints. The Creator gets pigment jars and a half-finished canvas. The card feels like you've been given something &mdash; a relic from someone who came before you, passed down for the mission ahead. Museum-placard typography, clean framing, the object is the star.</div>
+  </div>
+
+  <div class="card-display">
+    <!-- Organizer -->
+    <div class="card-b">
+      <div class="card-stripe" style="background: var(--organizer);"></div>
+      <div class="card-frame"></div>
+      <div class="card-image">
+        <div class="card-image-placeholder">
+          [Organizer Artifact]<br><br>
+          <span style="font-size:11px; opacity:.5;">Still life: A brass drafting compass resting on unfolded architectural blueprints. A worn leather notebook nearby, open to a page of precise hand-drawn grids. Golden light from left. Clean dark background. The objects feel old and valuable. Mixed-media: real photography with subtle geometric overlay and graph-paper texture bleeding in at edges.</span>
+        </div>
+      </div>
+      <span class="card-badge-left">iv</span>
+      <div class="card-coords">30.2672&deg; N<br>97.7431&deg; W</div>
+      <div class="card-bottom">
+        <div class="card-orient" style="color: var(--organizer);">Doing</div>
+        <div class="card-name">Organizer</div>
+        <div class="card-divider" style="background: var(--organizer);"></div>
+        <div class="card-tagline">You see the structure that should exist &mdash; and build it.</div>
+      </div>
+    </div>
+
+    <!-- Creator -->
+    <div class="card-b">
+      <div class="card-stripe" style="background: var(--creator);"></div>
+      <div class="card-frame"></div>
+      <div class="card-image">
+        <div class="card-image-placeholder">
+          [Creator Artifact]<br><br>
+          <span style="font-size:11px; opacity:.5;">Still life: Jars of raw pigment powder (ochre, crimson, cobalt) beside a thick palette knife. A half-primed canvas with one bold brushstroke. Torn paper scraps, paint-stained fingers visible at edge of frame. Plum and warm tones. Photography with collage overlay &mdash; watercolor washes and torn paper textures bleeding in.</span>
+        </div>
+      </div>
+      <span class="card-badge-left">vii</span>
+      <div class="card-coords">30.2672&deg; N<br>97.7431&deg; W</div>
+      <div class="card-bottom">
+        <div class="card-orient" style="color: var(--creator);">Experiencing</div>
+        <div class="card-name">Creator</div>
+        <div class="card-divider" style="background: var(--creator);"></div>
+        <div class="card-tagline">You make beauty from nothing.</div>
+      </div>
+    </div>
+
+    <!-- Mobilizer -->
+    <div class="card-b">
+      <div class="card-stripe" style="background: var(--mobilizer);"></div>
+      <div class="card-frame"></div>
+      <div class="card-image">
+        <div class="card-image-placeholder">
+          [Mobilizer Artifact]<br><br>
+          <span style="font-size:11px; opacity:.5;">Still life: A weathered megaphone lying on its side beside a hand-lettered protest sign (text illegible/abstract). A flame from a single match reflected in a dark surface. Red/crimson warmth. Photography with grain, smoke texture overlay, sense of urgency and movement even in a still composition.</span>
+        </div>
+      </div>
+      <span class="card-badge-left">vi</span>
+      <div class="card-coords">30.2672&deg; N<br>97.7431&deg; W</div>
+      <div class="card-bottom">
+        <div class="card-orient" style="color: var(--mobilizer);">Relating</div>
+        <div class="card-name">Mobilizer</div>
+        <div class="card-divider" style="background: var(--mobilizer);"></div>
+        <div class="card-tagline">You rally people around something bigger than all of them.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     DIRECTION C: THE LANDSCAPE
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="direction">
+  <div class="direction-header">
+    <div class="direction-num">Direction III</div>
+    <div class="direction-title">The Landscape</div>
+    <div class="direction-sub">Every archetype has a world &mdash; step into yours</div>
+    <div class="direction-desc">Each card is a full-bleed scene. Not where you live, but where your soul lives. The Organizer's landscape is a golden-hour cityscape seen through a geometric grid, where order meets beauty. The Explorer's is a vast desert horizon with a single road vanishing into orange distance. The Philosopher's is a library carved into a cliff face, lit by deep blue twilight. The card is a window. You look through it and recognize something.</div>
+  </div>
+
+  <div class="card-display">
+    <!-- Organizer -->
+    <div class="card-c">
+      <div class="card-scene">
+        <div class="card-image-placeholder" style="background: linear-gradient(170deg, #C49A3B22 0%, #1a1510 60%, #0a0805 100%);">
+          [Organizer Landscape]<br><br>
+          <span style="font-size:11px; opacity:.5;">A golden-hour cityscape seen from above &mdash; orderly streets radiating from a central point, geometric buildings glowing in amber sunset light. A subtle architectural grid overlay, like looking through drafting paper. Warm amber and gold tones dominating. Not a specific city, but the platonic ideal of one. Shot with a slight tilt-shift blur. Mixed-media: photograph with cartographic grid lines and topographic contours overlaid.</span>
+        </div>
+      </div>
+      <div class="card-overlay"></div>
+      <div class="card-top-mark">
+        <span class="card-lat">30.27&deg; N &middot; 97.74&deg; W</span>
+        <span class="card-num-c">IV</span>
+      </div>
+      <div class="card-bottom">
+        <div class="card-orient" style="color: var(--organizer);">Doing</div>
+        <div class="card-name">Organizer</div>
+        <div class="card-tagline">You see the structure that should exist &mdash; and build it.</div>
+      </div>
+      <div class="card-line-bottom" style="background: var(--organizer);"></div>
+    </div>
+
+    <!-- Explorer -->
+    <div class="card-c">
+      <div class="card-scene">
+        <div class="card-image-placeholder" style="background: linear-gradient(170deg, #2E8B8B22 0%, #0e1a1a 60%, #050a0a 100%);">
+          [Explorer Landscape]<br><br>
+          <span style="font-size:11px; opacity:.5;">A vast desert highway vanishing toward a horizon where teal sky meets orange sand at sunset. A single figure far in the distance, tiny against the scale. Topographic map lines overlaid on the terrain like the land itself has coordinates. Film grain, warm-to-cool color shift. Cinematic, expansive, the feeling of possibility.</span>
+        </div>
+      </div>
+      <div class="card-overlay"></div>
+      <div class="card-top-mark">
+        <span class="card-lat">36.24&deg; N &middot; 116.83&deg; W</span>
+        <span class="card-num-c">VIII</span>
+      </div>
+      <div class="card-bottom">
+        <div class="card-orient" style="color: var(--explorer);">Experiencing</div>
+        <div class="card-name">Explorer</div>
+        <div class="card-tagline">The unknown is where you feel most alive.</div>
+      </div>
+      <div class="card-line-bottom" style="background: var(--explorer);"></div>
+    </div>
+
+    <!-- Connector -->
+    <div class="card-c">
+      <div class="card-scene">
+        <div class="card-image-placeholder" style="background: linear-gradient(170deg, #D4847A22 0%, #1a1210 60%, #0a0805 100%);">
+          [Connector Landscape]<br><br>
+          <span style="font-size:11px; opacity:.5;">A warm, intimate scene: a candlelit table seen from above, hands of many people reaching toward center, sharing bread or passing something between them. Dusty rose and warm amber tones. Soft focus, watercolor wash overlay at edges. Not faces &mdash; just hands, connection, warmth. The feeling of being known and knowing.</span>
+        </div>
+      </div>
+      <div class="card-overlay"></div>
+      <div class="card-top-mark">
+        <span class="card-lat">30.27&deg; N &middot; 97.74&deg; W</span>
+        <span class="card-num-c">V</span>
+      </div>
+      <div class="card-bottom">
+        <div class="card-orient" style="color: var(--connector);">Relating</div>
+        <div class="card-name">Connector</div>
+        <div class="card-tagline">People feel known in your presence.</div>
+      </div>
+      <div class="card-line-bottom" style="background: var(--connector);"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MIDJOURNEY PROMPTS
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="prompts-section">
+  <h2>Midjourney Image Briefs</h2>
+
+  <!-- DIRECTION A -->
+  <div class="prompt-block">
+    <h3>Direction A: The Figure</h3>
+    <div class="prompt-type">Character Collage &mdash; 8 images needed</div>
+    <p>Each image is a stylized human figure constructed from collage materials. Not a portrait &mdash; the figure is made OF their archetype's materials. Semi-abstract, editorial art direction. The figure should have a recognizable posture/gesture but the face should be obscured, fragmented, or turned away. This is aspirational &mdash; you see yourself in the body language, not the face.</p>
+
+    <code><strong>Organizer:</strong>
+A stylized human figure composed of architectural blueprints, golden geometric grids, and amber light. Standing upright, one hand extended as if directing something being built. Body dissolves into graph paper and technical drawings at the edges. Warm amber and gold palette. Dark moody background. Mixed-media collage, editorial art direction. Portrait orientation, 3:4 aspect ratio --ar 3:4 --s 250 --v 6.1
+
+<strong>Explorer:</strong>
+A stylized human figure mid-stride, body constructed from topographic map lines and desert landscape fragments. A bold orange sun disc behind the head like a halo. Torn paper edges, film grain texture. Looking toward a far horizon, forward-leaning adventurous energy. Teal and orange palette. Dark background. Mixed-media collage, editorial art direction --ar 3:4 --s 250 --v 6.1
+
+<strong>Philosopher:</strong>
+A seated human figure in contemplation, body composed of fragmented Renaissance marble sculpture pieces and aged parchment with handwritten text. One hand supporting chin. Deep indigo and teal tones with stone textures. Fragments of starfield visible through gaps in the body. Ancient, still, weighty. Dark background. Mixed-media collage, editorial art direction --ar 3:4 --s 250 --v 6.1
+
+<strong>Analyst:</strong>
+A standing human figure looking through something, body composed of circuit diagrams, data visualizations, and botanical cross-sections. One eye visible through a magnifying lens. Steel sage green palette with technical overlay textures. Precise, systematic energy. Dark background. Mixed-media collage, editorial art direction --ar 3:4 --s 250 --v 6.1
+
+<strong>Builder:</strong>
+A human figure with rolled-up sleeves, body constructed from raw wood grain, concrete textures, and construction materials. Hands positioned as if shaping clay or lifting something heavy. Terracotta and warm earth palette. Sawdust particles floating. Dark background. Mixed-media collage, editorial art direction --ar 3:4 --s 250 --v 6.1
+
+<strong>Connector:</strong>
+A human figure with arms slightly open, body composed of soft watercolor washes, handwritten letters, and warm fabric textures. Multiple faint hands reaching toward the figure. Dusty rose and warm amber palette. Gentle, inviting posture. Dark background. Mixed-media collage, editorial art direction --ar 3:4 --s 250 --v 6.1
+
+<strong>Mobilizer:</strong>
+A human figure in dynamic forward-leaning pose, body constructed from crowd photographs, flame imagery, and bold graphic shapes. Fist raised or arm extended pointing forward. Crimson red and deep orange palette. Grain texture, smoke wisps. Urgent, commanding energy. Dark background. Mixed-media collage, editorial art direction --ar 3:4 --s 250 --v 6.1
+
+<strong>Creator:</strong>
+A human figure with head tilted, body composed of paint splatters, torn canvas, color swatches, and raw brushstrokes. Hands stained with pigment. Plum and warm violet palette with pops of other colors. Creative chaos energy. Dark background. Mixed-media collage, editorial art direction --ar 3:4 --s 250 --v 6.1</code>
+  </div>
+
+  <div class="prompt-block">
+    <h3>Direction B: The Artifact</h3>
+    <div class="prompt-type">Object Still Life &mdash; 8 images needed</div>
+    <p>Each image is a still life of 2-3 meaningful objects that represent the archetype's tools, instruments, or relics. Shot like a museum catalog or high-end product photography, but with mixed-media collage textures bleeding in at the edges. Objects should feel old, valuable, passed down. Dark background, dramatic side lighting.</p>
+
+    <code><strong>Organizer:</strong>
+Still life photograph: a brass drafting compass resting on unfolded architectural blueprints beside a worn leather-bound notebook open to hand-drawn grids. Golden side lighting from left. Dark charcoal background. Objects feel antique and valuable. Subtle geometric overlay and graph-paper texture at edges. Mixed-media editorial style --ar 4:5 --s 200 --v 6.1
+
+<strong>Explorer:</strong>
+Still life photograph: a weathered leather-bound journal with a hand-drawn map visible, beside a vintage brass telescope and a worn canvas rucksack strap. Orange and teal color accents. Dark background. Topographic map lines overlaid at edges, film grain. Mixed-media editorial style --ar 4:5 --s 200 --v 6.1
+
+<strong>Philosopher:</strong>
+Still life photograph: a fragment of marble sculpture (a hand or face detail) resting on an open antique book with dense text. A single candle flame reflected in dark surface. Deep indigo and teal tones. Stone texture, aged parchment. Mixed-media editorial style --ar 4:5 --s 200 --v 6.1
+
+<strong>Analyst:</strong>
+Still life photograph: a magnifying loupe beside a botanical illustration and a set of precision measuring instruments (calipers, protractor). Steel sage green accents. Technical drawing overlay at edges. Dark background, precise lighting. Mixed-media editorial style --ar 4:5 --s 200 --v 6.1
+
+<strong>Builder:</strong>
+Still life photograph: weathered woodworking tools (hand plane, chisel) on a workbench beside a half-shaped piece of raw wood. Terracotta and warm earth tones. Sawdust visible. Concrete and wood grain textures. Dark background. Mixed-media editorial style --ar 4:5 --s 200 --v 6.1
+
+<strong>Connector:</strong>
+Still life photograph: a stack of handwritten letters tied with twine beside two ceramic cups of tea, steam rising. Dusty rose and amber warmth. Soft fabric texture underneath. Watercolor wash at edges. Dark background, warm intimate lighting. Mixed-media editorial style --ar 4:5 --s 200 --v 6.1
+
+<strong>Mobilizer:</strong>
+Still life photograph: a weathered megaphone beside a hand-lettered banner (text abstract/illegible) and a single lit match. Crimson and deep orange tones. Grain texture, wisps of smoke. Dark background, dramatic lighting. Mixed-media editorial style --ar 4:5 --s 200 --v 6.1
+
+<strong>Creator:</strong>
+Still life photograph: open jars of raw pigment powder in rich colors beside a thick palette knife and a torn piece of canvas with one bold brushstroke. Plum and warm violet palette. Paint-stained surface. Torn paper and brushstroke textures at edges. Dark background. Mixed-media editorial style --ar 4:5 --s 200 --v 6.1</code>
+  </div>
+
+  <div class="prompt-block">
+    <h3>Direction C: The Landscape</h3>
+    <div class="prompt-type">Environment / Scene &mdash; 8 images needed</div>
+    <p>Each image is a full-bleed cinematic scene &mdash; the "world" of the archetype. Where their soul lives. Not literal, but emotionally true. These need strong atmosphere and should work with text overlaid at the bottom. Cartographic grid overlay connects them to the wayfinding theme. Portrait orientation for the card format.</p>
+
+    <code><strong>Organizer:</strong>
+Aerial view of a geometric city at golden hour, orderly streets radiating from a central point, buildings glowing in warm amber sunset light. Subtle architectural grid and blueprint overlay. Not a specific city but the platonic ideal of ordered beauty. Tilt-shift blur at edges. Topographic contour lines overlaid. Cinematic, warm --ar 3:4 --s 300 --v 6.1
+
+<strong>Explorer:</strong>
+A vast desert highway stretching to a horizon where teal sky meets orange sand at sunset. A single tiny figure walking in the far distance. Topographic map lines overlaid on the terrain. Film grain, warm-to-cool gradient. Expansive, cinematic, the feeling of infinite possibility. Mixed-media with cartographic overlay --ar 3:4 --s 300 --v 6.1
+
+<strong>Philosopher:</strong>
+A vast library carved into a cliff face, lit by deep blue twilight. Ancient stone, endless bookshelves visible in alcoves. A single warm light glowing from one window. Indigo and deep teal palette. Star field beginning above. Parchment texture overlay. Ancient, contemplative, wonder --ar 3:4 --s 300 --v 6.1
+
+<strong>Analyst:</strong>
+A greenhouse or botanical observatory at night, glass walls revealing internal glow of organized plant specimens and measurement instruments. Steel sage green tones. Grid lines on the glass panels. Technical, precise, but alive. Botanical illustration overlay at edges --ar 3:4 --s 300 --v 6.1
+
+<strong>Builder:</strong>
+A workshop at dawn, warm light flooding through industrial windows onto a workbench covered in materials mid-project. Wood shavings, raw materials, something half-built. Terracotta and warm earth tones. Concrete texture overlay. The beauty of work in progress --ar 3:4 --s 300 --v 6.1
+
+<strong>Connector:</strong>
+An intimate courtyard at dusk, string lights overhead, a long table set for many people, candles lit, warm amber glow. Hands of different people visible at the table edges. Dusty rose and golden warmth. Soft watercolor wash overlay. The feeling of belonging --ar 3:4 --s 300 --v 6.1
+
+<strong>Mobilizer:</strong>
+A crowd scene at sunset, silhouettes of many people facing the same direction, warm crimson and orange light behind them. A single figure standing slightly elevated. Grain texture, smoke in the air, sense of collective momentum. Bold, urgent, alive --ar 3:4 --s 300 --v 6.1
+
+<strong>Creator:</strong>
+An artist's studio at magic hour, large canvas on the wall with bold abstract marks, paint jars and brushes scattered, golden light through a skylight. Plum and warm violet tones with splashes of many colors. Torn paper and brushstroke texture overlay. Raw creative energy --ar 3:4 --s 300 --v 6.1</code>
+  </div>
+</div>
+
+</body>
+</html>

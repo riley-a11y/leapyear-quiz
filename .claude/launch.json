@@ -1,0 +1,36 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "results-page",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8090", "-d", "direction-2-cartography"],
+      "port": 8090
+    },
+    {
+      "name": "card-explorations",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["http-server", "-p", "8091", "-c-1"],
+      "port": 8091
+    }
+    ,
+    {
+      "name": "awakening",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["http-server", "direction-3-awakening", "-p", "8092", "-c-1"],
+      "port": 8092
+    },
+    {
+      "name": "main",
+      "runtimeExecutable": "/usr/bin/python3",
+      "runtimeArgs": ["-m", "http.server", "8093"],
+      "port": 8093
+    },
+    {
+      "name": "leapyear-quiz",
+      "runtimeExecutable": "/usr/bin/python3",
+      "runtimeArgs": ["-m", "http.server", "8094", "-d", "leapyear-quiz"],
+      "port": 8094
+    }
+  ]
+}

@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeapYear — Discover Your Drive</title>
+<link rel="stylesheet" href="https://use.typekit.net/gxr6ytx.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+  :root {
+    --cream:#FAF7F1;--parchment:#F0EBE1;--alabaster:#F5F1EB;
+    --night:#1B1918;--dark-green:#17322D;--ink:#2A2523;
+    --text:#3A3532;--t2:#7A7570;--t3:#A5A09A;--border:rgba(42,37,35,.08);
+    --display:'neulis-neue',sans-serif;--body:'area-normal',sans-serif;
+    --serif:'Instrument Serif','Georgia',serif;
+    --philosopher:#3D4E8C;--analyst:#5E8A72;--builder:#C4724E;--organizer:#C49A3B;
+    --connector:#D4847A;--mobilizer:#B8453A;--creator:#7B5B8A;--explorer:#2E8B8B;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased}
+  body{font-family:var(--body);font-weight:400;color:var(--text);background:var(--cream);overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.018;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* NAV */
+  .nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:24px 32px;display:flex;align-items:center;justify-content:space-between;transition:all .5s ease}
+  .nav.scrolled{padding:16px 32px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+  .nav.light-mode{background:rgba(250,247,241,.88)}
+  .nav.dark-mode{background:rgba(27,25,24,.65);border-bottom-color:rgba(255,255,255,.06)}
+  .nav.dark-mode .nav-logo-img{filter:invert(1) brightness(2)}
+  .nav.dark-mode .nav-start{background:var(--cream);color:var(--ink)}
+  .nav-logo-img{height:24px;transition:filter .5s ease}
+  .nav-start{font-family:var(--body);font-weight:600;font-size:13px;color:var(--cream);background:var(--ink);border:none;padding:10px 26px;border-radius:100px;cursor:pointer;text-decoration:none;opacity:0;transform:translateY(-4px);transition:opacity .4s ease,transform .4s ease,background .3s ease,color .3s ease}
+  .nav-start.visible{opacity:1;transform:translateY(0)}
+
+  /* HERO */
+  .hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;padding:100px 0 60px;position:relative;overflow:hidden}
+  .wash{position:absolute;border-radius:50%;pointer-events:none;filter:blur(120px);will-change:transform}
+  .w1{width:45vw;height:45vw;max-width:500px;max-height:500px;top:10%;right:5%;background:var(--connector);opacity:.08}
+  .w2{width:30vw;height:30vw;max-width:350px;max-height:350px;bottom:15%;left:8%;background:var(--explorer);opacity:.07}
+
+  .hero-container{width:100%;max-width:1200px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+  .hero-inner{max-width:520px;position:relative;z-index:2}
+
+  /* Cinematic Blur Reveals */
+  @keyframes cinematicReveal {
+    from { opacity: 0; transform: translateY(24px); filter: blur(12px); }
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
+
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--t3);margin-bottom:28px;opacity:0;animation:cinematicReveal .8s cubic-bezier(0.16, 1, 0.3, 1) .3s forwards}
+  .hero-badge-line{width:20px;height:1px;background:var(--t3)}
+  .hero-h1{font-family:var(--display);font-weight:700;font-size:clamp(52px,8vw,100px);line-height:.92;letter-spacing:-.04em;margin-bottom:24px;opacity:0;animation:cinematicReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) .45s forwards}
+  .hero-h1 .si{font-family:var(--serif);font-weight:400;font-style:italic;letter-spacing:-.02em}
+  .hero-sub{font-size:clamp(15px,1.6vw,18px);line-height:1.7;color:var(--t2);max-width:380px;margin-bottom:40px;opacity:0;animation:cinematicReveal 1s cubic-bezier(0.16, 1, 0.3, 1) .65s forwards}
+  .hero-cta{display:inline-flex;align-items:center;gap:10px;font-family:var(--body);font-weight:600;font-size:15px;color:var(--cream);background:var(--ink);border:none;padding:16px 40px;border-radius:100px;cursor:pointer;text-decoration:none;transition:all .3s ease;opacity:0;animation:cinematicReveal 1s cubic-bezier(0.16, 1, 0.3, 1) .8s forwards}
+  .hero-cta:hover{box-shadow:0 8px 32px rgba(42,37,35,.2);transform:translateY(-2px)}
+  .hero-meta{margin-top:14px;font-size:12px;color:var(--t3);opacity:0;animation:cinematicReveal 1s cubic-bezier(0.16, 1, 0.3, 1) .95s forwards}
+
+  /* Hero Visual: The Archetype Compass */
+  .hero-visual{width:45%;max-width:480px;position:relative;z-index:1;opacity:0;animation:cinematicReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) .6s forwards}
+  .hero-compass{width:100%;height:auto;display:block}
+  .spin-slow{transform-origin:200px 200px;animation:spin 45s linear infinite}
+  .spin-reverse-fast{transform-origin:200px 200px;animation:spinReverse 25s linear infinite}
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+  @keyframes spinReverse { 100% { transform: rotate(-360deg); } }
+
+  /* Centered Organic Scroll Indicator */
+  .scroll-ind{position:absolute;bottom:32px;left:50%;display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;animation:cinematicRevealScroll 1s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards}
+  @keyframes cinematicRevealScroll {
+    from { opacity: 0; transform: translate(-50%, 24px); filter: blur(12px); }
+    to { opacity: 1; transform: translate(-50%, 0); filter: blur(0); }
+  }
+  .scroll-ind span{font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--t3);opacity:0.7}
+  .scroll-track{width:1px;height:40px;background:linear-gradient(to bottom, rgba(42,37,35,.15), transparent);position:relative;overflow:hidden;border-radius:2px}
+  .scroll-drop{position:absolute;top:0;left:0;width:100%;height:30%;background:var(--t2);border-radius:2px;animation:scrollDrop 2.5s cubic-bezier(0.6, 0.05, 0.4, 1) infinite}
+  @keyframes scrollDrop{
+    0% { transform: translateY(-100%); opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateY(350%); opacity: 0; }
+  }
+
+  /* JOURNEY */
+  .journey{position:relative}
+  .journey-sticky{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .journey-bg{position:absolute;inset:0;background:var(--cream)}
+
+  /* Beats */
+  .beat-layer{position:absolute;inset:0;z-index:10;display:flex;align-items:center;pointer-events:none}
+  .beat-content{opacity:0;will-change:opacity,transform;transform:translateY(30px)}
+  .beat-content.pos-left{margin-left:max(48px,calc((100vw - 1200px)/2 + 48px));max-width:500px}
+  .beat-content.pos-right{margin-left:auto;margin-right:max(48px,calc((100vw - 1200px)/2 + 48px));max-width:500px;text-align:right}
+  .beat-content.pos-center{margin:0 auto;max-width:600px;text-align:center}
+  .beat-num{font-family:var(--body);font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px}
+  .beat-text{font-family:var(--serif);font-weight:400;font-style:italic;font-size:clamp(28px,5vw,54px);line-height:1.2;text-wrap:balance}
+  .beat-text strong{font-family:var(--display);font-weight:700;font-style:normal}
+  .beat-text .w { transition: opacity 0.2s ease; }
+
+  /* Orbit container */
+  .orbit-ring{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:visible;}
+
+  /* * HIGH-PERFORMANCE DYNAMIC MORPHING CARDS */
+  .ocard{
+    --morph: 0;
+    position:absolute;
+    top:50%; left:50%;
+    margin-top:-195px; margin-left:-140px;
+    width:280px; height:390px;
+
+    background: var(--cream);
+
+    clip-path: inset(
+      calc((1 - var(--morph)) * 55px)
+      0px
+      calc((1 - var(--morph)) * 55px)
+      0px
+      round calc(140px - var(--morph) * 122px)
+    );
+
+    will-change:transform, opacity, filter;
+    pointer-events:auto;
+    overflow:hidden;
+
+    box-shadow: 0 calc(8px + var(--morph)*16px) calc(20px + var(--morph)*40px) rgba(0,0,0,calc(0.2 + var(--morph)*0.2));
+  }
+
+  .ocard-bg{position:absolute;inset:0;will-change:opacity;}
+  .ocard-bg::after{content:'';position:absolute;inset:0;opacity:.28;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .ocard-vig{position:absolute;inset:0;z-index:1;pointer-events:none;will-change:opacity;
+    background:linear-gradient(180deg,rgba(255,255,255,.05) 0%,transparent 30%,rgba(0,0,0,.18) 100%)}
+
+  .ocard-in{
+    position:relative; z-index:2; height:100%; padding:24px;
+    display:flex; flex-direction:column; justify-content:space-between;
+    will-change:opacity;
+  }
+
+  .ocard-top{display:flex;justify-content:space-between;align-items:flex-start;
+    opacity:var(--morph); transform:translateY(calc((1 - var(--morph)) * -15px));}
+  .ocard-tag{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.2);padding:5px 12px;border-radius:100px}
+  .ocard-num{font-family:var(--serif);font-style:italic;font-size:15px;color:rgba(255,255,255,.5)}
+
+  .ocard-icon{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    pointer-events:none;
+    transform: scale(calc(1 + (1 - var(--morph)) * 0.5)) translateY(calc(var(--morph) * -12px));
+    opacity:calc(0.4 + (1 - var(--morph)) * 0.6);
+  }
+  .ocard-icon svg{width:110px;height:110px}
+
+  .ocard-foot{border-top:1px solid rgba(255,255,255,.15);padding-top:16px;
+    opacity:var(--morph); transform:translateY(calc((1 - var(--morph)) * 15px));}
+  .ocard-name{font-family:var(--display);font-weight:700;font-size:24px;color:#fff;margin-bottom:6px;letter-spacing:-0.01em;}
+  .ocard-line{font-family:var(--serif);font-style:italic;font-size:15px;line-height:1.45;color:rgba(255,255,255,.8)}
+
+  /* Colors */
+  .oc-phi .ocard-bg{background:var(--philosopher)}.oc-ana .ocard-bg{background:var(--analyst)}
+  .oc-bui .ocard-bg{background:var(--builder)}.oc-org .ocard-bg{background:var(--organizer)}
+  .oc-con .ocard-bg{background:var(--connector)}.oc-mob .ocard-bg{background:var(--mobilizer)}
+  .oc-cre .ocard-bg{background:var(--creator)}.oc-exp .ocard-bg{background:var(--explorer)}
+
+  /* Focus Glow */
+  .orbit-glow{position:absolute;z-index:4;pointer-events:none;width:550px;height:550px;border-radius:50%;
+    top:50%; left:50%; margin-top:-275px; margin-left:-275px;
+    filter:blur(100px);opacity:0;will-change:opacity, background-color, transform;}
+
+  /* UI Labels */
+  .orbit-label{position:absolute;bottom:8vh;left:50%;transform:translateX(-50%);text-align:center;z-index:12;pointer-events:none;opacity:0;white-space:nowrap;will-change:opacity;}
+  .orbit-label-tag{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:8px;opacity:.4}
+  .orbit-label-name{font-family:var(--display);font-weight:700;font-size:clamp(22px,2.5vw,34px);letter-spacing:-.01em}
+  .orbit-label-line{font-family:var(--serif);font-style:italic;font-size:clamp(14px,1.4vw,18px);opacity:.6;margin-top:6px}
+
+  /* Pips */
+  .orbit-progress{position:absolute;right:32px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:12;opacity:0;transition:opacity 0.4s ease}
+  .orbit-pip{width:5px;height:5px;border-radius:50%;transition:all .4s ease;opacity:0.25}
+  .orbit-pip.active{transform:scale(2.2);opacity:1}
+
+  /* CTA Layer */
+  .cta-layer{position:absolute;inset:0;z-index:15;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;will-change:opacity;}
+  .cta-inner{text-align:center;max-width:520px;pointer-events:auto;transform:translateY(20px);transition:transform 0.5s ease}
+  .cta-layer.visible .cta-inner{transform:translateY(0)}
+  .cta-inner h2{font-family:var(--display);font-weight:700;font-size:clamp(40px,7vw,80px);line-height:.95;letter-spacing:-.03em;margin-bottom:20px}
+  .cta-inner h2 .si{font-family:var(--serif);font-weight:400;font-style:italic}
+  .cta-inner>p{font-size:16px;line-height:1.65;opacity:.6;max-width:380px;margin:0 auto 36px}
+  .btn-light{display:inline-flex;align-items:center;gap:10px;font-family:var(--body);font-weight:600;font-size:15px;color:var(--ink);background:var(--alabaster);border:none;padding:16px 40px;border-radius:100px;cursor:pointer;text-decoration:none;transition:all .3s ease}
+  .btn-light:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.15)}
+  .cta-meta{margin-top:16px;font-size:12px;opacity:.3}
+
+  /* Footer */
+  .footer{position:relative;z-index:20;padding:28px 24px;text-align:center;background:var(--night)}
+  .footer p{font-size:11px;color:rgba(245,241,235,.2)}
+  .footer a{color:rgba(245,241,235,.4);text-decoration:none;transition:color 0.2s}
+  .footer a:hover{color:#fff}
+
+  @media(max-width:768px){
+    /* Safely dodge the notch, and scale down the button */
+    .nav { padding: 48px 24px 16px; }
+    .nav.scrolled { padding: 42px 24px 12px; }
+    .nav-logo-img { height: 18px; }
+    .nav-start { padding: 8px 14px; font-size: 11px; }
+
+    .hero{padding:100px 0 48px}
+    .hero-container{flex-direction:column;justify-content:center;padding:0 24px}
+    .hero-inner{max-width:100%;margin-left:0;z-index:2}
+    /* Visual becomes a subtle abstract background pattern on mobile to save space */
+    .hero-visual{position:absolute;top:10%;right:-30%;width:120%;max-width:none;opacity:0.15 !important;z-index:0;animation:none}
+
+    /* Lock constraints to prevent text spilling on edges */
+    .beat-content {
+      padding: 0 32px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .beat-content.pos-left,
+    .beat-content.pos-right,
+    .beat-content.pos-center {
+      margin-left: 0;
+      margin-right: 0;
+      max-width: 100%;
+    }
+
+    .scroll-ind{left:50%}
+    .orbit-progress{right:16px;gap:8px}
+    .orbit-pip{width:4px;height:4px}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a href="https://startleapyear.com" class="nav-logo">
+    <img class="nav-logo-img" src="https://cdn.prod.website-files.com/67d4936e49a6f8c99c6f200f/67d49d06a4ad6f9d4ce0c917_logo-dark.svg" alt="LeapYear"
+         onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'font-family:var(--display);font-weight:700;font-size:16px\'>LeapYear</span>'">
+  </a>
+  <a href="#" class="nav-start" id="navCta">Take the Assessment</a>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="wash w1"></div><div class="wash w2"></div>
+
+  <div class="hero-container">
+    <div class="hero-inner">
+      <div class="hero-badge"><span class="hero-badge-line"></span>LeapYear Assessment<span class="hero-badge-line"></span></div>
+      <h1 class="hero-h1">Discover<br>your <span class="si">drive.</span></h1>
+      <p class="hero-sub">85 questions. 13 minutes. A profile that names the way you specifically come alive.</p>
+      <a href="#" class="hero-cta">Start the Assessment
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      <p class="hero-meta">Free · Personalized · Immediate results</p>
+    </div>
+
+    <!-- Geometric Archetype Compass -->
+    <div class="hero-visual">
+      <svg class="hero-compass" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="var(--ink)" stop-opacity="0.08"/>
+            <stop offset="100%" stop-color="var(--ink)" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <circle cx="200" cy="200" r="140" fill="url(#glow)"/>
+
+        <!-- Outer Orbiting Nodes -->
+        <g class="spin-slow">
+          <circle cx="200" cy="200" r="160" stroke="var(--ink)" stroke-opacity="0.1" stroke-width="1"/>
+
+          <!-- Lines connecting nodes to center -->
+          <line x1="200" y1="200" x2="200" y2="40" stroke="var(--philosopher)" stroke-opacity="0.25" stroke-width="1"/>
+          <line x1="200" y1="200" x2="313" y2="87" stroke="var(--analyst)" stroke-opacity="0.25" stroke-width="1"/>
+          <line x1="200" y1="200" x2="360" y2="200" stroke="var(--builder)" stroke-opacity="0.25" stroke-width="1"/>
+          <line x1="200" y1="200" x2="313" y2="313" stroke="var(--organizer)" stroke-opacity="0.25" stroke-width="1"/>
+          <line x1="200" y1="200" x2="200" y2="360" stroke="var(--connector)" stroke-opacity="0.25" stroke-width="1"/>
+          <line x1="200" y1="200" x2="87" y2="313" stroke="var(--mobilizer)" stroke-opacity="0.25" stroke-width="1"/>
+          <line x1="200" y1="200" x2="40" y2="200" stroke="var(--creator)" stroke-opacity="0.25" stroke-width="1"/>
+          <line x1="200" y1="200" x2="87" y2="87" stroke="var(--explorer)" stroke-opacity="0.25" stroke-width="1"/>
+
+          <!-- 8 Colored Nodes representing the types -->
+          <circle cx="200" cy="40" r="7" fill="var(--philosopher)"/>
+          <circle cx="313" cy="87" r="7" fill="var(--analyst)"/>
+          <circle cx="360" cy="200" r="7" fill="var(--builder)"/>
+          <circle cx="313" cy="313" r="7" fill="var(--organizer)"/>
+          <circle cx="200" cy="360" r="7" fill="var(--connector)"/>
+          <circle cx="87" cy="313" r="7" fill="var(--mobilizer)"/>
+          <circle cx="40" cy="200" r="7" fill="var(--creator)"/>
+          <circle cx="87" cy="87" r="7" fill="var(--explorer)"/>
+        </g>
+
+        <!-- Inner Counter-Rotating Ring -->
+        <g class="spin-reverse-fast">
+           <circle cx="200" cy="200" r="95" stroke="var(--ink)" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="2 6"/>
+           <circle cx="200" cy="105" r="3" fill="var(--ink)" opacity="0.4"/>
+        </g>
+
+        <!-- Center Core -->
+        <circle cx="200" cy="200" r="30" stroke="var(--ink)" stroke-opacity="0.15" stroke-width="1"/>
+        <circle cx="200" cy="200" r="4" fill="var(--ink)" opacity="0.6"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="scroll-ind">
+    <span>Scroll</span>
+    <div class="scroll-track"><div class="scroll-drop"></div></div>
+  </div>
+</section>
+
+<div class="journey" id="journey">
+  <div class="journey-sticky">
+    <div class="journey-bg" id="journeyBg"></div>
+
+    <div class="beat-layer" id="beat1"><div class="beat-content pos-left">
+      <div class="beat-num" style="color:var(--t3)">Where we are</div>
+      <p class="beat-text" style="color:var(--ink)">
+        <span class="w">The</span> <span class="w">world</span> <span class="w">is</span> <span class="w">full</span> <span class="w">of</span> <span class="w">noise</span> <span class="w">telling</span> <span class="w">you</span> <strong><span class="w">who</span> <span class="w">to</span> <span class="w">be.</span></strong>
+      </p>
+    </div></div>
+
+    <div class="beat-layer" id="beat2"><div class="beat-content pos-right">
+      <div class="beat-num" style="color:var(--t3)">What this moment holds</div>
+      <p class="beat-text" style="color:var(--ink)">
+        <span class="w">But</span> <span class="w">you</span> <span class="w">were</span> <span class="w">already</span> <span class="w">given</span> <span class="w">an</span> <strong><span class="w">identity</span></strong> <span class="w">and</span> <span class="w">a</span> <strong><span class="w">unique</span> <span class="w">design.</span></strong>
+      </p>
+    </div></div>
+
+    <div class="beat-layer" id="beat3"><div class="beat-content pos-center">
+      <div class="beat-num" style="color:var(--t3)">What we need</div>
+      <p class="beat-text" style="color:var(--ink)">
+        <span class="w">Your</span> <span class="w">job</span> <span class="w">is</span> <span class="w">to</span> <strong><span class="w">become.</span></strong>
+      </p>
+    </div></div>
+
+    <div class="orbit-glow" id="orbitGlow"></div>
+
+    <div class="orbit-ring" id="orbitRing">
+      <div class="ocard oc-phi"><div class="ocard-bg"></div><div class="ocard-vig"></div><div class="ocard-in">
+        <div class="ocard-top"><span class="ocard-tag">Thinking</span><span class="ocard-num">i.</span></div>
+        <div class="ocard-icon"><svg viewBox="0 0 180 180" fill="none"><g opacity="0.85"><circle cx="90" cy="90" r="25.2" stroke="white" stroke-width="1.8"/><circle cx="90" cy="90" r="50.4" stroke="white" stroke-width="1.8"/><circle cx="90" cy="90" r="75.6" stroke="white" stroke-width="1.8"/><circle cx="90" cy="90" r="6.3" fill="white"/></g></svg></div>
+        <div class="ocard-foot"><div class="ocard-name">Philosopher</div><div class="ocard-line">You ask the questions others are afraid to sit with.</div></div>
+      </div></div>
+      <div class="ocard oc-ana"><div class="ocard-bg"></div><div class="ocard-vig"></div><div class="ocard-in">
+        <div class="ocard-top"><span class="ocard-tag">Thinking</span><span class="ocard-num">ii.</span></div>
+        <div class="ocard-icon"><svg viewBox="0 0 180 180" fill="none"><g opacity="0.85"><path d="M154.8 90L122.4 146.124H57.6L25.2 90L57.6 33.876H122.4L154.8 90Z" stroke="white" stroke-width="1.8"/><path d="M133.2 90L111.6 127.404H68.4L46.8 90L68.4 52.596H111.6L133.2 90Z" stroke="white" stroke-width="1.8"/><path d="M111.6 90L100.8 108.702H79.2L68.4 90L79.2 71.298H100.8L111.6 90Z" stroke="white" stroke-width="1.8"/></g></svg></div>
+        <div class="ocard-foot"><div class="ocard-name">Analyst</div><div class="ocard-line">You see the systems underneath and know how to shift them.</div></div>
+      </div></div>
+      <div class="ocard oc-bui"><div class="ocard-bg"></div><div class="ocard-vig"></div><div class="ocard-in">
+        <div class="ocard-top"><span class="ocard-tag">Doing</span><span class="ocard-num">iii.</span></div>
+        <div class="ocard-icon"><svg viewBox="0 0 180 180" fill="none"><g opacity="0.85"><path d="M27 153V90C27 73.291 33.637 57.267 45.452 45.452C57.267 33.637 73.291 27 90 27C106.709 27 122.733 33.637 134.548 45.452C146.362 57.267 153 73.291 153 90V153" stroke="white" stroke-width="1.8" stroke-linecap="square"/><path d="M54 153V90C54 80.452 57.793 71.295 64.544 64.544C71.295 57.793 80.452 54 90 54C99.548 54 108.705 57.793 115.456 64.544C122.207 71.295 126 80.452 126 90V153" stroke="white" stroke-width="1.8" stroke-linecap="square"/><path d="M81 153V90C81 87.613 81.948 85.324 83.636 83.636C85.324 81.948 87.613 81 90 81C92.387 81 94.676 81.948 96.364 83.636C98.052 85.324 99 87.613 99 90V153" stroke="white" stroke-width="1.8" stroke-linecap="square"/></g></svg></div>
+        <div class="ocard-foot"><div class="ocard-name">Builder</div><div class="ocard-line">You take what's imagined and make it real.</div></div>
+      </div></div>
+      <div class="ocard oc-org"><div class="ocard-bg"></div><div class="ocard-vig"></div><div class="ocard-in">
+        <div class="ocard-top"><span class="ocard-tag">Doing</span><span class="ocard-num">iv.</span></div>
+        <div class="ocard-icon"><svg viewBox="0 0 180 180" fill="none"><g opacity="0.85"><path d="M90 25.2L118.058 41.4V73.8L90 90L61.942 73.8V41.4L90 25.2Z" stroke="white" stroke-width="1.8"/><path d="M61.938 73.8L89.996 90V122.4L61.938 138.6L33.88 122.4V90L61.938 73.8Z" stroke="white" stroke-width="1.8"/><path d="M118.062 73.8L146.12 90V122.4L118.062 138.6L90.004 122.4V90L118.062 73.8Z" stroke="white" stroke-width="1.8"/></g></svg></div>
+        <div class="ocard-foot"><div class="ocard-name">Organizer</div><div class="ocard-line">You see the structure that should exist and build it.</div></div>
+      </div></div>
+      <div class="ocard oc-con"><div class="ocard-bg"></div><div class="ocard-vig"></div><div class="ocard-in">
+        <div class="ocard-top"><span class="ocard-tag">Relating</span><span class="ocard-num">v.</span></div>
+        <div class="ocard-icon"><svg viewBox="0 0 180 180" fill="none"><g opacity="0.85"><circle cx="90" cy="63" r="46.8" stroke="white" stroke-width="1.8"/><circle cx="66.6" cy="103.5" r="46.8" stroke="white" stroke-width="1.8"/><circle cx="113.4" cy="103.5" r="46.8" stroke="white" stroke-width="1.8"/></g></svg></div>
+        <div class="ocard-foot"><div class="ocard-name">Connector</div><div class="ocard-line">People feel known in your presence.</div></div>
+      </div></div>
+      <div class="ocard oc-mob"><div class="ocard-bg"></div><div class="ocard-vig"></div><div class="ocard-in">
+        <div class="ocard-top"><span class="ocard-tag">Relating</span><span class="ocard-num">vi.</span></div>
+        <div class="ocard-icon"><svg viewBox="0 0 180 180" fill="none"><g opacity="0.85"><path d="M39.6 36L93.6 90L39.6 144" stroke="white" stroke-width="1.8"/><path d="M66.6 36L120.6 90L66.6 144" stroke="white" stroke-width="1.8"/><path d="M93.6 36L147.6 90L93.6 144" stroke="white" stroke-width="1.8"/></g></svg></div>
+        <div class="ocard-foot"><div class="ocard-name">Mobilizer</div><div class="ocard-line">You rally people around something bigger than all of them.</div></div>
+      </div></div>
+      <div class="ocard oc-cre"><div class="ocard-bg"></div><div class="ocard-vig"></div><div class="ocard-in">
+        <div class="ocard-top"><span class="ocard-tag">Experiencing</span><span class="ocard-num">vii.</span></div>
+        <div class="ocard-icon"><svg viewBox="0 0 180 180" fill="none"><g opacity="0.85"><ellipse cx="90" cy="90" rx="68.4" ry="21.6" stroke="white" stroke-width="1.8"/><ellipse cx="90" cy="90" rx="68.4" ry="21.6" stroke="white" stroke-width="1.8" transform="rotate(60 90 90)"/><ellipse cx="90" cy="90" rx="68.4" ry="21.6" stroke="white" stroke-width="1.8" transform="rotate(120 90 90)"/></g></svg></div>
+        <div class="ocard-foot"><div class="ocard-name">Creator</div><div class="ocard-line">You make beauty from nothing.</div></div>
+      </div></div>
+      <div class="ocard oc-exp"><div class="ocard-bg"></div><div class="ocard-vig"></div><div class="ocard-in">
+        <div class="ocard-top"><span class="ocard-tag">Experiencing</span><span class="ocard-num">viii.</span></div>
+        <div class="ocard-icon"><svg viewBox="0 0 180 180" fill="none"><g opacity="0.85"><circle cx="90" cy="90" r="64.8" stroke="white" stroke-width="1.8"/><path d="M90 25.2L97.2 82.8L154.8 90L97.2 97.2L90 154.8L82.8 97.2L25.2 90L82.8 82.8L90 25.2Z" stroke="white" stroke-width="1.8"/></g></svg></div>
+        <div class="ocard-foot"><div class="ocard-name">Explorer</div><div class="ocard-line">The unknown is where you feel most alive.</div></div>
+      </div></div>
+    </div>
+
+    <div class="orbit-label" id="orbitLabel">
+      <div class="orbit-label-tag" id="olTag"></div>
+      <div class="orbit-label-name" id="olName"></div>
+      <div class="orbit-label-line" id="olLine"></div>
+    </div>
+
+    <div class="orbit-progress" id="orbitProgress"></div>
+
+    <div class="cta-layer" id="ctaLayer">
+      <div class="cta-inner">
+        <h2>Start <span class="si">here.</span></h2>
+        <p>See if it resonates. You'll walk away with your archetype card and a full profile you can use.</p>
+        <a href="#" class="btn-light">Start the Assessment
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        <p class="cta-meta">85 questions · ~13 minutes · Personalized and immediate</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer"><p>&copy; 2026 LeapYear · <a href="https://startleapyear.com">startleapyear.com</a></p></footer>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const nav=$('nav'), navCta=$('navCta'), hero=$('hero'), journey=$('journey'),
+        journeyBg=$('journeyBg'), orbitLabel=$('orbitLabel'),
+        olTag=$('olTag'), olName=$('olName'), olLine=$('olLine'),
+        orbitProgress=$('orbitProgress'), ctaLayer=$('ctaLayer'), orbitGlow=$('orbitGlow'),
+        beats = [
+          $('beat1').querySelector('.beat-content'),
+          $('beat2').querySelector('.beat-content'),
+          $('beat3').querySelector('.beat-content')
+        ];
+
+  const cards = document.querySelectorAll('.ocard');
+  const wash1 = document.querySelector('.w1');
+  const wash2 = document.querySelector('.w2');
+  const N = cards.length;
+
+  // UI Data
+  const colors = ['#3D4E8C','#5E8A72','#C4724E','#C49A3B','#D4847A','#B8453A','#7B5B8A','#2E8B8B'];
+  const cardData = [
+    {tag:'Thinking',name:'Philosopher',line:'You ask the questions others are afraid to sit with.'},
+    {tag:'Thinking',name:'Analyst',line:'You see the systems underneath and know how to shift them.'},
+    {tag:'Doing',name:'Builder',line:'You take what\u2019s imagined and make it real.'},
+    {tag:'Doing',name:'Organizer',line:'You see the structure that should exist and build it.'},
+    {tag:'Relating',name:'Connector',line:'People feel known in your presence.'},
+    {tag:'Relating',name:'Mobilizer',line:'You rally people around something bigger than all of them.'},
+    {tag:'Experiencing',name:'Creator',line:'You make beauty from nothing.'},
+    {tag:'Experiencing',name:'Explorer',line:'The unknown is where you feel most alive.'},
+  ];
+
+  colors.forEach(c => {
+    const p = document.createElement('div');
+    p.className = 'orbit-pip'; p.style.background = c;
+    orbitProgress.appendChild(p);
+  });
+  const pips = [...orbitProgress.children];
+
+  // Configure Scroll Container
+  const vh = window.innerHeight;
+  journey.style.height = (vh * 18) + 'px';
+
+  let rawProgress = 0;
+  let smoothProgress = 0;
+
+  // Mouse Tracking for Hero Interactive Parallax
+  let mouseX = 0, mouseY = 0;
+  let w1X = 0, w1Y = 0, w2X = 0, w2Y = 0;
+  let globalTime = 0;
+
+  window.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+  });
+
+  // Math Utilities
+  function lerp(a, b, t) { return a + (b - a) * Math.max(0, Math.min(1, t)); }
+  function sp(p, start, end) { return Math.max(0, Math.min(1, (p - start) / (end - start))); }
+  function easeInOut(t) { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
+
+  function ultraSticky(t) {
+      let x = Math.max(0, Math.min(1, t));
+      x = x * x * (3 - 2 * x);
+      x = x * x * (3 - 2 * x);
+      return x;
+  }
+
+  // ── SCRIPTED TIMELINE MAP ──
+  const S = {
+    b1In: 0.00, b1Out: 0.05,
+    b2In: 0.05, b2Out: 0.10,
+    b3In: 0.10, b3Out: 0.15,
+    darkIn: 0.15, darkFull: 0.18,
+    ovIn: 0.15, ovFull: 0.18,
+    spinEnd: 0.26,
+    alignEnd: 0.33,
+    scrollStart: 0.36, scrollEnd: 0.86,
+    ctaIn: 0.88, ctaFull: 0.98
+  };
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    nav.classList.toggle('scrolled', scrollY > 50);
+    if (scrollY > window.innerHeight * 0.6) navCta.classList.add('visible');
+
+    const jRect = journey.getBoundingClientRect();
+    const jTop = -jRect.top;
+    const jMax = jRect.height - window.innerHeight;
+    rawProgress = Math.max(0, Math.min(1, jTop / jMax));
+  }, { passive: true });
+
+  let lastActiveIdx = -1;
+
+  function render() {
+    smoothProgress += (rawProgress - smoothProgress) * 0.08;
+    const p = smoothProgress;
+    const isMobile = window.innerWidth < 768;
+    const baseScale = isMobile ? Math.min(1, window.innerWidth / 400) : 1;
+
+    // --- Hero Interactive Parallax & Breathing Animation ---
+    globalTime += 0.01;
+    let target1X = mouseX * 40 + Math.sin(globalTime) * 20;
+    let target1Y = mouseY * 40 + Math.cos(globalTime * 0.8) * 20;
+
+    let target2X = mouseX * -60 + Math.sin(globalTime * 1.2) * 30;
+    let target2Y = mouseY * -60 + Math.cos(globalTime * 0.9) * 30;
+
+    w1X += (target1X - w1X) * 0.05;
+    w1Y += (target1Y - w1Y) * 0.05;
+    w2X += (target2X - w2X) * 0.05;
+    w2Y += (target2Y - w2Y) * 0.05;
+
+    if(wash1) wash1.style.transform = 'translate3d(' + w1X + 'px, ' + w1Y + 'px, 0)';
+    if(wash2) wash2.style.transform = 'translate3d(' + w2X + 'px, ' + w2Y + 'px, 0)';
+    // ----------------------------------------------------
+
+    // 1. Dark Mode
+    let darkProg = sp(p, S.darkIn, S.darkFull);
+    let lightProg = sp(p, S.ctaIn, S.ctaFull);
+    let darkIntensity = darkProg * (1 - lightProg);
+
+    journeyBg.style.backgroundColor = 'rgb(' + Math.round(lerp(250,27,darkIntensity)) + ',' + Math.round(lerp(247,25,darkIntensity)) + ',' + Math.round(lerp(241,24,darkIntensity)) + ')';
+    nav.classList.toggle('dark-mode', darkIntensity > 0.5);
+    nav.classList.toggle('light-mode', darkIntensity <= 0.5 && window.scrollY > 50);
+
+    // 2. Intro Text Beats
+    const beatTimeline = [{in: S.b1In, out: S.b1Out}, {in: S.b2In, out: S.b2Out}, {in: S.b3In, out: S.b3Out}];
+    beats.forEach((beat, i) => {
+      let local = sp(p, beatTimeline[i].in, beatTimeline[i].out);
+      let opacity = local < 0.2 ? local / 0.2 : local > 0.8 ? (1 - local) / 0.2 : 1;
+      beat.style.opacity = easeInOut(opacity).toFixed(3);
+      beat.style.transform = 'translateY(' + lerp(30, -10, local) + 'px)';
+
+      // Mobile Scrubbing Word Fill Effect
+      var words = beat.querySelectorAll('.w');
+      if (isMobile) {
+        var fillProg = sp(local, 0.15, 0.75);
+        var targetIdx = Math.floor(fillProg * (words.length + 1));
+        words.forEach(function(w, idx) {
+          w.style.opacity = idx < targetIdx ? 1 : 0.15;
+        });
+      } else {
+        words.forEach(function(w) { w.style.opacity = 1; });
+      }
+    });
+
+    // 3. Master Index
+    let masterIndex = 0;
+    if (p < S.spinEnd) {
+      let spinProg = p / S.spinEnd;
+      masterIndex = (1 - Math.pow(1 - spinProg, 2)) * 6.5;
+    } else if (p < S.alignEnd) {
+      let alignProg = easeInOut(sp(p, S.spinEnd, S.alignEnd));
+      masterIndex = lerp(6.5, 8, alignProg);
+    } else if (p < S.scrollStart) {
+      masterIndex = 8;
+    } else if (p < S.scrollEnd) {
+      let scrollProg = sp(p, S.scrollStart, S.scrollEnd);
+      let linearTarget = lerp(0, 7, scrollProg);
+      let base = Math.floor(linearTarget);
+      let frac = linearTarget - base;
+      masterIndex = 8 + base + ultraSticky(frac);
+    } else {
+      masterIndex = 15;
+    }
+
+    const globalLayoutPhase = easeInOut(sp(p, S.alignEnd - 0.05, S.alignEnd));
+    const ovFade = easeInOut(sp(p, S.ovIn, S.ovFull));
+
+    // The master CTA transition fade
+    const ctaFade = easeInOut(sp(p, S.ctaIn, S.ctaFull));
+
+    // 4. Position & Dynamic Morphing Engine
+    cards.forEach((card, i) => {
+      let logicalIndex = i + 8;
+      let diff = logicalIndex - masterIndex;
+
+      // -- A. Circle Phase --
+      let circleRelI = ((diff + N/2) % N + N) % N - N/2;
+      let thetaOver = (circleRelI / N) * Math.PI * 2 - Math.PI / 2;
+      let circleRadius = isMobile ? 150 : 250;
+      let ox = Math.cos(thetaOver) * circleRadius;
+      let oy = Math.sin(thetaOver) * circleRadius;
+      let oScale = (isMobile ? 0.38 : 0.45) * baseScale;
+      let oOpacity = ovFade;
+
+      // -- B. Showcase Fan Phase --
+      let dist = Math.abs(diff);
+      let gap = Math.pow(Math.min(dist, 1), 0.6) * 110;
+      let sx = diff * (isMobile ? 120 : 160) + (Math.sign(diff) * gap);
+      let sy = dist * 25;
+      let sScale = Math.max(0.4, 1.1 - dist * 0.35) * baseScale;
+      let sRot = diff * 8;
+      let sOpacity = Math.max(0, 1 - dist * 0.45);
+
+      let targetMorph = Math.max(0, 1 - dist * 1.5);
+      let finalMorph = globalLayoutPhase * targetMorph;
+
+      // -- Blend --
+      let finalX = lerp(ox, sx, globalLayoutPhase);
+      let finalY = lerp(oy, sy, globalLayoutPhase);
+      let finalScale = lerp(oScale, sScale, globalLayoutPhase);
+      let finalRot = lerp(0, sRot, globalLayoutPhase);
+      let finalOpacity = lerp(oOpacity, sOpacity, globalLayoutPhase);
+
+      // -- C. The Final CTA Explosion --
+      if (ctaFade > 0) {
+        if (i === N - 1) {
+          // The Final Explorer Card massive expansion
+          finalX = lerp(finalX, 0, easeInOut(ctaFade));
+          finalY = lerp(finalY, 0, easeInOut(ctaFade));
+          finalRot = lerp(finalRot, 0, easeInOut(ctaFade));
+
+          finalScale = lerp(finalScale, 15 * baseScale, easeInOut(ctaFade));
+          finalOpacity = 1;
+
+          card.querySelector('.ocard-bg').style.opacity = Math.max(0, 1 - ctaFade * 2).toFixed(3);
+          let vig = card.querySelector('.ocard-vig');
+          if(vig) vig.style.opacity = Math.max(0, 1 - ctaFade * 2).toFixed(3);
+          card.querySelector('.ocard-in').style.opacity = Math.max(0, 1 - ctaFade * 2).toFixed(3);
+
+          card.style.boxShadow = 'none';
+        } else {
+          // The other cards scatter downward and outward beautifully
+          finalX += diff * 120 * easeInOut(ctaFade);
+          finalY += (Math.abs(diff) * 80 + 100) * easeInOut(ctaFade);
+          finalRot += diff * 15 * ctaFade;
+          finalScale = lerp(finalScale, 0.2, ctaFade);
+          finalOpacity *= (1 - easeInOut(ctaFade));
+        }
+      } else {
+        card.querySelector('.ocard-bg').style.opacity = 1;
+        let vig = card.querySelector('.ocard-vig');
+        if(vig) vig.style.opacity = 1;
+        card.querySelector('.ocard-in').style.opacity = 1;
+        card.style.boxShadow = '';
+      }
+
+      // Apply transforms
+      card.style.transform = 'translate3d(' + finalX + 'px, ' + finalY + 'px, 0) scale(' + finalScale + ') rotateZ(' + finalRot + 'deg)';
+      card.style.opacity = finalOpacity.toFixed(3);
+
+      let activeDist = lerp(Math.abs(circleRelI), dist, globalLayoutPhase);
+      card.style.zIndex = Math.round(100 - activeDist * 10);
+      card.style.setProperty('--morph', finalMorph.toFixed(3));
+    });
+
+    // 5. UI Updates
+    const activeIdx = Math.max(0, Math.min(N - 1, Math.round(masterIndex) % 8));
+    const showUi = p > S.alignEnd - 0.02 && p < S.ctaIn - 0.02;
+
+    if (activeIdx !== lastActiveIdx && showUi) {
+      lastActiveIdx = activeIdx;
+      const d = cardData[activeIdx];
+      olTag.textContent = d.tag;
+      olName.textContent = d.name;
+      olLine.textContent = d.line;
+      pips.forEach((pip, i) => pip.classList.toggle('active', i === activeIdx));
+      orbitGlow.style.backgroundColor = colors[activeIdx];
+    }
+
+    // Fade labels and progress pips during the final explosion
+    let uiFadeOut = 1 - Math.min(1, ctaFade * 2);
+    orbitLabel.style.opacity = showUi ? uiFadeOut : '0';
+    orbitProgress.style.opacity = showUi ? uiFadeOut : '0';
+
+    let glowDistance = Math.abs(masterIndex - Math.round(masterIndex));
+    let glowIntensity = Math.max(0, 1 - glowDistance * 2);
+    orbitGlow.style.opacity = showUi ? glowIntensity * 0.45 * uiFadeOut : 0;
+    orbitGlow.style.transform = 'scale(' + baseScale + ')';
+
+    // 6. Final CTA Layer
+    let ctaTextOpacity = Math.max(0, (ctaFade - 0.5) * 2);
+    ctaLayer.style.opacity = ctaTextOpacity.toFixed(3);
+    ctaLayer.classList.toggle('visible', ctaFade > 0.5);
+    ctaLayer.style.pointerEvents = ctaFade > 0.5 ? 'auto' : 'none';
+
+    ctaLayer.querySelector('.cta-inner').style.color = darkIntensity > 0.5 ? '#FAF7F1' : '#2A2523';
+
+    requestAnimationFrame(render);
+  }
+
+  render();
+
+  let rt;
+  window.addEventListener('resize', () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => location.reload(), 250);
+  });
+})();
+</script>
+</body>
+</html>

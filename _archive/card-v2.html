@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card V2 — Physical Directions</title>
+<link rel="stylesheet" href="https://use.typekit.net/gxr6ytx.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+
+  :root {
+    --display: 'neulis-neue', sans-serif;
+    --body: 'area-normal', sans-serif;
+    --serif: 'Instrument Serif', 'Georgia', serif;
+
+    --cream: #F5F0E8;
+    --card: #FAF7F1;
+    --warm-white: #FDFCF9;
+    --ink: #2A2523;
+    --text-dark: #3A3532;
+    --text-mid: #7A7570;
+    --text-light: #A5A09A;
+    --rule: #D4CFC6;
+
+    --philosopher: #3D4E8C;
+    --analyst: #5E8A72;
+    --builder: #C4724E;
+    --organizer: #C49A3B;
+    --connector: #D4847A;
+    --mobilizer: #B8453A;
+    --creator: #7B5B8A;
+    --explorer: #2E8B8B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-font-smoothing: antialiased; }
+  body {
+    font-family: var(--body);
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* Page layout */
+  .page-header {
+    text-align: center; padding: 80px 24px 20px;
+  }
+  .page-header h1 {
+    font-family: var(--display); font-weight: 800; font-size: 13px;
+    letter-spacing: 4px; text-transform: uppercase; color: var(--text-light);
+  }
+
+  .direction {
+    padding: 60px 24px 100px;
+    border-top: 1px solid var(--rule);
+  }
+  .direction-header {
+    max-width: 600px; margin: 0 auto 60px; text-align: center;
+  }
+  .direction-num {
+    font-family: var(--serif); font-style: italic; font-size: 15px;
+    color: var(--text-mid); margin-bottom: 6px;
+  }
+  .direction-title {
+    font-family: var(--display); font-weight: 800; font-size: clamp(26px,4vw,36px);
+    line-height: 1.05; letter-spacing: -.03em; margin-bottom: 10px; color: var(--ink);
+  }
+  .direction-sub {
+    font-family: var(--serif); font-style: italic; font-size: 17px;
+    color: var(--text-mid); line-height: 1.5;
+  }
+
+  .card-display {
+    display: flex; justify-content: center; align-items: flex-start;
+    gap: 32px; flex-wrap: wrap; max-width: 1200px; margin: 0 auto;
+  }
+
+
+  /* ═══════════════════════════════════════════
+     ATTEMPT 1: THE POSTCARD
+     Flush image, hard line, left-aligned type
+     ═══════════════════════════════════════════ */
+
+  .card-1 {
+    width: 300px;
+    background: var(--card);
+    border-radius: 0;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid var(--rule);
+  }
+
+  .card-1 .card-image {
+    width: 100%;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+  }
+  .card-1 .card-image img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+
+  /* Hard line */
+  .card-1 .card-rule {
+    height: 1px; background: var(--ink); margin: 0;
+  }
+
+  .card-1 .card-text {
+    padding: 20px 22px 24px;
+  }
+  .card-1 .card-orient {
+    font-weight: 700; font-size: 8px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--text-light); margin-bottom: 4px;
+  }
+  .card-1 .card-name {
+    font-family: var(--display); font-weight: 800; font-size: 32px;
+    line-height: .92; letter-spacing: -.03em; color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .card-1 .card-tagline {
+    font-family: var(--serif); font-style: italic; font-size: 14px;
+    line-height: 1.45; color: var(--text-mid);
+  }
+
+
+  /* ═══════════════════════════════════════════
+     ATTEMPT 2: THE RECORD SLEEVE
+     Inset image with cream margin, centered
+     ═══════════════════════════════════════════ */
+
+  .card-2 {
+    width: 300px;
+    background: var(--card);
+    border-radius: 0;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid var(--rule);
+    padding: 16px;
+  }
+
+  .card-2 .card-image {
+    width: 100%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+  }
+  .card-2 .card-image img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+
+  /* Hard line below image */
+  .card-2 .card-rule {
+    height: 1px; background: var(--ink); margin: 16px 0 0 0;
+  }
+
+  .card-2 .card-text {
+    padding: 16px 0 4px;
+    text-align: center;
+  }
+  .card-2 .card-orient {
+    font-weight: 700; font-size: 8px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--text-light); margin-bottom: 4px;
+  }
+  .card-2 .card-name {
+    font-family: var(--display); font-weight: 800; font-size: 30px;
+    line-height: .92; letter-spacing: -.03em; color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .card-2 .card-rule-thin {
+    width: 30px; height: 1px; background: var(--rule);
+    margin: 0 auto 10px;
+  }
+  .card-2 .card-tagline {
+    font-family: var(--serif); font-style: italic; font-size: 13px;
+    line-height: 1.5; color: var(--text-mid);
+  }
+  .card-2 .card-label {
+    margin-top: 14px;
+    font-weight: 700; font-size: 7px; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--text-light);
+  }
+
+
+  /* ═══════════════════════════════════════════
+     ATTEMPT 3: THE STAMP
+     Color band + big name, poster energy
+     ═══════════════════════════════════════════ */
+
+  .card-3 {
+    width: 300px;
+    background: var(--card);
+    border-radius: 0;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid var(--rule);
+  }
+
+  /* Thick color band at top */
+  .card-3 .card-band {
+    height: 6px;
+  }
+
+  .card-3 .card-image {
+    width: 100%;
+    aspect-ratio: 5/4;
+    overflow: hidden;
+  }
+  .card-3 .card-image img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+
+  /* Hard line */
+  .card-3 .card-rule {
+    height: 2px; background: var(--ink); margin: 0;
+  }
+
+  .card-3 .card-text {
+    padding: 18px 22px 22px;
+  }
+  .card-3 .card-orient-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 6px;
+  }
+  .card-3 .card-orient {
+    font-weight: 700; font-size: 8px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--text-light);
+  }
+  .card-3 .card-numeral {
+    font-family: var(--serif); font-style: italic; font-size: 14px;
+    color: var(--text-light);
+  }
+  .card-3 .card-name {
+    font-family: var(--display); font-weight: 800;
+    font-size: 42px;
+    line-height: .88; letter-spacing: -.04em; color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .card-3 .card-tagline {
+    font-family: var(--serif); font-style: italic; font-size: 14px;
+    line-height: 1.45; color: var(--text-mid);
+  }
+  .card-3 .card-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 16px; padding-top: 12px;
+    border-top: 1px solid var(--rule);
+  }
+  .card-3 .card-footer-label {
+    font-weight: 700; font-size: 7px; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--text-light);
+  }
+  .card-3 .card-color-dot {
+    width: 8px; height: 8px; border-radius: 0;
+  }
+
+
+  /* ═══════════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════════ */
+
+  @media (max-width: 700px) {
+    .card-display { gap: 24px; }
+    .card-1, .card-2, .card-3 { width: min(300px, 90vw); }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Card V2 &mdash; Physical Directions</h1>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     ATTEMPT 1: THE POSTCARD
+     ═══════════════════════════════════════════════════════════ -->
+<div class="direction">
+  <div class="direction-header">
+    <div class="direction-num">Attempt I</div>
+    <div class="direction-title">The Postcard</div>
+    <div class="direction-sub">Flush image, hard line, left-aligned type. Pin it to a corkboard.</div>
+  </div>
+
+  <div class="card-display">
+    <div class="card-1">
+      <div class="card-image">
+        <img src="Sample images/green statue - philosopher.png" alt="Philosopher">
+      </div>
+      <div class="card-rule"></div>
+      <div class="card-text">
+        <div class="card-orient">Thinking</div>
+        <div class="card-name">Philosopher</div>
+        <div class="card-tagline">You ask the questions others are afraid to sit with.</div>
+      </div>
+    </div>
+
+    <div class="card-1">
+      <div class="card-image">
+        <img src="Sample images/sample 2 - explorer.png" alt="Explorer">
+      </div>
+      <div class="card-rule"></div>
+      <div class="card-text">
+        <div class="card-orient">Experiencing</div>
+        <div class="card-name">Explorer</div>
+        <div class="card-tagline">The unknown is where you feel most alive.</div>
+      </div>
+    </div>
+
+    <div class="card-1">
+      <div class="card-image">
+        <img src="Sample images/flame - mobilizer.png" alt="Mobilizer">
+      </div>
+      <div class="card-rule"></div>
+      <div class="card-text">
+        <div class="card-orient">Relating</div>
+        <div class="card-name">Mobilizer</div>
+        <div class="card-tagline">You rally people around something bigger than all of them.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     ATTEMPT 2: THE RECORD SLEEVE
+     ═══════════════════════════════════════════════════════════ -->
+<div class="direction">
+  <div class="direction-header">
+    <div class="direction-num">Attempt II</div>
+    <div class="direction-title">The Record Sleeve</div>
+    <div class="direction-sub">Inset image, cream border, centered type. Gallery print energy.</div>
+  </div>
+
+  <div class="card-display">
+    <div class="card-2">
+      <div class="card-image">
+        <img src="Sample images/slate blue - analyst.png" alt="Analyst">
+      </div>
+      <div class="card-rule"></div>
+      <div class="card-text">
+        <div class="card-orient">Thinking</div>
+        <div class="card-name">Analyst</div>
+        <div class="card-rule-thin"></div>
+        <div class="card-tagline">You see the systems underneath and know how to shift them.</div>
+        <div class="card-label">LeapYear</div>
+      </div>
+    </div>
+
+    <div class="card-2">
+      <div class="card-image">
+        <img src="Sample images/sample 2 - creator.png" alt="Creator">
+      </div>
+      <div class="card-rule"></div>
+      <div class="card-text">
+        <div class="card-orient">Experiencing</div>
+        <div class="card-name">Creator</div>
+        <div class="card-rule-thin"></div>
+        <div class="card-tagline">You make beauty from nothing.</div>
+        <div class="card-label">LeapYear</div>
+      </div>
+    </div>
+
+    <div class="card-2">
+      <div class="card-image">
+        <img src="Sample images/sample 2 organizer.png" alt="Organizer">
+      </div>
+      <div class="card-rule"></div>
+      <div class="card-text">
+        <div class="card-orient">Doing</div>
+        <div class="card-name">Organizer</div>
+        <div class="card-rule-thin"></div>
+        <div class="card-tagline">You see the structure that should exist &mdash; and build it.</div>
+        <div class="card-label">LeapYear</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     ATTEMPT 3: THE STAMP
+     ═══════════════════════════════════════════════════════════ -->
+<div class="direction">
+  <div class="direction-header">
+    <div class="direction-num">Attempt III</div>
+    <div class="direction-title">The Stamp</div>
+    <div class="direction-sub">Color band, big bold name, poster energy. Collectible.</div>
+  </div>
+
+  <div class="card-display">
+    <div class="card-3">
+      <div class="card-band" style="background: var(--philosopher);"></div>
+      <div class="card-image">
+        <img src="Sample images/green statue - philosopher.png" alt="Philosopher">
+      </div>
+      <div class="card-rule"></div>
+      <div class="card-text">
+        <div class="card-orient-row">
+          <span class="card-orient">Thinking</span>
+          <span class="card-numeral">I</span>
+        </div>
+        <div class="card-name">Philosopher</div>
+        <div class="card-tagline">You ask the questions others are afraid to sit with.</div>
+        <div class="card-footer">
+          <span class="card-footer-label">LeapYear</span>
+          <span class="card-color-dot" style="background: var(--philosopher);"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-3">
+      <div class="card-band" style="background: var(--explorer);"></div>
+      <div class="card-image">
+        <img src="Sample images/sample 2 - explorer.png" alt="Explorer">
+      </div>
+      <div class="card-rule"></div>
+      <div class="card-text">
+        <div class="card-orient-row">
+          <span class="card-orient">Experiencing</span>
+          <span class="card-numeral">VIII</span>
+        </div>
+        <div class="card-name">Explorer</div>
+        <div class="card-tagline">The unknown is where you feel most alive.</div>
+        <div class="card-footer">
+          <span class="card-footer-label">LeapYear</span>
+          <span class="card-color-dot" style="background: var(--explorer);"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-3">
+      <div class="card-band" style="background: var(--mobilizer);"></div>
+      <div class="card-image">
+        <img src="Sample images/flame - mobilizer.png" alt="Mobilizer">
+      </div>
+      <div class="card-rule"></div>
+      <div class="card-text">
+        <div class="card-orient-row">
+          <span class="card-orient">Relating</span>
+          <span class="card-numeral">VI</span>
+        </div>
+        <div class="card-name">Mobilizer</div>
+        <div class="card-tagline">You rally people around something bigger than all of them.</div>
+        <div class="card-footer">
+          <span class="card-footer-label">LeapYear</span>
+          <span class="card-color-dot" style="background: var(--mobilizer);"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

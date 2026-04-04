@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeapYear Results Page — Redesign Reference</title>
+<link rel="icon" href="https://cdn.prod.website-files.com/67d4936e49a6f8c99c6f200f/67d4bd9d4c6b42259b3b58c5_favicon.png" type="image/png">
+<link rel="stylesheet" href="https://use.typekit.net/gxr6ytx.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+
+  :root {
+    --cream:#FAF7F1;--parchment:#F0EBE1;--alabaster:#F5F1EB;
+    --night:#1B1918;--dark-green:#17322D;--ink:#2A2523;
+    --text:#3A3532;--t2:#7A7570;--t3:#A5A09A;--border:rgba(42,37,35,.08);
+    --display:'neulis-neue',sans-serif;--body:'area-normal',sans-serif;
+    --serif:'Instrument Serif','Georgia',serif;
+    --philosopher:#3D4E8C;--analyst:#5E8A72;--builder:#C4724E;--organizer:#C49A3B;
+    --connector:#D4847A;--mobilizer:#B8453A;--creator:#7B5B8A;--explorer:#2E8B8B;
+    /* LeapYear brand accents */
+    --flame:#DD5E32;--sandy-brown:#F1AA5F;--brunswick-green:#354A3D;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased}
+  body{font-family:var(--body);font-weight:400;color:var(--text);background:var(--cream);overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.018;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* ===== NAV ===== */
+  .nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:24px 32px;display:flex;align-items:center;justify-content:space-between;background:rgba(27,25,24,.65);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
+  .nav-logo-img{height:24px;filter:invert(1) brightness(2)}
+
+  /* ===== RESULTS HERO ===== */
+  #results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    background: var(--cream);
+    min-height: 100vh;
+  }
+  .results-hero {
+    background: var(--night);
+    color: var(--cream);
+    text-align: center;
+    padding: 5rem 1.5rem 4rem;
+    width: 100%;
+  }
+  .results-hero .result-label {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 1rem;
+    color: rgba(245,241,235,0.5);
+    margin-bottom: 1rem;
+  }
+  .results-hero .result-type {
+    font-family: var(--display);
+    font-size: clamp(2.25rem, 6vw, 3.5rem);
+    font-weight: 700;
+    color: var(--cream);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  /* ===== RESULTS CONTENT ===== */
+  .results-content {
+    max-width: 640px;
+    width: 100%;
+    padding: 3rem 1.5rem 4rem;
+  }
+  .result-section {
+    margin-bottom: 3rem;
+  }
+  .result-section h2 {
+    font-family: var(--display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    line-height: 1.25;
+  }
+  .result-section h3 {
+    font-family: var(--display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+  .result-section p, .result-section .narrative {
+    font-family: var(--body);
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--t2);
+  }
+  .result-section .narrative p { margin-bottom: 1.1rem; }
+  .section-intro {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--text);
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .separator {
+    width: 48px;
+    height: 1px;
+    background: var(--border);
+    margin: 2.5rem 0;
+  }
+
+  /* ===== SCORE CHART ===== */
+  .score-chart {
+    margin: 1.5rem 0;
+  }
+  .score-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.65rem;
+  }
+  .score-label {
+    font-family: var(--body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    width: 90px;
+    text-align: right;
+    color: var(--t3);
+    flex-shrink: 0;
+  }
+  .score-bar-track {
+    flex: 1;
+    height: 4px;
+    background: var(--parchment);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 1s ease;
+  }
+  .score-bar-fill.primary-bar { background: var(--ink); }
+  .score-bar-fill.secondary-bar { background: var(--t2); }
+  .score-bar-fill.other-bar { background: var(--t3); opacity: 0.4; }
+  .score-value {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--t3);
+    width: 36px;
+    flex-shrink: 0;
+  }
+
+  /* ===== FLAGS ===== */
+  .result-flag-block {
+    margin-top: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--parchment);
+    border-radius: 12px;
+    border-left: 3px solid var(--t3);
+  }
+  .result-flag-block h3 {
+    font-family: var(--display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .result-flag-block p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--t2);
+  }
+
+  /* ===== MINDSET ===== */
+  .mindset-indicator {
+    margin: 1rem 0 1.25rem;
+  }
+  .mindset-label {
+    display: inline-block;
+    font-family: var(--body);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    padding: 8px 20px;
+    border-radius: 100px;
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  /* ===== BRIDGE & CTA ===== */
+  .result-bridge {
+    margin-top: 3rem;
+    padding: 2.5rem;
+    background: var(--night);
+    border-radius: 18px;
+    color: var(--cream);
+  }
+  .result-bridge h2 {
+    font-family: var(--display);
+    color: var(--cream);
+    margin-bottom: 1rem;
+  }
+  .result-bridge p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(245,241,235,0.7);
+  }
+
+  .result-cta-block {
+    margin-top: 2rem;
+    padding: 2.5rem;
+    background: var(--night);
+    border-radius: 18px;
+    text-align: center;
+  }
+  .result-cta-block h2 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--cream);
+    margin-bottom: 1rem;
+  }
+  .result-cta-block p {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: rgba(245,241,235,0.65);
+    margin-bottom: 1.5rem;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .result-cta-block a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 16px 40px;
+    background: var(--cream);
+    color: var(--ink);
+    border: none;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  .result-cta-block a:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+
+  .btn-retake {
+    display: inline-block;
+    margin-top: 2rem;
+    font-family: var(--body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0;
+    background: transparent;
+    color: var(--t3);
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  .btn-retake:hover { color: var(--ink); }
+
+  /* ===== MOBILE ===== */
+  @media(max-width:768px){
+    .nav { padding: 48px 24px 16px; }
+    .nav-logo-img { height: 18px; }
+  }
+  @media (max-width: 480px) {
+    .results-hero .result-type { font-size: 2rem; }
+    .results-hero { padding: 3.5rem 1.25rem 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <img class="nav-logo-img" src="https://cdn.prod.website-files.com/67d4936e49a6f8c99c6f200f/67d5a64dbfc8c1fccb663e80_LeapYear%20Logo%20Full.svg" alt="LeapYear" onerror="this.outerHTML='<span style=\'font-family:var(--display);font-weight:700;font-size:18px;color:var(--cream)\'>LeapYear</span>'">
+</nav>
+
+<!-- RESULTS PAGE -->
+<section id="results">
+  <!-- Hero: injected by JS -->
+  <!-- Content: injected by JS -->
+  <div class="results-content" id="results-content"></div>
+</section>
+
+<script>
+// ============================================================
+// REDESIGN CONTEXT
+// ============================================================
+// This is a standalone results page for the LeapYear personality assessment.
+// It's populated with Riley's actual test results (Mobilizer-Explorer).
+//
+// WHAT THIS PAGE NEEDS TO BECOME:
+// The current design is functional but basic. It needs to match the visual
+// quality of the landing page and loading animation — which have:
+// - Orbital archetype gallery with scroll-driven animation
+// - Day-to-night color transitions
+// - Cinematic reveal animations
+// - Instrument Serif italic mixed with Neulis Neue bold
+// - Paper grain texture overlay
+// - Archetype-specific colors as accents
+//
+// Each archetype has its own color:
+//   Philosopher: #3D4E8C (Deep Indigo)
+//   Analyst: #5E8A72 (Steel Sage)
+//   Builder: #C4724E (Terracotta)
+//   Organizer: #C49A3B (Warm Amber)
+//   Connector: #D4847A (Dusty Rose)
+//   Mobilizer: #B8453A (Crimson Earth)
+//   Creator: #7B5B8A (Plum)
+//   Explorer: #2E8B8B (Mediterranean Teal)
+//
+// DESIGN PRINCIPLES:
+// - Mobile-first (audience is 17-18 year olds on phones)
+// - The results page should feel like someone talking to you — flowing prose
+// - Typography-forward: Neulis Neue (display), Area Normal (body), Instrument Serif (accents)
+// - Warm palette: cream, parchment, deep greens, flame orange as CTA
+// - No pure black or pure white
+// - The narrative is the primary experience; score chart is secondary
+// - Archetype color should accent the primary type throughout
+// - Sections should use scroll-reveal animations
+// - The card/reveal moment (dark section at top) transitions into warm cream content
+//
+// BRAND FONTS:
+// - neulis-neue (display/headlines) via Typekit kit gxr6ytx
+// - area-normal (body/UI) via Typekit
+// - Instrument Serif (italic accents) via Google Fonts
+//
+// ============================================================
+
+// ===== SAMPLE RESULT DATA (Riley's actual scores) =====
+const SAMPLE_RESULT = {
+  primary: 'mobilizer',
+  primaryScore: 85,
+  secondary: 'explorer',
+  secondaryScore: 84,
+  isBalanced: true,
+  isRenaissance: true,
+  allScores: [
+    { archetype: 'mobilizer', score: 85 },
+    { archetype: 'explorer', score: 84 },
+    { archetype: 'creator', score: 83 },
+    { archetype: 'analyst', score: 74 },
+    { archetype: 'philosopher', score: 74 },
+    { archetype: 'connector', score: 61 },
+    { archetype: 'builder', score: 59 },
+    { archetype: 'organizer', score: 27 }
+  ],
+  modifiers: {
+    growthMindsetTier: 'high',
+    tensionTemplate: 'community_vs_independence',
+    shadows: ['vulnerability_low', 'assertiveness_high', 'gregariousness_high', 'selfConsciousness_low'],
+    socialFlavor: 'social'
+  }
+};
+
+// ===== OUTPUT CONTENT (all the text content for results) =====
+const OUTPUT_CONTENT = {
+  sectionIntros: {
+    pairing: "Your pairing is a combination of your two strongest drives. Your core type most defines how you see the world. Your secondary is the other voice in the room \u2014 the one that colors how your core type shows up. Together they create a tension and a richness that neither type has on its own.",
+    coreType: "Your core type is the deepest pattern in how you engage the world. It\u2019s not just what you\u2019re good at \u2014 it\u2019s what makes you come alive.",
+    secondaryType: "Your secondary type is like the other major force in your personality. It shapes how your core type expresses itself and often creates the internal tension that drives your growth.",
+    tension: "Everyone carries a tension between different parts of who they are. Yours shows up in the pull between your primary and secondary type \u2014 two drives that don\u2019t always agree. This tension isn\u2019t a flaw. It\u2019s actually where most of your growth will come from.",
+    shadow: "Your shadows are the blind spots that live on the other side of your strengths. Every strength, taken too far or left unexamined, creates a vulnerability. These aren\u2019t things to fix \u2014 they\u2019re things to know about yourself.",
+    mindset: "One of the things we measure in this assessment is your growth mindset \u2014 your belief about whether people can fundamentally change. Research shows this belief shapes almost everything about how you approach challenges, failure, and becoming who you\u2019re meant to be. Here\u2019s what you landed.",
+    balanced: "Your top two types are closely matched \u2014 you carry both of these drives almost equally. That means your secondary type isn\u2019t just a flavor; it\u2019s a co-pilot. You\u2019ll feel real tension between these two \u2014 and that\u2019s where a lot of your growth lives.",
+    renaissance: "Your top three types are all within striking distance of each other. You\u2019re not cleanly one thing \u2014 and that\u2019s actually a strength. You resist easy categorization because you carry multiple drives at a high level. The Renaissance needed people like you: those who refuse to be reduced to a single function."
+  },
+
+  primaryNarratives: {
+    mobilizer: {
+      archetype: "Mobilizer",
+      orientation: "relating",
+      coreDrive: "rallying others toward a vision",
+      narrative: "You\u2019re a dynamic, vision-driven leader. People are drawn to your charisma and your big ideas, and you love rallying them around a common goal. It\u2019s easy for you to see potential \u2014 in ideas and in people \u2014 that others can\u2019t see yet.\n\nOne of your favorite moments is watching someone click. That shift from disbelief about themselves to confidence about what they could achieve. You love to unlock that in people. You also find it natural to communicate what the future could look like in a way that makes other people want to be part of it.\n\nPeople describe you as a leader who takes a genuine interest in others in a way that makes them feel like they\u2019re part of something bigger than themselves. Your core strength is vision casting \u2014 seeing what could be and making it feel inevitable.\n\nYour shadow is impatience. Big ideas and great visions take a long time to see through. And you have to watch out for losing interest in something because of how long it\u2019s taking. Otherwise you\u2019ll leave behind a trail of things that had a great start and then fizzled out. The Mobilizer\u2019s growth edge is learning that the unglamorous middle of a long-term commitment is where the real leadership happens."
+    }
+  },
+
+  secondaryDescriptions: {
+    explorer: "Your Explorer side pulls you toward new experiences and unfamiliar people. You get restless when things feel too predictable, and you bring a natural curiosity to everything you do. People around you feel more adventurous just being near you. The tension is that your need for novelty can pull you away from the thing you\u2019re building."
+  },
+
+  tensionTemplates: {
+    community_vs_independence: {
+      orientations: ["relating", "experiencing"],
+      title: "Community vs. Independence",
+      content: "You need people and you need freedom \u2014 and sometimes those feel like opposite things. Your relational side is deeply invested in community, in being known, in building something together with the people you love. Your experiencing side craves independence \u2014 the ability to go wherever curiosity takes you without being tethered to expectations. You\u2019ve probably felt guilty about wanting space when people need you. Or lonely when you\u2019ve chosen adventure over connection. This isn\u2019t a problem to solve. It\u2019s a rhythm to learn. The people who love you best are the ones who can hold space for both \u2014 who don\u2019t need you to choose between belonging and freedom."
+    }
+  },
+
+  shadowModifiers: {
+    vulnerability_low: "You have a natural resilience that helps you stay steady when things get chaotic. Most people around you are more shaken by setbacks than you are. That\u2019s a real strength \u2014 just make sure it doesn\u2019t keep you from acknowledging when something actually hurts.",
+    assertiveness_high: "You don\u2019t have trouble speaking up. Your voice carries weight in a room, and people look to you when a decision needs to be made. But you may need to learn when not to fill the silence \u2014 when the most powerful thing you can do is listen and let someone else lead.",
+    gregariousness_high: "You draw energy from people. Social gatherings light you up, and you\u2019re often the one making sure nobody is standing alone. That\u2019s a gift. Just be honest with yourself about whether you sometimes use social energy to avoid the quiet work of self-reflection.",
+    selfConsciousness_low: "You\u2019re not easily embarrassed, and you\u2019re comfortable putting yourself out there. That confidence lets you take risks other people avoid. Make sure that ease doesn\u2019t make you blind to the moments when a little more self-awareness would serve you."
+  },
+
+  growthMindsetClosings: {
+    high: "You already believe you can grow. That belief is the foundation for a beautiful life. The tension between your primary and secondary type \u2014 that push and pull you feel \u2014 is the engine. Not a problem to solve. The engine. The question for you isn\u2019t whether you can become more than you are right now. It\u2019s where you want to aim. You\u2019re standing at the beginning of a story that\u2019s going to surprise you. And the version of yourself on the other side of real investment, real formation, real community? That person is going to look back at this moment and be grateful you took the first step."
+  },
+
+  leapYearBridge: "This assessment is just the beginning. It can show you clues about who you are and how you come alive \u2014 but even the best assessment can only scratch the surface. The real work of knowing yourself requires an examined life. It requires people who can walk alongside you, call out what they see in you, and challenge you to grow. That\u2019s what LeapYear is. A 12-month gap year experience in Austin, Texas where students like you invest in becoming the person they were made to be \u2014 through Career Design, Leadership Foundations, and Spiritual Formation.",
+
+  leapYearCTA: {
+    headline: "Talk Through Your Results",
+    body: "Everyone who takes this assessment gets a free coaching call. We\u2019ll walk through your profile together, dig into what it means for you specifically, and talk about what we\u2019ve learned about what your type needs in the early years of adulthood.",
+    buttonText: "Book Your Free Call",
+    buttonUrl: "https://calendly.com/riley-startleapyear/leapyear-student-interview-clone?hide_gdpr_banner=1&primary_color=dd5e32"
+  }
+};
+
+// ===== RENDER FUNCTION =====
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+function renderResults() {
+  const result = SAMPLE_RESULT;
+  const c = OUTPUT_CONTENT;
+
+  // Hero
+  const resultsSection = document.getElementById('results');
+  const heroHtml = `<div class="results-hero">
+    <div class="result-label">Your Pairing</div>
+    <div class="result-type">${capitalize(result.primary)} &mdash; ${capitalize(result.secondary)}</div>
+  </div>`;
+  document.getElementById('results-content').insertAdjacentHTML('beforebegin', heroHtml);
+
+  let html = '';
+
+  // 1. Pairing intro
+  html += `<div class="result-section">
+    <p class="section-intro">${c.sectionIntros.pairing}</p>`;
+  if (result.isRenaissance) {
+    html += `<div class="result-flag-block">
+      <h3>Renaissance Profile</h3>
+      <p>${c.sectionIntros.renaissance}</p>
+    </div>`;
+  } else if (result.isBalanced) {
+    html += `<div class="result-flag-block">
+      <h3>Balanced Profile</h3>
+      <p>${c.sectionIntros.balanced}</p>
+    </div>`;
+  }
+  html += `</div>`;
+
+  // 2. Core Type
+  const pNarr = c.primaryNarratives[result.primary];
+  html += `<div class="result-section">
+    <div class="separator"></div>
+    <h2>Core Type: The ${capitalize(result.primary)}</h2>
+    <p class="section-intro">${c.sectionIntros.coreType}</p>
+    <div class="narrative">${pNarr.narrative.split('\n\n').map(p => `<p>${p}</p>`).join('')}</div>
+  </div>`;
+
+  // 3. Secondary Type
+  html += `<div class="result-section">
+    <div class="separator"></div>
+    <h2>Secondary Type: The ${capitalize(result.secondary)}</h2>
+    <p class="section-intro">${c.sectionIntros.secondaryType}</p>
+    <p>${c.secondaryDescriptions[result.secondary]}</p>
+  </div>`;
+
+  // 4. Tension
+  const tension = c.tensionTemplates[result.modifiers.tensionTemplate];
+  if (tension) {
+    html += `<div class="result-section">
+      <div class="separator"></div>
+      <h2>Your Tension: ${tension.title}</h2>
+      <p class="section-intro">${c.sectionIntros.tension}</p>
+      <p>${tension.content}</p>
+    </div>`;
+  }
+
+  // 5. Shadows
+  if (result.modifiers.shadows.length > 0) {
+    html += `<div class="result-section">
+      <div class="separator"></div>
+      <h2>Your Shadows</h2>
+      <p class="section-intro">${c.sectionIntros.shadow}</p>
+      <div class="narrative">`;
+    result.modifiers.shadows.forEach(s => {
+      if (c.shadowModifiers[s]) {
+        html += `<p>${c.shadowModifiers[s]}</p>`;
+      }
+    });
+    html += `</div></div>`;
+  }
+
+  // 6. Mindset
+  const mindsetLabels = { high: 'Growth', low: 'Fixed', mixed: 'Mixed' };
+  html += `<div class="result-section">
+    <div class="separator"></div>
+    <h2>Your Mindset</h2>
+    <p class="section-intro">${c.sectionIntros.mindset}</p>
+    <div class="mindset-indicator">
+      <span class="mindset-label">${mindsetLabels[result.modifiers.growthMindsetTier]} Mindset</span>
+    </div>
+    <p>${c.growthMindsetClosings[result.modifiers.growthMindsetTier]}</p>
+  </div>`;
+
+  // Score chart
+  html += `<div class="result-section">
+    <div class="separator"></div>
+    <h3>Your Archetype Scores</h3>
+    <div class="score-chart">`;
+  result.allScores.forEach(s => {
+    const barClass = s.archetype === result.primary ? 'primary-bar' : s.archetype === result.secondary ? 'secondary-bar' : 'other-bar';
+    html += `<div class="score-row">
+      <span class="score-label">${capitalize(s.archetype)}</span>
+      <div class="score-bar-track"><div class="score-bar-fill ${barClass}" style="width: ${s.score}%;"></div></div>
+      <span class="score-value">${s.score}</span>
+    </div>`;
+  });
+  html += `</div></div>`;
+
+  // 7. LeapYear Bridge
+  html += `<div class="result-bridge">
+    <h2>What Comes Next</h2>
+    <p>${c.leapYearBridge}</p>
+  </div>`;
+
+  // 8. Calendly CTA
+  html += `<div class="result-cta-block">
+    <h2>${c.leapYearCTA.headline}</h2>
+    <p>${c.leapYearCTA.body}</p>
+    <a href="${c.leapYearCTA.buttonUrl}" target="_blank" rel="noopener">${c.leapYearCTA.buttonText}</a>
+  </div>`;
+
+  // Retake
+  html += `<div style="text-align:center; margin-top: 2rem; padding-bottom: 2rem;">
+    <button class="btn-retake">Take It Again</button>
+  </div>`;
+
+  document.getElementById('results-content').innerHTML = html;
+}
+
+// Render on load
+document.addEventListener('DOMContentLoaded', renderResults);
+</script>
+
+<!--
+============================================================
+REDESIGN BRIEF FOR GEMINI
+============================================================
+
+This is the current results page for the LeapYear personality assessment.
+It works but looks basic compared to the rest of the experience.
+
+WHAT THE REST OF THE EXPERIENCE LOOKS LIKE:
+- Landing page: cinematic hero with animated SVG compass, scroll-driven
+  day-to-night transition, orbital gallery of 8 archetype cards
+- Quiz: clean one-question-at-a-time flow with progress bar
+- Loading reveal: dark screen, spinning ring of archetype cards (roulette),
+  lands on your type with a color wash and "You are a Mobilizer." reveal
+- Then this results page
+
+THE PROBLEM:
+The results page doesn't match the visual quality of everything before it.
+It's a wall of text with basic typography. It needs to feel like the climax
+of the experience, not an afterthought.
+
+WHAT "MATCHING THE FLOW" MEANS:
+1. The dark hero at the top should transition smoothly from the loading reveal
+2. Use the primary archetype's color (Mobilizer = #B8453A) as an accent throughout
+3. Sections should animate in on scroll (IntersectionObserver with reveal classes)
+4. The typography should mix Neulis Neue bold headlines with Instrument Serif
+   italic accents — same treatment as the landing page
+5. Score bars should animate (count up + fill) when they scroll into view
+6. The shadows section could use cards instead of plain paragraphs
+7. The tension section could have a visual element (not just text)
+8. The CTA block should feel like a commissioning moment, not a sales pitch
+9. Consider using the archetype SVG icons as visual elements
+10. The overall feel should be: warm, personal, premium — like receiving a
+    beautifully designed letter about yourself
+
+CONSTRAINTS:
+- Must remain a single HTML file (all CSS/JS inline)
+- Must work on mobile (375px) as primary viewport
+- Keep the rendering function structure — it takes a result object and
+  OUTPUT_CONTENT and builds the HTML dynamically
+- The Typekit fonts (neulis-neue, area-normal) load from the external stylesheet
+- Instrument Serif loads from Google Fonts
+- No frameworks — vanilla JS, CSS, HTML only
+
+DATA SHAPE (what the scoring engine returns):
+{
+  primary: 'mobilizer',           // lowercase archetype name
+  secondary: 'explorer',
+  primaryScore: 85,               // 0-100
+  secondaryScore: 84,
+  isBalanced: true,               // top 2 within 5 points
+  isRenaissance: true,            // top 3 within 5 points
+  allScores: [                    // sorted descending
+    { archetype: 'mobilizer', score: 85 },
+    ...
+  ],
+  modifiers: {
+    growthMindsetTier: 'high',    // 'high' | 'low' | 'mixed'
+    tensionTemplate: 'community_vs_independence',  // key into tensionTemplates
+    shadows: ['vulnerability_low', ...],           // keys into shadowModifiers
+    socialFlavor: 'social'        // 'social' | 'independent' | 'balanced'
+  }
+}
+
+THE 8 ARCHETYPES AND THEIR COLORS:
+- Philosopher (#3D4E8C) — Deep Indigo — Thinking
+- Analyst (#5E8A72) — Steel Sage — Thinking
+- Builder (#C4724E) — Terracotta — Doing
+- Organizer (#C49A3B) — Warm Amber — Doing
+- Connector (#D4847A) — Dusty Rose — Relating
+- Mobilizer (#B8453A) — Crimson Earth — Relating
+- Creator (#7B5B8A) — Plum — Experiencing
+- Explorer (#2E8B8B) — Mediterranean Teal — Experiencing
+
+SVG ICONS: Each archetype has a minimal line-art SVG icon (white stroke on
+transparent). They're in the project root as "[Archetype] icon..svg".
+============================================================
+-->
+</body>
+</html>
