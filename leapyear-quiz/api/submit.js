@@ -6,7 +6,14 @@
  * sends results email via Resend, returns token.
  */
 
-const { nanoid } = require('nanoid');
+const crypto = require('crypto');
+function nanoid(size = 12) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const bytes = crypto.randomBytes(size);
+  let id = '';
+  for (let i = 0; i < size; i++) id += chars[bytes[i] % chars.length];
+  return id;
+}
 
 // Airtable config
 const AIRTABLE_BASE = process.env.AIRTABLE_BASE_ID || 'app4NpJ7gQZvHpwGe';
