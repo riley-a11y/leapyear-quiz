@@ -305,6 +305,16 @@ document.addEventListener('DOMContentLoaded', () => {
     emailForm.addEventListener('submit', submitEmailCapture);
   }
 
-  // Start the quiz
-  startQuiz();
+  // Wire cover screen Begin button
+  const coverBegin = document.getElementById('cover-begin');
+  if (coverBegin) {
+    coverBegin.addEventListener('click', () => {
+      const cover = document.getElementById('quiz-cover');
+      cover.classList.add('fade-out');
+      setTimeout(() => {
+        cover.style.display = 'none';
+        startQuiz();
+      }, 500);
+    });
+  }
 });
