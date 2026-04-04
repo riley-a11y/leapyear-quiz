@@ -320,15 +320,15 @@ function renderResults(result) {
     </div>` : ''}
 
     <!-- Strengths & Shadows -->
-    ${shadowCount > 0 ? `<div class="explore-card card-dark rv d4" data-section="shadows">
+    <div class="explore-card card-dark rv d4" data-section="shadows">
       <div>
-        <div class="card-shadow-count">${shadowCount}</div>
+        ${shadowCount > 0 ? `<div class="card-shadow-count">${shadowCount}</div>` : `<div class="card-shadow-count">&#9681;</div>`}
         <div class="card-label">Strengths & Shadows</div>
         <div class="card-title">Two <span class="si">Sides</span></div>
       </div>
-      <div class="card-hook">${shadowCount} insights to explore</div>
+      <div class="card-hook">${shadowCount > 0 ? `${shadowCount} insights to explore` : 'The other side of your strengths'}</div>
       <div class="card-arrow">${ARROW_SVG}</div>
-    </div>` : ''}
+    </div>
 
     <!-- Mindset -->
     <div class="explore-card card-dark rv d5" data-section="mindset">
@@ -403,15 +403,22 @@ function renderResults(result) {
 
   // ===== CARD CLICK HANDLERS =====
   document.querySelectorAll('.explore-card[data-section]').forEach(card => {
-    card.addEventListener('click', () => {
+    const handler = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       const section = card.dataset.section;
-      const content = buildModalContent(section, result, c, pColor, sColor);
       if (section === 'share') {
         openShareModal(result);
       } else {
+        const content = buildModalContent(section, result, c, pColor, sColor);
         openModal(content);
       }
-    });
+    };
+    card.addEventListener('click', handler);
+    // Ensure touch devices fire reliably
+    card.style.webkitTapHighlightColor = 'transparent';
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
   });
 
   // ===== SCROLL REVEALS =====
@@ -510,6 +517,18 @@ function buildModalContent(section, result, c, pColor, sColor) {
           cards += `<div class="modal-shadow-card"><p>${c.shadowModifiers[s]}</p></div>`;
         }
       });
+      // If no specific shadow modifiers fired, extract shadow content from primary narrative
+      if (!cards) {
+        const pNarrText = pNarr.narrative;
+        // Find the shadow paragraph — typically starts with "But here's your shadow" or "Your shadow" or "That's your shadow"
+        const shadowMatch = pNarrText.match(/(?:But here['']s (?:your|the) shadow|Your shadow|That['']s your shadow|The hard part)[^]*$/i);
+        if (shadowMatch) {
+          const shadowParagraphs = shadowMatch[0].split('\n\n').filter(p => p.trim());
+          shadowParagraphs.forEach(p => {
+            cards += `<div class="modal-shadow-card"><p>${p.trim()}</p></div>`;
+          });
+        }
+      }
       return `
         <span class="modal-label">Strengths & Shadows</span>
         <h2 class="modal-heading">The Other Side of Your <span class="si">Strengths</span></h2>

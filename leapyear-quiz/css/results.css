@@ -242,6 +242,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
 }
 .explore-card:hover {
   transform: translateY(-6px) scale(1.02);
@@ -301,6 +305,7 @@
   font-family: var(--body);
   font-size: 13px;
   line-height: 1.5;
+  padding-right: 32px;
 }
 .card-arrow {
   position: absolute;
@@ -413,51 +418,44 @@
   pointer-events: none;
 }
 .modal-backdrop.open {
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.5);
   pointer-events: auto;
 }
 
+/* Desktop: centered article window */
 .modal-sheet {
   position: fixed;
-  bottom: 0; left: 0; right: 0;
-  max-height: 92vh;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  width: 90%;
+  max-width: 640px;
+  max-height: 85vh;
   background: var(--cream);
-  border-radius: 24px 24px 0 0;
+  border-radius: 20px;
   z-index: 510;
-  transform: translateY(100%);
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   overflow-y: auto;
   overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.25);
 }
 .modal-sheet.open {
-  transform: translateY(0);
-}
-.modal-sheet.dragging {
-  transition: none;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .modal-handle {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  padding: 12px 0 8px;
-  background: var(--cream);
-  border-radius: 24px 24px 0 0;
-  cursor: grab;
-}
-.modal-handle::after {
-  content: '';
-  width: 40px; height: 4px;
-  border-radius: 2px;
-  background: rgba(42,37,35,0.15);
+  display: none;
 }
 
 .modal-close {
-  position: absolute;
-  top: 16px; right: 20px;
+  position: sticky;
+  top: 16px;
+  float: right;
+  margin: 16px 16px 0 0;
   width: 36px; height: 36px;
   border-radius: 50%;
   background: rgba(42,37,35,0.06);
@@ -473,7 +471,55 @@
 .modal-close svg { width: 16px; height: 16px; color: var(--t2); }
 
 .modal-content {
-  padding: 8px 28px 48px;
+  padding: 16px 40px 48px;
+}
+
+/* Mobile: bottom sheet */
+@media (max-width: 768px) {
+  .modal-sheet {
+    top: auto; left: 0; right: 0; bottom: 0;
+    transform: translateY(100%);
+    width: 100%;
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.2);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.3s ease;
+  }
+  .modal-sheet.open {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .modal-sheet.dragging {
+    transition: none;
+  }
+  .modal-handle {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    justify-content: center;
+    padding: 12px 0 8px;
+    background: var(--cream);
+    border-radius: 24px 24px 0 0;
+    cursor: grab;
+  }
+  .modal-handle::after {
+    content: '';
+    width: 40px; height: 4px;
+    border-radius: 2px;
+    background: rgba(42,37,35,0.15);
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 20px;
+    float: none;
+    margin: 0;
+  }
+  .modal-content {
+    padding: 8px 24px 40px;
+  }
 }
 .modal-label {
   font-family: var(--body);
@@ -819,7 +865,6 @@
   }
   .card-title { font-size: 18px; }
   .card-hook { font-size: 12px; }
-  .modal-content { padding: 8px 24px 40px; }
   .modal-score-row {
     flex-direction: column;
     align-items: flex-start;
