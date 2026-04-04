@@ -172,8 +172,9 @@ async function createQuizResult(token, personId, data) {
 
 async function sendResultsEmail(name, email, primary, token) {
   const apiKey = process.env.RESEND_API_KEY;
+  console.log('RESEND_API_KEY present:', !!apiKey, 'length:', apiKey ? apiKey.length : 0);
   if (!apiKey) {
-    console.warn('RESEND_API_KEY not set — skipping email');
+    console.error('RESEND_API_KEY not set — skipping email');
     return;
   }
 
