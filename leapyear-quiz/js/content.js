@@ -204,7 +204,7 @@ export const OUTPUT_CONTENT = {
     "mixed": "You sense there\u2019s more in you than what you\u2019ve seen so far. That instinct is right. The strengths, the shadows, the tensions \u2014 they\u2019re the starting point, not the ceiling. But becoming the person you were made to be doesn\u2019t happen by accident. It happens through investment. Self-knowledge. Real community. The kind of experience that challenges you in the right ways at the right time. You\u2019re not behind. You\u2019re at the beginning."
   },
 
-  "leapYearBridge": "This assessment is just the beginning. It can show you clues about who you are and how you come alive \u2014 but even the best assessment can only scratch the surface. The real work of knowing yourself requires an examined life. It requires people who can walk alongside you, call out what they see in you, and challenge you to grow. That\u2019s what LeapYear is. A 12-month gap year experience in Austin, Texas where students like you invest in becoming the person they were made to be \u2014 through Career Design, Leadership Foundations, and Spiritual Formation.",
+  "leapYearBridge": "This assessment is just the beginning. It can show you clues about who you are and how you come alive \u2014 but even the best assessment can only scratch the surface. The real work of knowing yourself requires an examined life. It requires people who can walk alongside you, call out what they see in you, and challenge you to grow. That\u2019s what LeapYear is. A 9-month gap year experience in Austin, Texas where students like you invest in becoming the person they were made to be \u2014 through Career Design, Leadership Foundations, and Spiritual Formation.",
 
   "leapYearCTA": {
     "headline": "Talk Through Your Results",

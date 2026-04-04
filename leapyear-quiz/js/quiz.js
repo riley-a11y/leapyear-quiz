@@ -1,19 +1,101 @@
 /**
  * LeapYear Assessment — Quiz Logic Module
- * Manages quiz state, question rendering, option selection, and email capture flow.
+ * Manages quiz state, question rendering, scale transitions, and email capture flow.
  */
 
-import { ITEMS, SCALES } from './items.js';
+import { ITEMS, SCALES, SCALE_GROUPS } from './items.js';
 import { scoreAssessment } from './scoring.js';
 
 // ===== Module State =====
 let currentIndex = 0;
 const responses = {};
 let capturedUserData = null;
+let showingTransition = false;
+
+// ===== Scale Group Helpers =====
+
+function getGroupForIndex(index) {
+  for (let i = SCALE_GROUPS.length - 1; i >= 0; i--) {
+    if (index >= SCALE_GROUPS[i].startIndex) return i;
+  }
+  return 0;
+}
+
+function isGroupBoundary(index) {
+  return SCALE_GROUPS.some(g => g.startIndex === index);
+}
+
+// Track which group transitions have been shown
+const shownTransitions = new Set();
+
+// ===== Transition Screen =====
+
+function showTransitionScreen(groupIndex, onContinue) {
+  showingTransition = true;
+  const group = SCALE_GROUPS[groupIndex];
+
+  const assessment = document.getElementById('assessment');
+  const progressContainer = assessment.querySelector('.progress-bar-container');
+  const questionArea = document.getElementById('question-area');
+
+  // Update progress bar through transition
+  const pct = Math.round((group.startIndex / ITEMS.length) * 100);
+  document.getElementById('progress-text').textContent = `Question ${group.startIndex + 1} of ${ITEMS.length}`;
+  document.getElementById('progress-pct').textContent = `${pct}%`;
+  document.getElementById('progress-fill').style.width = `${pct}%`;
+
+  // Hide question area, show transition
+  questionArea.style.display = 'none';
+
+  let transitionEl = document.getElementById('scale-transition');
+  if (!transitionEl) {
+    transitionEl = document.createElement('div');
+    transitionEl.id = 'scale-transition';
+    transitionEl.className = 'scale-transition';
+    progressContainer.after(transitionEl);
+  }
+
+  const contextHTML = group.contextNote
+    ? `<p class="transition-context">${group.contextNote}</p>`
+    : '';
+
+  transitionEl.innerHTML = `
+    <div class="transition-inner">
+      <span class="transition-label">Next: ${group.count} questions</span>
+      <h2 class="transition-stem">${group.stem}</h2>
+      ${contextHTML}
+      <button class="transition-btn" id="transition-continue">Continue</button>
+    </div>
+  `;
+  transitionEl.style.display = 'flex';
+
+  // Animate in
+  requestAnimationFrame(() => {
+    transitionEl.classList.add('visible');
+  });
+
+  document.getElementById('transition-continue').addEventListener('click', () => {
+    transitionEl.classList.remove('visible');
+    setTimeout(() => {
+      transitionEl.style.display = 'none';
+      questionArea.style.display = '';
+      showingTransition = false;
+      onContinue();
+    }, 300);
+  });
+}
 
 // ===== Quiz Rendering =====
 
 function renderQuestion() {
+  // Check if we need a transition screen
+  const groupIndex = getGroupForIndex(currentIndex);
+  if (isGroupBoundary(currentIndex) && !shownTransitions.has(groupIndex)) {
+    shownTransitions.add(groupIndex);
+    showTransitionScreen(groupIndex, () => renderQuestion());
+    return;
+  }
+
   const item = ITEMS[currentIndex];
   const scale = SCALES[item.scale];
   const pct = Math.round((currentIndex / ITEMS.length) * 100);
@@ -22,7 +104,15 @@ function renderQuestion() {
   document.getElementById('progress-pct').textContent = `${pct}%`;
   document.getElementById('progress-fill').style.width = `${pct}%`;
   document.getElementById('question-stem').textContent = scale.stem;
-  document.getElementById('question-text').textContent = item.text;
+
+  // Render item text — use innerHTML for items with bold emphasis
+  const questionTextEl = document.getElementById('question-text');
+  if (item.boldWords) {
+    questionTextEl.innerHTML = item.text;
+  } else {
+    questionTextEl.textContent = item.text;
+  }
+
   document.getElementById('btn-back').disabled = currentIndex === 0;
 
   const optionsEl = document.getElementById('options');
@@ -61,6 +151,9 @@ function selectOption(itemId, value) {
     }
   });
 
+  // Blur active element to prevent mobile hover persistence
+  document.activeElement.blur();
+
   setTimeout(() => {
     if (currentIndex < ITEMS.length - 1) {
       currentIndex++;
@@ -76,6 +169,7 @@ function selectOption(itemId, value) {
 // ===== Navigation =====
 
 function goBack() {
+  if (showingTransition) return;
   if (currentIndex > 0) {
     currentIndex--;
     renderQuestion();
@@ -149,6 +243,8 @@ function startQuiz() {
   currentIndex = 0;
   Object.keys(responses).forEach(k => delete responses[k]);
   capturedUserData = null;
+  shownTransitions.clear();
+  showingTransition = false;
 
   // Show assessment, hide email capture
   document.getElementById('assessment').style.display = 'flex';
@@ -171,6 +267,14 @@ function startQuiz() {
 // ===== Keyboard Navigation =====
 
 document.addEventListener('keydown', e => {
+  if (showingTransition) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      const continueBtn = document.getElementById('transition-continue');
+      if (continueBtn) { e.preventDefault(); continueBtn.click(); }
+    }
+    return;
+  }
+
   const assessmentEl = document.getElementById('assessment');
   if (assessmentEl.style.display === 'none') return;
 
