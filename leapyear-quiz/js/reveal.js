@@ -102,10 +102,27 @@ function showLoadingReveal(primaryType) {
 // ===== Self-initialize on DOMContentLoaded =====
 
 document.addEventListener('DOMContentLoaded', function() {
-  var primaryType = new URLSearchParams(window.location.search).get('type');
+  var params = new URLSearchParams(window.location.search);
+  var primaryType = params.get('type');
+  var token = params.get('token');
+
   if (!primaryType) {
     window.location.href = 'quiz.html';
     return;
   }
+
+  // Update "See Your Full Results" link with token
+  var resultsLink = document.querySelector('a.btn-light[href="results.html"]');
+  if (resultsLink && token) {
+    resultsLink.href = '/results/' + token;
+  }
+
+  // Update Calendly link with token in utm_content
+  var calendlyLink = document.querySelector('a.btn-light[href*="calendly.com"]');
+  if (calendlyLink && token) {
+    var href = calendlyLink.href;
+    calendlyLink.href = href + (href.indexOf('?') >= 0 ? '&' : '?') + 'utm_content=' + token;
+  }
+
   showLoadingReveal(primaryType);
 });

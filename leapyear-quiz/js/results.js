@@ -648,19 +648,39 @@ function openShareModal(result) {
 }
 
 // ===== INIT =====
-document.addEventListener('DOMContentLoaded', () => {
-  const stored = localStorage.getItem('ly_result');
-  if (!stored) {
-    const el = document.getElementById('results-content');
-    if (el) {
-      el.innerHTML = `<div style="text-align:center; padding: 6rem 1.5rem; min-height: 60vh; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-        <h2 style="font-family:var(--display); font-size:1.5rem; color:var(--ink); margin-bottom:0.75rem;">No results found.</h2>
-        <p style="font-family:var(--body); color:var(--t2); margin-bottom:2rem;">Take the assessment first.</p>
-        <a href="quiz.html" style="font-family:var(--body); font-weight:600; font-size:15px; padding:14px 36px; background:var(--ink); color:var(--cream); border-radius:100px; text-decoration:none;">Start Assessment</a>
-      </div>`;
+document.addEventListener('DOMContentLoaded', async () => {
+  // Check for token in URL path: /results/:token
+  const pathMatch = window.location.pathname.match(/\/results\/([a-zA-Z0-9_-]+)/);
+  const token = pathMatch ? pathMatch[1] : null;
+
+  // Try API fetch if we have a token
+  if (token) {
+    try {
+      const res = await fetch('/api/results?token=' + encodeURIComponent(token));
+      if (res.ok) {
+        const result = await res.json();
+        renderResults(result);
+        return;
+      }
+    } catch (err) {
+      console.warn('API fetch failed, trying localStorage:', err.message);
     }
+  }
+
+  // Fall back to localStorage
+  const stored = localStorage.getItem('ly_result');
+  if (stored) {
+    renderResults(JSON.parse(stored));
     return;
   }
 
-  renderResults(JSON.parse(stored));
+  // No data available
+  const el = document.getElementById('results-content');
+  if (el) {
+    el.innerHTML = `<div style="text-align:center; padding: 6rem 1.5rem; min-height: 60vh; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+      <h2 style="font-family:var(--display); font-size:1.5rem; color:var(--ink); margin-bottom:0.75rem;">No results found.</h2>
+      <p style="font-family:var(--body); color:var(--t2); margin-bottom:2rem;">Take the assessment first.</p>
+      <a href="quiz.html" style="font-family:var(--body); font-weight:600; font-size:15px; padding:14px 36px; background:var(--ink); color:var(--cream); border-radius:100px; text-decoration:none;">Start Assessment</a>
+    </div>`;
+  }
 });

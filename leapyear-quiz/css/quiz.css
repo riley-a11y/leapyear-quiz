@@ -379,7 +379,39 @@
 }
 .email-form input::placeholder { color: var(--t3); }
 .email-form input:focus { border-bottom-color: var(--ink); }
-.email-form button {
+/* Role Toggle */
+.role-toggle {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.role-btn {
+  flex: 1;
+  font-family: var(--body);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 16px;
+  background: transparent;
+  color: var(--t2);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.role-btn + .role-btn {
+  border-left: 1px solid var(--border);
+}
+.role-btn.active {
+  background: var(--ink);
+  color: var(--cream);
+  font-weight: 600;
+}
+.role-btn:hover:not(.active) {
+  background: rgba(42,37,35,0.06);
+}
+
+.email-form button[type="submit"] {
   font-family: var(--body);
   font-weight: 600;
   font-size: 15px;
@@ -392,8 +424,8 @@
   transition: all 0.3s ease;
   margin-top: 1rem;
 }
-.email-form button:hover { box-shadow: 0 8px 32px rgba(42,37,35,.2); transform: translateY(-2px); }
-.email-form button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+.email-form button[type="submit"]:hover { box-shadow: 0 8px 32px rgba(42,37,35,.2); transform: translateY(-2px); }
+.email-form button[type="submit"]:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 .email-form-note {
   font-size: 12px;
   color: var(--t3);

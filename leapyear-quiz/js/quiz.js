@@ -176,14 +176,33 @@ function goBack() {
   }
 }
 
+// ===== Role Toggle =====
+
+function initRoleToggle() {
+  const toggle = document.getElementById('role-toggle');
+  if (!toggle) return;
+  toggle.addEventListener('click', (e) => {
+    const btn = e.target.closest('.role-btn');
+    if (!btn) return;
+    toggle.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+}
+
+function getSelectedRole() {
+  const active = document.querySelector('#role-toggle .role-btn.active');
+  return active ? active.dataset.role : 'student';
+}
+
 // ===== Email Capture =====
 
-function submitEmailCapture(e) {
+async function submitEmailCapture(e) {
   e.preventDefault();
   const name = document.getElementById('capture-name').value.trim();
   const email = document.getElementById('capture-email').value.trim();
   if (!name || !email) return;
 
+  const role = getSelectedRole();
   const btn = document.getElementById('capture-submit');
   btn.disabled = true;
   btn.textContent = 'Loading...';
@@ -191,50 +210,52 @@ function submitEmailCapture(e) {
   // Score the assessment
   const result = scoreAssessment(responses);
 
-  capturedUserData = {
-    name,
-    email,
-    primary: result.primary,
-    secondary: result.secondary,
-    scores: {}
-  };
-  result.allScores.forEach(s => { capturedUserData.scores[s.archetype] = s.score.toFixed(1); });
+  // Save FULL result to localStorage (backup — works even if API fails)
+  localStorage.setItem('ly_result', JSON.stringify(result));
 
-  // Build payload
+  // Build scores object { philosopher: 78.3, analyst: 65.2, ... }
+  const allScores = {};
+  result.allScores.forEach(s => { allScores[s.archetype] = parseFloat(s.score.toFixed(1)); });
+
+  // Build API payload
   const payload = {
     name,
     email,
+    role,
     primary: result.primary,
     secondary: result.secondary,
+    primaryScore: result.primaryScore,
+    secondaryScore: result.secondaryScore,
     isBalanced: result.isBalanced,
     isRenaissance: result.isRenaissance,
-    growthMindset: result.modifiers.growthMindsetTier,
-    scores: capturedUserData.scores,
-    timestamp: new Date().toISOString()
+    allScores,
+    growthMindsetTier: result.modifiers.growthMindsetTier,
+    tensionTemplate: result.modifiers.tensionTemplate,
+    socialFlavor: result.modifiers.socialFlavor,
+    shadows: result.modifiers.shadows,
   };
 
-  // Save FULL result to localStorage
-  localStorage.setItem('ly_result', JSON.stringify(result));
-
-  // Store in localStorage as backup array
+  // POST to API — get token back
+  let token = null;
   try {
-    const existing = JSON.parse(localStorage.getItem('ly_submissions') || '[]');
-    existing.push(payload);
-    localStorage.setItem('ly_submissions', JSON.stringify(existing));
-  } catch(err) { /* silent */ }
-
-  // Try webhook POST (non-blocking — redirect regardless)
-  const WEBHOOK_URL = ''; // Riley: paste Zapier/Make/Netlify Function URL here
-  if (WEBHOOK_URL) {
-    fetch(WEBHOOK_URL, {
+    const res = await fetch('/api/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    }).catch(() => { /* silent — localStorage backup exists */ });
+      body: JSON.stringify(payload),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      token = data.token;
+    }
+  } catch (err) {
+    // Silent — localStorage backup exists
+    console.warn('API submit failed, using localStorage fallback:', err.message);
   }
 
-  // Redirect to reveal page
-  window.location.href = 'reveal.html?type=' + result.primary;
+  // Redirect to reveal page (with token if available)
+  const params = new URLSearchParams({ type: result.primary });
+  if (token) params.set('token', token);
+  window.location.href = 'reveal.html?' + params.toString();
 }
 
 // ===== Start Quiz =====
@@ -299,11 +320,12 @@ document.addEventListener('DOMContentLoaded', () => {
     backBtn.addEventListener('click', goBack);
   }
 
-  // Wire email form
+  // Wire email form + role toggle
   const emailForm = document.getElementById('email-form');
   if (emailForm) {
     emailForm.addEventListener('submit', submitEmailCapture);
   }
+  initRoleToggle();
 
   // Wire cover screen Begin button
   const coverBegin = document.getElementById('cover-begin');

@@ -1,6 +1,9 @@
 {
   "name": "leapyear-quiz",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "LeapYear Personality Assessment",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "nanoid": "^5.0.0"
+  }
 }
