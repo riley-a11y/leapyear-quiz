@@ -53,7 +53,7 @@ module.exports = async function handler(req, res) {
 
   try {
     const formula = encodeURIComponent(`{Token} = "${token}"`);
-    const url = `https://api.airtable.com/v0/${AIRTABLE_BASE}/${QUIZ_TABLE}?filterByFormula=${formula}&maxRecords=1`;
+    const url = `https://api.airtable.com/v0/${AIRTABLE_BASE}/${QUIZ_TABLE}?filterByFormula=${formula}&maxRecords=1&returnFieldsByFieldId=true`;
 
     const airtableRes = await fetch(url, {
       headers: { 'Authorization': `Bearer ${process.env.AIRTABLE_API_KEY}` },
