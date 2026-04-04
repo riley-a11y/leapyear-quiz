@@ -391,7 +391,7 @@ function renderResults(result) {
   </div>`;
 
   // CTA Bridge
-  const bottomHtml = `<div class="results-bottom rv">
+  const bottomHtml = `<div class="results-bottom">
     <div class="result-bridge">
       <h2>Talk Through <span class="si">Your Results</span></h2>
       <p class="bridge-text">${c.leapYearCTA.body}</p>
@@ -455,7 +455,7 @@ function renderResults(result) {
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -5% 0px' });
 
-  document.querySelectorAll('.pairing-intro .rv, .card-grid .rv, .results-bottom .rv').forEach(el => observer.observe(el));
+  document.querySelectorAll('.pairing-intro .rv, .card-grid .rv').forEach(el => observer.observe(el));
 
   // ===== STICKY BADGE =====
   const badge = document.getElementById('sticky-badge');
