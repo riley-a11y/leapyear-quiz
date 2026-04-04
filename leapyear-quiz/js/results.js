@@ -34,6 +34,10 @@ let dragStartY = 0;
 let dragCurrentY = 0;
 let isDragging = false;
 
+function isMobile() {
+  return window.innerWidth <= 768;
+}
+
 function createModalSystem() {
   modalBackdrop = document.createElement('div');
   modalBackdrop.className = 'modal-backdrop';
@@ -41,17 +45,26 @@ function createModalSystem() {
 
   modalSheet = document.createElement('div');
   modalSheet.className = 'modal-sheet';
+  // Hidden by default
+  modalSheet.style.opacity = '0';
+  modalSheet.style.pointerEvents = 'none';
+  if (isMobile()) {
+    modalSheet.style.transform = 'translateY(100%)';
+  } else {
+    modalSheet.style.transform = 'translate(-50%, -50%) scale(0.95)';
+  }
   document.body.appendChild(modalSheet);
 
   modalBackdrop.addEventListener('click', closeModal);
 
-  // Swipe to dismiss
+  // Swipe to dismiss (mobile)
   modalSheet.addEventListener('touchstart', (e) => {
     const handle = modalSheet.querySelector('.modal-handle');
+    if (!handle) return;
     if (e.target === handle || handle.contains(e.target) || modalSheet.scrollTop <= 0) {
       dragStartY = e.touches[0].clientY;
       isDragging = true;
-      modalSheet.classList.add('dragging');
+      modalSheet.style.transition = 'none';
     }
   }, { passive: true });
 
@@ -67,12 +80,12 @@ function createModalSystem() {
   modalSheet.addEventListener('touchend', () => {
     if (!isDragging) return;
     isDragging = false;
-    modalSheet.classList.remove('dragging');
     const delta = dragCurrentY - dragStartY;
     if (delta > 120) {
       closeModal();
     } else {
-      modalSheet.style.transform = '';
+      modalSheet.style.transition = 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+      modalSheet.style.transform = 'translateY(0)';
     }
     dragStartY = 0;
     dragCurrentY = 0;
@@ -91,27 +104,41 @@ function openModal(contentHtml) {
   // Prevent body scroll
   document.body.style.overflow = 'hidden';
 
-  requestAnimationFrame(() => {
-    modalBackdrop.classList.add('open');
-    modalSheet.classList.add('open');
-    modalSheet.style.transform = '';
+  // Show modal with JS inline styles
+  const mobile = isMobile();
+  modalSheet.style.pointerEvents = 'auto';
+  modalSheet.style.opacity = '1';
+  if (mobile) {
+    modalSheet.style.transform = 'translateY(0)';
+  } else {
+    modalSheet.style.transform = 'translate(-50%, -50%) scale(1)';
+  }
 
-    // Animate score bars if present
-    setTimeout(() => {
-      modalSheet.querySelectorAll('.modal-score-fill').forEach(f => {
-        f.style.width = f.dataset.width;
-      });
-    }, 300);
-  });
+  // Show backdrop
+  modalBackdrop.style.background = 'rgba(0,0,0,0.5)';
+  modalBackdrop.style.pointerEvents = 'auto';
+
+  // Animate score bars if present
+  setTimeout(() => {
+    modalSheet.querySelectorAll('.modal-score-fill').forEach(f => {
+      f.style.width = f.dataset.width;
+    });
+  }, 300);
 }
 
 function closeModal() {
-  modalBackdrop.classList.remove('open');
-  modalSheet.classList.remove('open');
+  const mobile = isMobile();
+  modalSheet.style.opacity = '0';
+  modalSheet.style.pointerEvents = 'none';
+  if (mobile) {
+    modalSheet.style.transform = 'translateY(100%)';
+  } else {
+    modalSheet.style.transform = 'translate(-50%, -50%) scale(0.95)';
+  }
+  modalBackdrop.style.background = 'rgba(0,0,0,0)';
+  modalBackdrop.style.pointerEvents = 'none';
   document.body.style.overflow = '';
-  setTimeout(() => {
-    modalSheet.innerHTML = '';
-  }, 500);
+  modalSheet.innerHTML = '';
 }
 
 // ===== SHARE IMAGE GENERATION =====
@@ -403,9 +430,7 @@ function renderResults(result) {
 
   // ===== CARD CLICK HANDLERS =====
   document.querySelectorAll('.explore-card[data-section]').forEach(card => {
-    const handler = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+    card.addEventListener('click', () => {
       const section = card.dataset.section;
       if (section === 'share') {
         openShareModal(result);
@@ -413,8 +438,7 @@ function renderResults(result) {
         const content = buildModalContent(section, result, c, pColor, sColor);
         openModal(content);
       }
-    };
-    card.addEventListener('click', handler);
+    });
     // Ensure touch devices fire reliably
     card.style.webkitTapHighlightColor = 'transparent';
     card.setAttribute('role', 'button');

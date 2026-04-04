@@ -417,34 +417,23 @@
   transition: background 0.4s ease;
   pointer-events: none;
 }
-.modal-backdrop.open {
-  background: rgba(0,0,0,0.5);
-  pointer-events: auto;
-}
 
-/* Desktop: centered article window */
+/* ===== MODAL OVERLAY ===== */
+/* Modal positioning and visibility is controlled via JS inline styles.
+   CSS provides layout, typography, and mobile-specific overrides only. */
 .modal-sheet {
   position: fixed;
+  background: var(--cream);
+  z-index: 510;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* Desktop: centered article window */
   top: 50%; left: 50%;
-  transform: translate(-50%, -50%) scale(0.95);
   width: 90%;
   max-width: 640px;
   max-height: 85vh;
-  background: var(--cream);
   border-radius: 20px;
-  z-index: 510;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow-y: auto;
-  overscroll-behavior: contain;
   box-shadow: 0 32px 80px rgba(0,0,0,0.25);
-}
-.modal-sheet.open {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translate(-50%, -50%) scale(1);
 }
 
 .modal-handle {
@@ -474,25 +463,15 @@
   padding: 16px 40px 48px;
 }
 
-/* Mobile: bottom sheet */
+/* Mobile: bottom sheet layout */
 @media (max-width: 768px) {
   .modal-sheet {
     top: auto; left: 0; right: 0; bottom: 0;
-    transform: translateY(100%);
     width: 100%;
     max-width: 100%;
     max-height: 92vh;
     border-radius: 24px 24px 0 0;
     box-shadow: 0 -8px 40px rgba(0,0,0,0.2);
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.3s ease;
-  }
-  .modal-sheet.open {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  .modal-sheet.dragging {
-    transition: none;
   }
   .modal-handle {
     display: flex;
