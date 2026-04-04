@@ -212,9 +212,6 @@
   color: var(--ink);
   margin-bottom: 2.5rem;
   min-height: 4.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   text-wrap: balance;
 }
 

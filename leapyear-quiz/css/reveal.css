@@ -212,9 +212,9 @@
 
 /* ===== REVEAL MOBILE ===== */
 @media(max-width:768px) {
-  .lr-stage { position: absolute; top: 0; left: 0; right: 0; height: 55%; z-index: 5; }
-  .lr-ring .ocard.is-winner { transform: translate(0px, 10px) rotate(calc(var(--counter-rot) * 1deg)) scale(1.05) !important; }
-  .lr-final { top: auto; bottom: 0; transform: translate(-50%, 0); z-index: 15; padding-bottom: 32px; }
+  .lr-stage { position: absolute; top: 0; left: 0; right: 0; height: 50%; z-index: 5; }
+  .lr-ring .ocard.is-winner { transform: translate(0px, -20px) rotate(calc(var(--counter-rot) * 1deg)) scale(0.95) !important; }
+  .lr-final { top: auto; bottom: 0; transform: translate(-50%, 0); z-index: 15; padding-bottom: 40px; }
   .lr-final.is-visible { transform: translate(-50%, 0); }
   .lr-final h1 { font-size: 26px; margin-bottom: 4px; }
   .lr-final p { font-size: 13px; margin-bottom: 10px; max-width: 280px; line-height: 1.4; }

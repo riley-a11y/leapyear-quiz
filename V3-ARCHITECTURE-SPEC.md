@@ -135,6 +135,35 @@ This lets you use clean URLs: `personality.startleapyear.com/results/abc123` whi
 
 ## Part 2: Quiz UX Updates (from user feedback)
 
+### Update 0: Opening Cover Screen (before first question)
+
+**What:** Before the first question appears, show a brief cover screen that establishes credibility and sets expectations. This is the student's first moment inside the assessment — it should feel considered, not like you just got dumped into question 1.
+
+**Design:**
+- Full-screen, centered, same warm cream background
+- Content (approximate — adjust copy as needed):
+
+```
+This assessment draws from 5 validated research instruments
+measuring curiosity, vocational interest, personality,
+cognitive style, and growth mindset.
+
+85 questions · ~13 minutes
+
+Answer honestly — there are no right or wrong answers.
+Your responses are used only to build your profile.
+```
+
+- A "Begin" or "Let's go" button (Flame style, pill shape)
+- Below the button, a small note: "You can go back to any question"
+- The tone should be warm but credible — not clinical, not salesy. It says: this is real, it's based on real research, and it won't take forever.
+- Animate in with the same cinematic reveal (opacity + translateY + blur) used on the landing page hero
+- The "5 validated research instruments" line is the credibility signal — it tells them this isn't a BuzzFeed quiz without being academic about it
+
+**Implementation:** This is a new screen state between clicking "Take Assessment" on the landing page and showing the first question. It can be a div inside quiz.html that fades out when the student clicks Begin, revealing the first transition screen (CEI group intro) underneath.
+
+---
+
 ### Update 1: Group Items by Scale + Transition Screens
 
 **Problem:** Both users were confused when the response scale switched mid-quiz without warning. Molly accidentally answered incorrectly. Charles had to "rearm himself."
