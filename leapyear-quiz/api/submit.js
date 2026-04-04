@@ -164,6 +164,7 @@ async function createQuizResult(token, personId, data) {
     }
   });
 
+  console.log('Airtable fields to write:', JSON.stringify(fields, null, 2));
   return airtableFetch(QUIZ_TABLE, 'POST', { records: [{ fields }] });
 }
 
@@ -271,6 +272,9 @@ module.exports = async function handler(req, res) {
       isBalanced, isRenaissance,
       allScores, growthMindsetTier, tensionTemplate, socialFlavor, shadows,
     } = req.body;
+
+    // Debug: log the full payload to diagnose missing scores
+    console.log('Submit payload received:', JSON.stringify(req.body, null, 2));
 
     if (!name || !email || !primary) {
       return res.status(400).json({ error: 'Missing required fields: name, email, primary' });
