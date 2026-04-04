@@ -310,10 +310,12 @@ module.exports = async function handler(req, res) {
       // Still return token — client has localStorage backup
     }
 
-    // 4. Send email (non-blocking — don't let email failure block response)
-    sendResultsEmail(name, email, primary, token).catch(err => {
+    // 4. Send email (must await — Vercel kills the process after response)
+    try {
+      await sendResultsEmail(name, email, primary, token);
+    } catch (err) {
       console.error('Email send error:', err.message);
-    });
+    }
 
     // 5. Return token + primary
     return res.status(200).json({ token, primary });
