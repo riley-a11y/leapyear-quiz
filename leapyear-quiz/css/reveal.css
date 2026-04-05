@@ -132,30 +132,27 @@
   transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease !important;
 }
 
-/* --- Standalone Winner Card (outside the ring, no rotation issues) --- */
+/* --- Standalone Winner Card (inserted into .lr-final, no rotation issues) --- */
 .lr-winner {
-  position: absolute;
-  top: 5vh;
-  left: 50%;
-  transform: translateX(-50%) scale(0);
-  z-index: 20;
   --morph: 1;
   box-shadow: 0 24px 64px rgba(0,0,0,0.5);
-  opacity: 0;
-  pointer-events: none;
+  margin: 0 auto 24px;
+  flex-shrink: 0;
 }
 
-/* --- Final Text (bottom-anchored) --- */
+/* --- Final Content (centered flex column with card + text) --- */
 .lr-final {
   position: absolute;
-  bottom: 0; left: 50%;
-  transform: translate(-50%, 0);
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   z-index: 10;
   opacity: 0;
   pointer-events: none;
-  width: 100%;
-  padding: 0 24px 48px;
+  padding: 24px;
 }
 .lr-final h1 {
   font-family: var(--display);
@@ -221,8 +218,8 @@
 @media (max-width: 768px) {
   .lr-ring { top: 38% !important; }
   .lr-status-text { top: 38%; }
-  .lr-winner { top: 2vh; }
-  .lr-final { padding-bottom: 32px; }
+  .lr-winner { transform: scale(0.82); }
+  .lr-final { padding: 16px; }
   .lr-final h1 { font-size: 24px; margin-bottom: 4px; }
   .lr-final p { font-size: 13px; margin-bottom: 10px; max-width: 280px; line-height: 1.4; }
   .lr-inbox-notice { gap: 8px; padding: 8px 16px; margin-bottom: 14px; font-size: 12px; }

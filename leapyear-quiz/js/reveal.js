@@ -88,19 +88,19 @@ function showLoadingReveal(primaryType) {
     winCard.classList.add('lr-winner');
     winCard.classList.remove('is-loser');
     winCard.style.cssText = ''; // Clear all inline styles from ring positioning
-    document.body.appendChild(winCard);
 
-    // Animate in: scale from 0 → 1 with spring easing (via JS inline styles)
+    // Insert card at the TOP of .lr-final so it stacks above the text
+    finalResults.insertBefore(winCard, finalResults.firstChild);
+
+    // Animate in: scale from 0.3 → 1 with spring easing
     var winScale = isMobile ? 0.82 : 1;
-    // Start state
     winCard.style.opacity = '0';
-    winCard.style.transform = 'translateX(-50%) scale(0.3)';
+    winCard.style.transform = 'scale(0.3)';
 
-    // Trigger entrance after a beat (let ring fade start)
     setTimeout(function() {
       winCard.style.transition = 'transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease';
       winCard.style.opacity = '1';
-      winCard.style.transform = 'translateX(-50%) scale(' + winScale + ')';
+      winCard.style.transform = 'scale(' + winScale + ')';
     }, 400);
 
     // Background wash
