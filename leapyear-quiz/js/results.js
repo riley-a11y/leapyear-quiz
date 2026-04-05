@@ -653,14 +653,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   const pathMatch = window.location.pathname.match(/\/results\/([a-zA-Z0-9_-]+)/);
   const token = pathMatch ? pathMatch[1] : null;
 
+  // Helper: safely call renderResults with error logging
+  function tryRender(result, source) {
+    try {
+      renderResults(result);
+      return true;
+    } catch (err) {
+      console.error(`renderResults failed (${source}):`, err);
+      return false;
+    }
+  }
+
   // Try API fetch if we have a token
   if (token) {
     try {
       const res = await fetch('/api/results?token=' + encodeURIComponent(token));
       if (res.ok) {
         const result = await res.json();
-        renderResults(result);
-        return;
+        if (tryRender(result, 'API')) return;
       }
     } catch (err) {
       console.warn('API fetch failed, trying localStorage:', err.message);
@@ -670,8 +680,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Fall back to localStorage
   const stored = localStorage.getItem('ly_result');
   if (stored) {
-    renderResults(JSON.parse(stored));
-    return;
+    if (tryRender(JSON.parse(stored), 'localStorage')) return;
   }
 
   // No data available
