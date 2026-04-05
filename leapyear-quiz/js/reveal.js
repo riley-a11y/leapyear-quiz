@@ -1,6 +1,6 @@
 /**
  * LeapYear Assessment — Reveal Animation Module
- * Self-initializing: reads type from URL params and auto-plays the roulette reveal.
+ * Roulette spin → fade ring → scale in standalone winner card → text reveal.
  */
 
 function capitalize(s) {
@@ -17,23 +17,24 @@ function showLoadingReveal(primaryType) {
   var isMobile = window.innerWidth < 768;
   var radius = isMobile ? 140 : 280;
 
-  // Reset state from any previous run
+  // Reset state
   ring.classList.remove('is-visible');
   ring.style.transition = 'none';
   ring.style.transform = 'rotate(0deg)';
   statusText.style.opacity = '1';
   statusText.style.transform = 'translate(-50%, -50%)';
-  finalResults.classList.remove('is-visible');
+  finalResults.style.opacity = '0';
+  finalResults.style.pointerEvents = 'none';
   bgWash.style.opacity = '0';
   lrCards.forEach(function(card) {
-    card.classList.remove('is-winner', 'is-loser');
-    card.style.removeProperty('--win-x');
-    card.style.removeProperty('--win-y');
-    card.style.removeProperty('--counter-rot');
-    card.style.removeProperty('--morph');
+    card.classList.remove('is-loser');
   });
 
-  // Find the winning card by the ACTUAL scored primary type
+  // Remove any previous standalone winner card
+  var oldWinner = document.querySelector('.lr-winner');
+  if (oldWinner) oldWinner.remove();
+
+  // Find the winning card index
   var winningIndex = 0;
   lrCards.forEach(function(card, i) {
     if (card.getAttribute('data-type') === primaryType) {
@@ -50,52 +51,72 @@ function showLoadingReveal(primaryType) {
     card.style.setProperty('--ty', ty + 'px');
   });
 
-  // Show the ring after a frame so the browser registers the reset
+  // Show ring
   setTimeout(function() { ring.classList.add('is-visible'); }, 50);
 
-  // Phase 1: Spin the roulette — land on the REAL type
+  // Phase 1: Spin
   var anglePerCard = 360 / N;
   var offsetAngle = winningIndex * anglePerCard;
-  var finalRotation = 1080 - offsetAngle; // 3 full spins then land on winner at top
+  var finalRotation = 1080 - offsetAngle;
 
-  // Re-enable transition and spin after browser paints the initial state
   setTimeout(function() {
     ring.style.transition = 'transform 4.5s cubic-bezier(0.15, 0.95, 0.25, 1)';
-    // Force reflow so the browser registers the starting position
     ring.offsetHeight;
     ring.style.transform = 'rotate(' + finalRotation + 'deg)';
   }, 300);
 
-  // Phase 2: Stop & reveal the winner (after spin finishes at ~4.8s)
+  // Phase 2: Fade out ring, show standalone winner card
   setTimeout(function() {
+    // Fade status text
+    statusText.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
     statusText.style.opacity = '0';
     statusText.style.transform = 'translate(-50%, -100%) scale(0.9)';
 
-    lrCards.forEach(function(card, i) {
-      if (i === winningIndex) {
-        // Counter-rotate so the card faces upright
-        var counterRot = -finalRotation;
-        // Position the winner at center-top of viewport
-        card.style.setProperty('--counter-rot', counterRot);
-        card.classList.add('is-winner');
-        // Also set --morph inline to ensure clip-path morphs to full card
-        card.style.setProperty('--morph', '1');
-
-        bgWash.style.backgroundColor = 'var(--' + primaryType + ')';
-        bgWash.style.opacity = '0.35';
-      } else {
-        card.classList.add('is-loser');
-      }
+    // Fade out ALL ring cards (including the winner inside the ring)
+    lrCards.forEach(function(card) {
+      card.style.transition = 'opacity 0.6s ease';
+      card.style.opacity = '0';
     });
+
+    // Fade out ring
+    ring.style.transition = 'opacity 0.6s ease';
+    ring.style.opacity = '0';
+
+    // Create standalone winner card (clone from the ring card)
+    var winSource = lrCards[winningIndex];
+    var winCard = winSource.cloneNode(true);
+    winCard.classList.add('lr-winner');
+    winCard.classList.remove('is-loser');
+    winCard.style.cssText = ''; // Clear all inline styles from ring positioning
+    document.body.appendChild(winCard);
+
+    // Animate in: scale from 0 → 1 with spring easing (via JS inline styles)
+    var winScale = isMobile ? 0.82 : 1;
+    // Start state
+    winCard.style.opacity = '0';
+    winCard.style.transform = 'translateX(-50%) scale(0.3)';
+
+    // Trigger entrance after a beat (let ring fade start)
+    setTimeout(function() {
+      winCard.style.transition = 'transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease';
+      winCard.style.opacity = '1';
+      winCard.style.transform = 'translateX(-50%) scale(' + winScale + ')';
+    }, 400);
+
+    // Background wash
+    bgWash.style.backgroundColor = 'var(--' + primaryType + ')';
+    bgWash.style.opacity = '0.35';
   }, 5000);
 
-  // Phase 3: Text reveal with correct name
+  // Phase 3: Text reveal
   setTimeout(function() {
     var name = capitalize(primaryType);
     var vowels = ['A','E','I','O','U'];
     var prefix = vowels.indexOf(name.charAt(0)) >= 0 ? 'an' : 'a';
     document.getElementById('lrResultHeading').innerHTML = 'You are ' + prefix + ' <span class="si">' + name + '</span>.';
-    finalResults.classList.add('is-visible');
+    finalResults.style.transition = 'opacity 1s cubic-bezier(0.16, 1, 0.3, 1)';
+    finalResults.style.opacity = '1';
+    finalResults.style.pointerEvents = 'auto';
   }, 6200);
 }
 
