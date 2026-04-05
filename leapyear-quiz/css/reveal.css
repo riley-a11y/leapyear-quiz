@@ -122,7 +122,7 @@
               opacity 0.8s ease !important;
 }
 .lr-ring .ocard.is-winner {
-  transform: translate(0px, -100px) rotate(calc(var(--counter-rot) * 1deg)) scale(1.35) !important;
+  transform: translate(0px, -180px) rotate(calc(var(--counter-rot) * 1deg)) scale(1.2) !important;
   opacity: 1 !important;
   z-index: 50;
   --morph: 1;
@@ -135,19 +135,19 @@
 
 .lr-final {
   position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, 200px);
+  bottom: 0; left: 50%;
+  transform: translate(-50%, 0);
   text-align: center;
   z-index: 10;
   opacity: 0;
   pointer-events: none;
   transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
   width: 100%;
-  padding: 0 24px;
+  padding: 0 24px 48px;
 }
 .lr-final.is-visible {
   opacity: 1;
-  transform: translate(-50%, 190px);
+  transform: translate(-50%, 0);
   pointer-events: auto;
 }
 .lr-final h1 {
@@ -212,11 +212,15 @@
 
 /* ===== REVEAL MOBILE ===== */
 @media(max-width:768px) {
-  .lr-stage { position: absolute; top: 0; left: 0; right: 0; height: 50%; z-index: 5; }
-  .lr-ring .ocard.is-winner { transform: translate(0px, -20px) rotate(calc(var(--counter-rot) * 1deg)) scale(0.95) !important; }
-  .lr-final { top: auto; bottom: 0; transform: translate(-50%, 0); z-index: 15; padding-bottom: 40px; }
+  /* Stage stays full viewport so ring + status text share the same center */
+  .lr-stage { position: absolute; top: 0; left: 0; right: 0; height: 100vh; z-index: 5; overflow: visible; }
+  /* Move ring + status text to ~40% so there's room for the final text below */
+  .lr-ring { top: 38% !important; }
+  .lr-status-text { top: 38%; }
+  .lr-ring .ocard.is-winner { transform: translate(0px, -40px) rotate(calc(var(--counter-rot) * 1deg)) scale(0.82) !important; }
+  .lr-final { bottom: 0; padding-bottom: 32px; }
   .lr-final.is-visible { transform: translate(-50%, 0); }
-  .lr-final h1 { font-size: 26px; margin-bottom: 4px; }
+  .lr-final h1 { font-size: 24px; margin-bottom: 4px; }
   .lr-final p { font-size: 13px; margin-bottom: 10px; max-width: 280px; line-height: 1.4; }
   .lr-inbox-notice { gap: 8px; border-radius: 100px; text-align: center; padding: 8px 16px; margin-bottom: 14px; font-size: 12px; }
   .lr-final .btn-light { padding: 12px 24px; font-size: 13px; }
