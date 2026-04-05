@@ -44,6 +44,7 @@ const QR = {
   socialFlavor:   'fldOLJfzcLtKyOHtG',
   shadows:        'fld4l1h4Z0wtroQbI',
   submitted:      'fldAS4GVQo0QSIaAS',
+  resultsLink:    'fldCJ2ZqnfAMCdbj2',
 };
 
 // People table field IDs
@@ -149,6 +150,7 @@ async function createQuizResult(token, personId, data) {
     [QR.socialFlavor]:   data.socialFlavor || 'balanced',
     [QR.shadows]:        Array.isArray(data.shadows) ? data.shadows.join(',') : '',
     [QR.submitted]:      new Date().toISOString(),
+    [QR.resultsLink]:    `https://leapyear-quiz.vercel.app/results/${token}`,
   };
 
   // Link to Person if available
@@ -182,7 +184,7 @@ async function sendResultsEmail(name, email, primary, token) {
   const typeName = cap(primary);
   const coreDrive = CORE_DRIVES[primary] || '';
   const color = COLORS[primary] || '#DD5E32';
-  const resultsUrl = `https://personality.startleapyear.com/results/${token}`;
+  const resultsUrl = `https://leapyear-quiz.vercel.app/results/${token}`;
   const calendlyUrl = `https://calendly.com/riley-startleapyear/leapyear-student-interview-clone?hide_gdpr_banner=1&primary_color=dd5e32&utm_content=${token}`;
 
   const html = `
