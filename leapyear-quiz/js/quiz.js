@@ -12,6 +12,38 @@ const responses = {};
 let capturedUserData = null;
 let showingTransition = false;
 
+// ===== Progress Persistence =====
+const STORAGE_KEY = 'ly_quiz_progress';
+
+function saveProgress() {
+  try {
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+      currentIndex,
+      responses,
+      shownTransitions: [...shownTransitions],
+      timestamp: Date.now(),
+    }));
+  } catch (e) { /* silent */ }
+}
+
+function loadProgress() {
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const saved = JSON.parse(raw);
+    // Expire after 2 hours
+    if (Date.now() - saved.timestamp > 2 * 60 * 60 * 1000) {
+      sessionStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+    return saved;
+  } catch (e) { return null; }
+}
+
+function clearProgress() {
+  sessionStorage.removeItem(STORAGE_KEY);
+}
+
 // ===== Scale Group Helpers =====
 
 function getGroupForIndex(index) {
@@ -157,6 +189,7 @@ function selectOption(itemId, value) {
   setTimeout(() => {
     if (currentIndex < ITEMS.length - 1) {
       currentIndex++;
+      saveProgress();
       renderQuestion();
     } else {
       // Show email capture, hide assessment
@@ -252,6 +285,9 @@ async function submitEmailCapture(e) {
     console.warn('API submit failed, using localStorage fallback:', err.message);
   }
 
+  // Clear saved progress — quiz is complete
+  clearProgress();
+
   // Redirect to reveal page (with token if available)
   const params = new URLSearchParams({ type: result.primary });
   if (token) params.set('token', token);
@@ -260,11 +296,23 @@ async function submitEmailCapture(e) {
 
 // ===== Start Quiz =====
 
-function startQuiz() {
-  currentIndex = 0;
-  Object.keys(responses).forEach(k => delete responses[k]);
+function startQuiz(fresh = false) {
+  // Try to restore saved progress (unless explicitly starting fresh)
+  const saved = fresh ? null : loadProgress();
+
+  if (saved && saved.currentIndex > 0) {
+    currentIndex = saved.currentIndex;
+    Object.keys(responses).forEach(k => delete responses[k]);
+    Object.assign(responses, saved.responses);
+    shownTransitions.clear();
+    (saved.shownTransitions || []).forEach(i => shownTransitions.add(i));
+  } else {
+    currentIndex = 0;
+    Object.keys(responses).forEach(k => delete responses[k]);
+    shownTransitions.clear();
+  }
+
   capturedUserData = null;
-  shownTransitions.clear();
   showingTransition = false;
 
   // Show assessment, hide email capture
@@ -329,14 +377,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Wire cover screen Begin button
   const coverBegin = document.getElementById('cover-begin');
-  if (coverBegin) {
+  const cover = document.getElementById('quiz-cover');
+
+  // If saved progress exists, skip cover and resume
+  const savedProgress = loadProgress();
+  if (savedProgress && savedProgress.currentIndex > 0 && cover) {
+    cover.style.display = 'none';
+    startQuiz();  // Will auto-restore from sessionStorage
+  } else if (coverBegin) {
     coverBegin.addEventListener('click', () => {
-      const cover = document.getElementById('quiz-cover');
-      cover.classList.add('fade-out');
-      setTimeout(() => {
-        cover.style.display = 'none';
-        startQuiz();
-      }, 500);
+      if (cover) {
+        cover.classList.add('fade-out');
+        setTimeout(() => {
+          cover.style.display = 'none';
+          startQuiz();
+        }, 500);
+      }
     });
   }
 });
