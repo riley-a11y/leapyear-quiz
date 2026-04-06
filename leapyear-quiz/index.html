@@ -447,12 +447,16 @@
 
   render();
 
-  let rt;
+  let rt, lastWidth = window.innerWidth;
   window.addEventListener('resize', () => {
+    // Only reload on width change (orientation flip, etc.)
+    // Ignore height-only changes from mobile address bar show/hide
+    if (Math.abs(window.innerWidth - lastWidth) < 2) return;
+    lastWidth = window.innerWidth;
     clearTimeout(rt);
     rt = setTimeout(() => {
       location.reload();
-    }, 250);
+    }, 300);
   });
 })();
 </script>
