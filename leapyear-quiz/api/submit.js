@@ -54,6 +54,7 @@ const PPL = {
   type:           'fldjMvmCFoenGP7fF',
   createLead:     'fldLSGxtFg3fG83cr',
   leadSource:     'flddN90lGUeJJGM15',
+  hsGradYear:     'fld5FhrqX4GoEfnKA',
 };
 
 // Core drives for email (static — avoids importing large content.js)
@@ -110,7 +111,7 @@ async function findPersonByEmail(email) {
   return data.records && data.records.length > 0 ? data.records[0].id : null;
 }
 
-async function createPerson(name, email, role) {
+async function createPerson(name, email, role, gradYear) {
   // Map role to People table Type field values
   const typeMap = {
     student: 'Student',
@@ -127,6 +128,9 @@ async function createPerson(name, email, role) {
   };
   if (typeValue) {
     fields[PPL.type] = [typeValue];
+  }
+  if (gradYear) {
+    fields[PPL.hsGradYear] = { name: gradYear };
   }
 
   const result = await airtableFetch(PEOPLE_TABLE, 'POST', {
@@ -270,7 +274,7 @@ module.exports = async function handler(req, res) {
 
   try {
     const {
-      name, email, role,
+      name, email, role, gradYear,
       primary, secondary, primaryScore, secondaryScore,
       isBalanced, isRenaissance,
       allScores, growthMindsetTier, tensionTemplate, socialFlavor, shadows,
@@ -291,7 +295,7 @@ module.exports = async function handler(req, res) {
     try {
       personId = await findPersonByEmail(email);
       if (!personId) {
-        personId = await createPerson(name, email, role || 'student');
+        personId = await createPerson(name, email, role || 'student', gradYear);
       }
     } catch (err) {
       console.error('People table error:', err.message);

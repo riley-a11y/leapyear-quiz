@@ -219,7 +219,20 @@ function initRoleToggle() {
     if (!btn) return;
     toggle.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    updateGradYearVisibility(btn.dataset.role);
   });
+  // Show grad year by default since Student is pre-selected
+  updateGradYearVisibility('student');
+}
+
+function updateGradYearVisibility(role) {
+  const field = document.getElementById('grad-year-field');
+  if (!field) return;
+  if (role === 'student') {
+    field.classList.add('visible');
+  } else {
+    field.classList.remove('visible');
+  }
 }
 
 function getSelectedRole() {
@@ -236,6 +249,9 @@ async function submitEmailCapture(e) {
   if (!name || !email) return;
 
   const role = getSelectedRole();
+  const gradYear = role === 'student'
+    ? (document.getElementById('capture-grad-year')?.value || '')
+    : '';
   const btn = document.getElementById('capture-submit');
   btn.disabled = true;
   btn.textContent = 'Loading...';
@@ -255,6 +271,7 @@ async function submitEmailCapture(e) {
     name,
     email,
     role,
+    gradYear,
     primary: result.primary,
     secondary: result.secondary,
     primaryScore: result.primaryScore,

@@ -410,6 +410,38 @@
 .role-btn:hover:not(.active) {
   background: rgba(42,37,35,0.06);
 }
+/* Graduation Year */
+.grad-year-field {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+  margin-top: 0;
+}
+.grad-year-field.visible {
+  max-height: 80px;
+  opacity: 1;
+  margin-top: 0;
+}
+.grad-year-field select {
+  font-family: var(--body);
+  font-size: 1rem;
+  padding: 12px 0;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--ink);
+  outline: none;
+  width: 100%;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  transition: border-color 0.3s ease;
+}
+.grad-year-field select:focus {
+  border-bottom-color: var(--ink);
+}
 
 .email-form button[type="submit"] {
   font-family: var(--body);
