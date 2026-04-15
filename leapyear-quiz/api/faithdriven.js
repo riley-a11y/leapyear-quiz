@@ -74,7 +74,7 @@ module.exports = async function handler(req, res) {
         updates[PPL.leadSource] = [...existing.leadSources, FAITH_DRIVEN_LEAD_SOURCE_ID];
       }
       if (gradYear && !existing.gradYear) {
-        updates[PPL.hsGradYear] = { name: gradYear };
+        updates[PPL.hsGradYear] = gradYear;
       }
       if (Object.keys(updates).length > 0) {
         await airtableFetch(PEOPLE_TABLE, 'PATCH', {
@@ -91,7 +91,7 @@ module.exports = async function handler(req, res) {
         [PPL.type]: ['Student'],
       };
       if (gradYear) {
-        fields[PPL.hsGradYear] = { name: gradYear };
+        fields[PPL.hsGradYear] = gradYear;
       }
       await airtableFetch(PEOPLE_TABLE, 'POST', {
         typecast: true,
@@ -101,7 +101,8 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json({ success: true });
   } catch (err) {
-    console.error('Faith Driven submit error:', err);
+    console.error('Faith Driven submit error:', err.message);
+    console.error('Stack:', err.stack);
     return res.status(500).json({ error: 'Something went wrong. Please try again.' });
   }
 };
