@@ -78,6 +78,7 @@ module.exports = async function handler(req, res) {
       }
       if (Object.keys(updates).length > 0) {
         await airtableFetch(PEOPLE_TABLE, 'PATCH', {
+          typecast: true,
           records: [{ id: existing.id, fields: updates }],
         });
       }
@@ -93,6 +94,7 @@ module.exports = async function handler(req, res) {
         fields[PPL.hsGradYear] = { name: gradYear };
       }
       await airtableFetch(PEOPLE_TABLE, 'POST', {
+        typecast: true,
         records: [{ fields }],
       });
     }
