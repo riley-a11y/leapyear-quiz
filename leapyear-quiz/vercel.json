@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/faithdriven", "destination": "/faithdriven.html" },
     { "source": "/results/:token", "destination": "/results.html" }
   ],
   "headers": [
