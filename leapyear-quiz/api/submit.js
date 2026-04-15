@@ -139,6 +139,27 @@ async function createPerson(name, email, role, gradYear) {
   return result.records[0].id;
 }
 
+async function updatePerson(personId, name, role, gradYear) {
+  const typeMap = {
+    student: 'Student',
+    parent: 'Parent',
+    other: null,
+  };
+  const typeValue = typeMap[role] || typeMap[role?.toLowerCase()];
+
+  const fields = {};
+  if (name) fields[PPL.firstName] = name;
+  if (typeValue) fields[PPL.type] = [typeValue];
+  if (gradYear) fields[PPL.hsGradYear] = gradYear;
+
+  if (Object.keys(fields).length === 0) return;
+
+  await airtableFetch(PEOPLE_TABLE, 'PATCH', {
+    typecast: true,
+    records: [{ id: personId, fields }],
+  });
+}
+
 async function createQuizResult(token, personId, data) {
   const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
   const fields = {
@@ -294,7 +315,10 @@ module.exports = async function handler(req, res) {
     let personId;
     try {
       personId = await findPersonByEmail(email);
-      if (!personId) {
+      if (personId) {
+        // Update existing person with name/role/gradYear from quiz
+        await updatePerson(personId, name, role, gradYear);
+      } else {
         personId = await createPerson(name, email, role || 'student', gradYear);
       }
     } catch (err) {
