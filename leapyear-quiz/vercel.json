@@ -1,6 +1,7 @@
 {
   "rewrites": [
     { "source": "/faithdriven", "destination": "/faithdriven.html" },
+    { "source": "/brentwood", "destination": "/brentwood.html" },
     { "source": "/results/:token", "destination": "/results.html" }
   ],
   "headers": [
