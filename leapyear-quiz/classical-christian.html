@@ -110,6 +110,7 @@
     .cc-hero-media video {
       position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
     }
+    .cc-hero-media video { object-fit: cover; background: #000; }
     .cc-hero-media-fallback {
       position: absolute; inset: 0;
       display: flex; flex-direction: column;
@@ -378,7 +379,7 @@
           </div>
         </div>
 
-        <div class="cc-hero-media cc-reveal" id="cc-video" data-video-url="https://youtu.be/W2sBnH5Xdrw">
+        <div class="cc-hero-media cc-reveal" id="cc-video" data-video-url="https://pspxjyy2sekic5a3.public.blob.vercel-storage.com/Webinar%20Sample%20-%20good%20audio.mp4">
           <div class="cc-hero-media-fallback">
             <div class="cc-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
             <div>A 3-minute introduction from Riley</div>
@@ -536,6 +537,8 @@
       const url = (el.getAttribute('data-video-url') || '').trim();
       if (!url || url.charAt(0) === '[') return;
 
+      const isDirectVideo = /\.(mp4|webm|mov|m4v)(\?|$)/i.test(url);
+
       function embedUrl(raw) {
         try {
           const u = new URL(raw);
@@ -556,16 +559,26 @@
       const io = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          const src = embedUrl(url);
-          if (!src) return;
-          const iframe = document.createElement('iframe');
-          iframe.src = src;
-          iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
-          iframe.setAttribute('allowfullscreen', '');
-          iframe.setAttribute('loading', 'lazy');
-          iframe.setAttribute('title', 'LeapYear webinar introduction');
+          let media;
+          if (isDirectVideo) {
+            media = document.createElement('video');
+            media.src = url;
+            media.controls = true;
+            media.playsInline = true;
+            media.preload = 'metadata';
+            media.setAttribute('title', 'LeapYear webinar introduction');
+          } else {
+            const src = embedUrl(url);
+            if (!src) return;
+            media = document.createElement('iframe');
+            media.src = src;
+            media.allow = 'autoplay; encrypted-media; picture-in-picture';
+            media.setAttribute('allowfullscreen', '');
+            media.setAttribute('loading', 'lazy');
+            media.setAttribute('title', 'LeapYear webinar introduction');
+          }
           el.innerHTML = '';
-          el.appendChild(iframe);
+          el.appendChild(media);
           io.disconnect();
         });
       }, { rootMargin: '200px' });
