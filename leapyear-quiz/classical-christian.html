@@ -95,13 +95,16 @@
     .cc-hero-media {
       position: relative;
       width: 100%;
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 4 / 5;
       border-top-right-radius: clamp(2rem, 4vw, 4rem);
       border-bottom-left-radius: clamp(1rem, 2vw, 2rem);
       overflow: hidden;
       background:
         radial-gradient(circle at 28% 22%, rgba(241, 170, 95, 0.18), transparent 62%),
         linear-gradient(135deg, var(--cc-brunswick) 0%, var(--cc-night) 100%);
+    }
+    @media (min-width: 960px) {
+      .cc-hero-media { aspect-ratio: 5 / 6; }
     }
     .cc-hero-media iframe,
     .cc-hero-media video {
