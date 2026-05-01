@@ -7,6 +7,7 @@
     },
     { "source": "/faithdriven", "destination": "/faithdriven.html" },
     { "source": "/brentwood", "destination": "/brentwood.html" },
+    { "source": "/webinar", "destination": "/classical-christian.html" },
     { "source": "/results/:token", "destination": "/results.html" }
   ],
   "headers": [
