@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>LeapYear — A Webinar for Parents of Classically Educated Seniors</title>
-  <meta name="description" content="A free 45-minute webinar for parents of classically educated high school seniors. Launch your graduating senior with clarity, conviction, and a deeper faith.">
+  <title>How to give your senior the clarity, confidence, and conviction college won't | A LeapYear webinar for Christian parents.</title>
+  <meta name="description" content="A free 45-minute webinar for Christian parents of high school juniors and seniors. Walk away with a clearer plan for your senior's next year.">
   <meta content="width=device-width, initial-scale=1" name="viewport">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="How to give your senior the clarity, confidence, and conviction college won't | A LeapYear webinar for Christian parents.">
+  <meta property="og:description" content="A free 45-minute webinar for Christian parents of high school juniors and seniors. Walk away with a clearer plan for your senior's next year.">
+  <meta property="og:image" content="https://leapyear-quiz.vercel.app/assets/riley-headshot.jpg">
+  <meta name="twitter:card" content="summary_large_image">
 
   <!-- Webflow design system (fonts, tokens, typography classes, button base) -->
   <link href="css/webflow/normalize.css" rel="stylesheet" type="text/css">
@@ -210,6 +216,18 @@
       object-fit: cover;
       display: block;
     }
+    .cc-portrait--placeholder {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cc-portrait--placeholder span {
+      font-family: neulis-neue, sans-serif;
+      font-weight: 700;
+      font-size: clamp(3.5rem, 7vw, 5.5rem);
+      letter-spacing: -0.04em;
+      color: var(--cc-alabaster);
+      opacity: 0.78;
+    }
+    .cc-about-grid + .cc-about-grid { margin-top: clamp(3rem, 5vw, 5rem); }
     .cc-about-copy { display: flex; flex-direction: column; gap: 1.25rem; max-width: 34em; }
 
     /* =================== BIG QUOTE (program-page pattern) =================== */
@@ -330,6 +348,27 @@
       justify-content: center; align-items: center;
     }
 
+    /* =================== STICKY MOBILE CTA =================== */
+    .cc-sticky-cta { display: none; }
+    @media (max-width: 720px) {
+      .cc-sticky-cta {
+        display: flex;
+        position: fixed;
+        left: 0; right: 0; bottom: 0;
+        padding: 0.75rem var(--cc-sp-gutter) calc(0.75rem + env(safe-area-inset-bottom));
+        background: rgba(245, 241, 235, 0.94);
+        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(14px);
+        border-top: 1px solid var(--cc-ink-10);
+        z-index: 60;
+        transform: translateY(110%);
+        transition: transform 0.3s ease;
+      }
+      .cc-sticky-cta.is-visible { transform: translateY(0); }
+      .cc-sticky-cta .button { width: 100%; }
+      .cc-sticky-cta.is-visible ~ .cc-footer { padding-bottom: calc(2.5rem + 4.5rem + env(safe-area-inset-bottom)); }
+    }
+
     /* =================== FOOTER =================== */
     .cc-footer {
       background: var(--cc-night);
@@ -363,7 +402,7 @@
       <img src="https://cdn.prod.website-files.com/67d4936e49a6f8c99c6f200f/67d49d06a4ad6f9d4ce0c917_logo-dark.svg" alt="LeapYear">
     </a>
     <a href="#register" class="button button-primary button-small w-inline-block">
-      <div class="button-text">Register</div>
+      <div class="button-text">Save my seat</div>
     </a>
   </nav>
 
@@ -372,12 +411,12 @@
     <div class="cc-wrap">
       <div class="cc-hero-grid">
         <div class="cc-hero-copy cc-reveal">
-          <div class="cc-tag">A Webinar for Parents</div>
-          <h1 class="text-h1 text-balanced">For Parents of <span class="highlight-flame">Classically Educated</span> Seniors</h1>
-          <div class="text-lg">A free webinar on launching your graduating senior with clarity, conviction, and a deeper faith — before they pick a major or a career.</div>
+          <div class="cc-tag">A Webinar for Christian Parents</div>
+          <h1 class="text-h1 text-balanced">How to give your senior the <span class="highlight-flame">clarity, confidence, and conviction</span> college won't</h1>
+          <div class="text-lg">A free 45-minute conversation about launching your senior with clarity, conviction, and a deeper faith, before they pick a major or a path.</div>
           <div class="cc-hero-ctas">
             <a href="#register" class="button button-primary button-lg w-inline-block">
-              <div class="button-text">Register for a Parent Webinar</div>
+              <div class="button-text">Save my seat</div>
             </a>
             <a href="https://startleapyear.com" class="button button-tertiary">
               <div class="button-text">Or learn more about LeapYear →</div>
@@ -400,13 +439,13 @@
     <div class="cc-wrap">
       <div class="cc-head cc-head--center cc-reveal">
         <div class="cc-tag">What you'll walk away with</div>
-        <h2 class="text-h2 text-balanced">In 45 minutes, you'll leave with:</h2>
+        <h2 class="text-h2 text-balanced">In 45 minutes, you'll leave with three things.</h2>
       </div>
       <div class="cc-buckets">
         <article class="cc-bucket cc-reveal">
           <div class="cc-bucket-tag">01</div>
           <h4 class="text-h4">A clearer picture of what your senior needs now</h4>
-          <p class="text-reg">Beyond the college decision — what's actually at stake in the months between graduation and launch, and how to think about it clearly.</p>
+          <p class="text-reg">Beyond the college decision, what's actually at stake in the months between graduation and launch, and how to think about it clearly.</p>
         </article>
         <article class="cc-bucket cc-reveal">
           <div class="cc-bucket-tag">02</div>
@@ -430,13 +469,14 @@
         <h2 class="text-h2">Who this webinar is for</h2>
       </div>
       <div class="cc-who cc-reveal">
-        <p class="text-lg">You've given your student a classical Christian education because you believe <span class="highlight-sand">formation matters more than credentials</span>. You've invested in critical thinking, creative problem-solving, civil discourse, and a rooted faith. Now your senior is approaching a decision that most 18-year-olds aren't ready to make, in a world that's changing faster than any generation before them.</p>
-        <p class="text-lg">This webinar is for parents who want to think clearly about what their senior needs in this moment, and who are open to the idea that the year after high school might be the most formative year of their student's life.</p>
+        <p class="text-lg">This webinar is for Christian parents thinking carefully about what their senior needs in the year between high school and whatever comes next.</p>
+        <p class="text-lg">Maybe you homeschooled. Maybe you chose a classical Christian school. Maybe you've been the intentional Christian family inside a public school system. Whatever the path, you've spent years investing in <span class="highlight-sand">formation over credentials</span>, and now your senior is approaching a decision the system isn't designed to help them make well.</p>
+        <p class="text-lg">If you want to think clearly about what comes next, and if you're open to the idea that the year after high school might be the most formative year of your kid's life, this is for you.</p>
       </div>
     </div>
   </section>
 
-  <!-- ======= ABOUT RILEY ======= -->
+  <!-- ======= ABOUT RILEY + TAMI ======= -->
   <section class="cc-section cc-theme-cream">
     <div class="cc-wrap">
       <div class="cc-about-grid">
@@ -445,12 +485,31 @@
         </div>
         <div class="cc-about-copy cc-reveal">
           <div class="cc-tag">About your host</div>
-          <h3 class="text-h3">Riley Simpson, Founder of LeapYear.</h3>
+          <h3 class="text-h3">Riley Simpson, Founder of LeapYear</h3>
           <p class="text-reg">
-            Riley is the Founder of LeapYear, a 9-month leadership incubator in Austin, Texas for recent high school graduates. A <strong>Classical Conversations alum (Challenge B)</strong>, Riley took two gap years before college, studied entrepreneurship and theology at Abilene Christian University, and worked in education venture capital before founding LeapYear.
+            Riley is the founder of LeapYear. At eighteen he was burned out, unsure, and had no idea how to answer the question every senior gets: "So, what are you going to do?" At the wisdom of his parents, he took two years to explore before college: real estate, mediation, film, youth ministry. Those two years changed everything. He went from an unsure, exhausted student to someone who knew what he was about and could walk into a room with confidence and purpose.
           </p>
           <p class="text-reg">
-            The program's founding cohort includes students who deferred offers from <span class="highlight-sand">Stanford, Purdue, and Texas A&amp;M</span>.
+            Later, working in education venture capital at Learn Capital, Riley saw the bigger pattern: most students have no idea how to answer that question, and the system keeps asking it anyway. LeapYear is the program he wishes he'd had, designed to give every student that same clarity and confidence in nine months instead of two years. The founding cohort includes students who deferred offers from <span class="highlight-sand">Stanford, Purdue, and Texas A&amp;M</span>.
+          </p>
+          <p class="text-reg">
+            Riley lives in the Austin area with his wife Molly.
+          </p>
+        </div>
+      </div>
+
+      <div class="cc-about-grid">
+        <div class="cc-portrait cc-portrait--placeholder cc-reveal" aria-label="Tami Peterson">
+          <span aria-hidden="true">TP</span>
+        </div>
+        <div class="cc-about-copy cc-reveal">
+          <div class="cc-tag">Lead Coach</div>
+          <h3 class="text-h3">Tami Peterson, Lead Coach</h3>
+          <p class="text-reg">
+            Tami Peterson is the founder of Life Architects and LeapYear's lead coach. She has spent more than two decades coaching young adults and their families through the transition from high school to whatever comes next, including twelve years at Covenant Christian Academy in Dallas.
+          </p>
+          <p class="text-reg">
+            She holds dual coaching certifications (ACC-ICF and CCC-CCNI) and is a certified Highlands Ability Battery consultant with over fourteen years of experience helping students discover how they're built. She has served on the NACCAP Board of Directors and is a sought-after voice on student development, family transitions, and what it actually takes for a young adult to launch well.
           </p>
         </div>
       </div>
@@ -467,6 +526,16 @@
           <span>LeapYear Founding Cohort</span>
         </div>
       </div>
+
+      <!-- ====== PARENT TESTIMONIAL SLOT — enable when copy is cleared ======
+      <div class="cc-bigquote cc-reveal" style="margin-top: clamp(1.5rem, 3vw, 2.5rem);">
+        <div class="cc-bigquote-text">"[Parent quote goes here.]"</div>
+        <div class="cc-bigquote-footer">
+          <h5>— [Parent Name],</h5>
+          <span>Parent of LeapYear Founding Cohort</span>
+        </div>
+      </div>
+      ============================================================ -->
     </div>
   </section>
 
@@ -476,7 +545,7 @@
       <div class="cc-head cc-head--center cc-reveal">
         <div class="cc-tag">Register</div>
         <h2 class="text-h2 text-balanced">Pick a date that works for you.</h2>
-        <div class="text-lg">Three sessions. Same 45 minutes. Pick what fits your week.</div>
+        <div class="text-lg">Three sessions. Same 45 minutes. Pick what fits your week. Tami Peterson, LeapYear's lead coach, joins for the second half and stays for Q&amp;A.</div>
       </div>
 
       <div class="cc-dates-grid">
@@ -484,24 +553,24 @@
           <div class="cc-date-day">[DAY_1]</div>
           <h4 class="cc-date-date">[DATE_1]</h4>
           <div class="cc-date-time">[TIME_1]</div>
-          <a href="[ZOOM_URL_1]" target="_blank" rel="noopener" class="button button-primary button-small button-flame w-inline-block">
-            <div class="button-text">Register →</div>
+          <a href="[ZOOM_URL_1]" target="_blank" rel="noopener" class="button button-primary button-small button-flame w-inline-block" data-cta="date-1">
+            <div class="button-text">Save my seat →</div>
           </a>
         </article>
         <article class="cc-date-card cc-reveal">
           <div class="cc-date-day">[DAY_2]</div>
           <h4 class="cc-date-date">[DATE_2]</h4>
           <div class="cc-date-time">[TIME_2]</div>
-          <a href="[ZOOM_URL_2]" target="_blank" rel="noopener" class="button button-primary button-small button-flame w-inline-block">
-            <div class="button-text">Register →</div>
+          <a href="[ZOOM_URL_2]" target="_blank" rel="noopener" class="button button-primary button-small button-flame w-inline-block" data-cta="date-2">
+            <div class="button-text">Save my seat →</div>
           </a>
         </article>
         <article class="cc-date-card cc-reveal">
           <div class="cc-date-day">[DAY_3]</div>
           <h4 class="cc-date-date">[DATE_3]</h4>
           <div class="cc-date-time">[TIME_3]</div>
-          <a href="[ZOOM_URL_3]" target="_blank" rel="noopener" class="button button-primary button-small button-flame w-inline-block">
-            <div class="button-text">Register →</div>
+          <a href="[ZOOM_URL_3]" target="_blank" rel="noopener" class="button button-primary button-small button-flame w-inline-block" data-cta="date-3">
+            <div class="button-text">Save my seat →</div>
           </a>
         </article>
       </div>
@@ -516,12 +585,12 @@
   <section class="cc-section cc-theme-alab cc-final">
     <div class="cc-wrap">
       <div class="cc-head cc-reveal">
-        <h2 class="text-h2 text-balanced">Ready to explore what's next for your senior?</h2>
-        <div class="text-lg">The webinar is free. 45 minutes. Three dates to choose from.</div>
+        <h2 class="text-h2 text-balanced">Ready to think clearly about what's next?</h2>
+        <div class="text-lg">Whatever you decide about LeapYear, you'll leave the webinar more equipped than when you walked in. Three dates to pick from. Free. Forty-five minutes.</div>
       </div>
       <div class="cc-final-ctas cc-reveal">
-        <a href="#register" class="button button-primary button-lg w-inline-block">
-          <div class="button-text">Register for a Parent Webinar</div>
+        <a href="#register" class="button button-primary button-lg w-inline-block" data-cta="final">
+          <div class="button-text">Save my seat</div>
         </a>
         <a href="https://startleapyear.com" class="button button-tertiary">
           <div class="button-text">Learn more about LeapYear →</div>
@@ -529,6 +598,13 @@
       </div>
     </div>
   </section>
+
+  <!-- ======= STICKY MOBILE CTA ======= -->
+  <div class="cc-sticky-cta" aria-hidden="true">
+    <a href="#register" class="button button-primary w-inline-block" data-cta="sticky-mobile">
+      <div class="button-text">Save my seat</div>
+    </a>
+  </div>
 
   <!-- ======= FOOTER ======= -->
   <footer class="cc-footer">
@@ -598,6 +674,20 @@
         });
       }, { rootMargin: '200px' });
       io.observe(el);
+    })();
+
+    // Sticky mobile CTA: appear once the hero scrolls out of view
+    (function () {
+      const sticky = document.querySelector('.cc-sticky-cta');
+      const hero = document.querySelector('.cc-hero');
+      if (!sticky || !hero || !('IntersectionObserver' in window)) return;
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          sticky.classList.toggle('is-visible', !entry.isIntersecting);
+          sticky.setAttribute('aria-hidden', entry.isIntersecting ? 'true' : 'false');
+        });
+      }, { threshold: 0 });
+      io.observe(hero);
     })();
 
     // Fade-in reveal on scroll
