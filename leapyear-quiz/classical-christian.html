@@ -118,14 +118,20 @@
       gap: 1rem;
       color: var(--cc-alab-70);
       text-align: center; padding: 2rem;
+      z-index: 2;
+      transition: opacity 0.35s ease;
     }
+    .cc-hero-media-fallback.is-clickable { cursor: pointer; }
+    .cc-hero-media-fallback.is-hidden { opacity: 0; pointer-events: none; }
     .cc-play {
       width: 72px; height: 72px;
       border-radius: 50%;
       background: var(--cc-flame);
       display: flex; align-items: center; justify-content: center;
       box-shadow: 0 14px 32px rgba(221, 94, 50, 0.32);
+      transition: transform 0.2s ease;
     }
+    .cc-hero-media-fallback.is-clickable:hover .cc-play { transform: scale(1.06); }
     .cc-play svg { width: 24px; height: 24px; fill: var(--cc-alabaster); margin-left: 3px; }
 
     /* =================== SECTION HEADERS =================== */
@@ -559,26 +565,35 @@
       const io = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          let media;
           if (isDirectVideo) {
-            media = document.createElement('video');
-            media.src = url;
-            media.controls = true;
-            media.playsInline = true;
-            media.preload = 'metadata';
-            media.setAttribute('title', 'LeapYear webinar introduction');
+            const video = document.createElement('video');
+            video.src = url;
+            video.playsInline = true;
+            video.preload = 'metadata';
+            video.setAttribute('title', 'LeapYear webinar introduction');
+            const fallback = el.querySelector('.cc-hero-media-fallback');
+            el.insertBefore(video, el.firstChild);
+            if (fallback) {
+              fallback.classList.add('is-clickable');
+              fallback.addEventListener('click', () => {
+                video.controls = true;
+                video.play();
+                fallback.classList.add('is-hidden');
+                setTimeout(() => fallback.remove(), 400);
+              }, { once: true });
+            }
           } else {
             const src = embedUrl(url);
             if (!src) return;
-            media = document.createElement('iframe');
-            media.src = src;
-            media.allow = 'autoplay; encrypted-media; picture-in-picture';
-            media.setAttribute('allowfullscreen', '');
-            media.setAttribute('loading', 'lazy');
-            media.setAttribute('title', 'LeapYear webinar introduction');
+            const iframe = document.createElement('iframe');
+            iframe.src = src;
+            iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+            iframe.setAttribute('allowfullscreen', '');
+            iframe.setAttribute('loading', 'lazy');
+            iframe.setAttribute('title', 'LeapYear webinar introduction');
+            el.innerHTML = '';
+            el.appendChild(iframe);
           }
-          el.innerHTML = '';
-          el.appendChild(media);
           io.disconnect();
         });
       }, { rootMargin: '200px' });
