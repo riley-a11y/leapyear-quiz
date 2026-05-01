@@ -1,5 +1,10 @@
 {
   "rewrites": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "webinar.startleapyear.com" }],
+      "destination": "/classical-christian.html"
+    },
     { "source": "/faithdriven", "destination": "/faithdriven.html" },
     { "source": "/brentwood", "destination": "/brentwood.html" },
     { "source": "/results/:token", "destination": "/results.html" }
