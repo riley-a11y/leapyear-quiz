@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>LeapYear — Parent Webinar</title>
+  <meta name="description" content="A free 45-minute live conversation for Christian parents of juniors and seniors. Help your student launch with clarity, confidence, and conviction.">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="LeapYear — Webinar for Parents">
+  <meta property="og:description" content="A free 45-minute live conversation for Christian parents of juniors and seniors. Help your student launch with clarity, confidence, and conviction.">
+  <meta property="og:image" content="https://leapyear-quiz.vercel.app/assets/social-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LeapYear — Webinar for Parents">
+  <meta name="twitter:description" content="A free 45-minute live conversation for Christian parents of juniors and seniors. Help your student launch with clarity, confidence, and conviction.">
+  <meta name="twitter:image" content="https://leapyear-quiz.vercel.app/assets/social-preview.png">
+
+  <link href="css/webflow/normalize.css" rel="stylesheet" type="text/css">
+  <link href="css/webflow/webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/webflow/staging-startleapyear.webflow.css" rel="stylesheet" type="text/css">
+  <script src="https://use.typekit.net/gxr6ytx.js" type="text/javascript"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+  <link href="https://cdn.prod.website-files.com/67d4936e49a6f8c99c6f200f/67d4bd9d4c6b42259b3b58c5_favicon.png" rel="shortcut icon" type="image/x-icon">
+
+  <style>
+    :root {
+      --cc-night: #071411;
+      --cc-alabaster: #F5F1EB;
+      --cc-cream: #F1EFEC;
+      --cc-brunswick: #354A3D;
+      --cc-dark-green: #17322D;
+      --cc-flame: #DD5E32;
+      --cc-sand: #F1AA5F;
+      --cc-ink-60: rgba(7, 20, 17, 0.60);
+      --cc-ink-10: rgba(7, 20, 17, 0.10);
+      --cc-alab-70: rgba(245, 241, 235, 0.72);
+      --cc-alab-40: rgba(245, 241, 235, 0.45);
+
+      --cc-sp-section: clamp(5rem, 9vw, 9rem);
+      --cc-sp-section-tight: clamp(4rem, 7vw, 7rem);
+      --cc-sp-gutter: clamp(1.25rem, 4vw, 4rem);
+      --cc-max: 1240px;
+    }
+
+    body.body-parents {
+      background: var(--cc-alabaster);
+      color: var(--cc-night);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    img, video, iframe { display: block; max-width: 100%; }
+
+    .cc-wrap { max-width: var(--cc-max); margin: 0 auto; padding-left: var(--cc-sp-gutter); padding-right: var(--cc-sp-gutter); }
+    .cc-section { padding-top: var(--cc-sp-section); padding-bottom: var(--cc-sp-section); }
+    .cc-section--tight { padding-top: var(--cc-sp-section-tight); padding-bottom: var(--cc-sp-section-tight); }
+    .cc-theme-cream { background: var(--cc-cream); }
+    .cc-theme-alab  { background: var(--cc-alabaster); }
+    .cc-theme-dark  { background: var(--cc-night); color: var(--cc-alabaster); }
+    .cc-theme-dark .text-tagline { color: var(--cc-alab-70); }
+    .cc-theme-dark .text-lg { color: var(--cc-alab-70); }
+
+    /* =================== NAV =================== */
+    .cc-nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(245, 241, 235, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--cc-ink-10);
+      padding: 1rem var(--cc-sp-gutter);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .cc-nav img { height: 22px; width: auto; }
+    .cc-nav .button { padding: 10px 20px; height: auto; font-size: 14px; }
+
+    /* =================== HERO =================== */
+    .cc-hero { padding: clamp(3rem, 6vw, 5rem) 0 var(--cc-sp-section); }
+    .cc-hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(2.5rem, 5vw, 4rem);
+      align-items: center;
+    }
+    @media (min-width: 960px) {
+      .cc-hero-grid {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+        gap: clamp(4rem, 6vw, 6rem);
+      }
+    }
+    .cc-hero-copy { display: flex; flex-direction: column; gap: 1.75rem; max-width: 34em; }
+    .cc-hero-copy .cc-tag { margin-bottom: 0; }
+    .cc-hero-copy h1 { margin: 0; }
+    .cc-hero-copy .text-lg { margin: 0; max-width: 30em; line-height: 1.55; }
+    .cc-hero-sub {
+      font-family: area-normal, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--cc-ink-60);
+      max-width: 32em;
+      margin: 0;
+    }
+    .cc-hero-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem 1.75rem; margin-top: 0.5rem; }
+    .cc-hero-meta {
+      font-family: area-normal, sans-serif;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--cc-ink-60);
+      margin: 0;
+    }
+
+    .cc-hero-media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      border-top-left-radius: clamp(2rem, 4vw, 4rem);
+      border-bottom-right-radius: clamp(2rem, 4vw, 4rem);
+      border-top-right-radius: 0;
+      border-bottom-left-radius: 0;
+      overflow: hidden;
+      isolation: isolate;
+      background:
+        url('assets/hero-poster.jpg') center / cover no-repeat,
+        linear-gradient(135deg, var(--cc-brunswick) 0%, var(--cc-night) 100%);
+    }
+    @media (min-width: 960px) {
+      .cc-hero-media { aspect-ratio: 5 / 6; }
+    }
+    .cc-hero-media iframe,
+    .cc-hero-media video {
+      position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+      border-top-left-radius: clamp(2rem, 4vw, 4rem);
+      border-bottom-right-radius: clamp(2rem, 4vw, 4rem);
+    }
+    .cc-hero-media video { object-fit: cover; background: #000; }
+    .cc-hero-media-fallback {
+      position: absolute;
+      inset: auto 1rem 1rem 1rem;
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.625rem;
+      width: max-content;
+      max-width: calc(100% - 2rem);
+      padding: 0.5rem 1.125rem 0.5rem 0.5rem;
+      background: rgba(7, 20, 17, 0.42);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      border: 1px solid rgba(245, 241, 235, 0.16);
+      border-radius: 999px;
+      color: var(--cc-alabaster);
+      font-family: area-normal, sans-serif;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      letter-spacing: -0.005em;
+      text-align: left;
+      z-index: 2;
+      transition: opacity 0.35s ease, transform 0.2s ease, background 0.2s ease;
+    }
+    .cc-hero-media-fallback.is-clickable { cursor: pointer; }
+    .cc-hero-media-fallback.is-clickable:hover {
+      background: rgba(7, 20, 17, 0.62);
+      transform: translateY(-1px);
+    }
+    .cc-hero-media-fallback.is-hidden { opacity: 0; pointer-events: none; }
+    .cc-play {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--cc-flame);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 6px 16px rgba(221, 94, 50, 0.36);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .cc-hero-media-fallback.is-clickable:hover .cc-play {
+      transform: scale(1.08);
+      box-shadow: 0 8px 22px rgba(221, 94, 50, 0.45);
+    }
+    .cc-play svg { width: 12px; height: 12px; fill: var(--cc-alabaster); margin-left: 1.5px; }
+
+    /* =================== SECTION HEADERS =================== */
+    .cc-head {
+      max-width: 44rem;
+      margin-bottom: clamp(2.5rem, 5vw, 4rem);
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .cc-head--center { margin-left: auto; margin-right: auto; align-items: center; text-align: center; }
+    .cc-head h2 { margin: 0; }
+    .cc-head .text-lg { margin: 0; max-width: 38em; }
+    .cc-tag {
+      font-family: area-normal, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--cc-ink-60);
+    }
+    .cc-theme-dark .cc-tag { color: var(--cc-alab-70); }
+
+    /* =================== FOUNDER NOTE (long-form prose, signed) =================== */
+    .cc-note {
+      max-width: 38rem;
+      margin: 0 auto;
+      display: flex; flex-direction: column;
+      gap: 1.25rem;
+    }
+    .cc-note .text-lg,
+    .cc-note p {
+      margin: 0;
+      max-width: none;
+    }
+    .cc-note .cc-tag { margin-bottom: 0.75rem; }
+    .cc-note h2 { margin: 0 0 0.5rem; }
+    .cc-note-cta {
+      margin-top: 1.5rem;
+      display: flex; flex-wrap: wrap;
+      gap: 1.25rem 1.75rem;
+      align-items: center;
+    }
+    .cc-note-sign {
+      font-family: neulis-neue, sans-serif;
+      font-weight: 700;
+      font-size: 1.125rem;
+      letter-spacing: -0.015em;
+      color: var(--cc-night);
+      margin-top: 0.5rem;
+    }
+    .cc-note-sign span {
+      display: block;
+      font-family: area-normal, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cc-ink-60);
+      margin-top: 0.25rem;
+    }
+
+    /* =================== PROBLEM (centered, callouts) =================== */
+    .cc-problem { max-width: 40rem; margin: 0 auto; text-align: center; }
+    .cc-problem h2 { margin: 0 0 2rem; }
+    .cc-problem p { margin: 0 0 1.25rem; }
+    .cc-problem p:last-child { margin-bottom: 0; }
+    .cc-problem-pull {
+      font-family: neulis-neue, sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.25rem, 2.2vw, 1.625rem);
+      line-height: 1.3;
+      letter-spacing: -0.015em;
+      color: var(--cc-night);
+      max-width: 28em;
+      margin: 2rem auto !important;
+    }
+    .cc-problem-pull .highlight-flame { color: var(--cc-flame); }
+
+    /* =================== WHO IT'S FOR (bullet list) =================== */
+    .cc-who { max-width: 46rem; }
+    .cc-who p { margin: 0; }
+    .cc-who p + p { margin-top: 1.5em; }
+    .cc-who-list {
+      margin: 2rem 0 0;
+      padding: 0;
+      list-style: none;
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .cc-who-list li {
+      padding-left: 1.75rem;
+      position: relative;
+      font-family: neulis-neue, sans-serif;
+      font-weight: 400;
+      font-size: clamp(1.0625rem, 1.4vw, 1.1875rem);
+      line-height: 1.5;
+      color: var(--cc-night);
+    }
+    .cc-who-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.7em;
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background: var(--cc-flame);
+    }
+
+    /* =================== FRAMEWORK (3 pillars, stacked deep) =================== */
+    .cc-framework-intro {
+      max-width: 44rem;
+      margin: 0 auto clamp(3.5rem, 6vw, 5rem);
+      text-align: center;
+      display: flex; flex-direction: column; gap: 1.25rem;
+    }
+    .cc-framework-intro h2 { margin: 0; }
+    .cc-framework-intro p { margin: 0; }
+    .cc-pillars {
+      display: flex; flex-direction: column;
+      gap: clamp(2.5rem, 5vw, 4rem);
+      max-width: 46rem;
+      margin: 0 auto;
+    }
+    .cc-pillar {
+      background: rgba(245, 241, 235, 0.04);
+      border: 1px solid rgba(245, 241, 235, 0.10);
+      border-radius: clamp(1rem, 1.5vw, 1.25rem);
+      padding: clamp(2rem, 4vw, 3rem);
+      display: flex; flex-direction: column;
+      gap: 1.25rem;
+    }
+    .cc-pillar-num {
+      font-family: area-normal, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--cc-sand);
+      margin: 0;
+    }
+    .cc-pillar h3 {
+      margin: 0;
+      color: var(--cc-alabaster);
+    }
+    .cc-pillar p { margin: 0; color: var(--cc-alab-70); }
+    .cc-pillar-q {
+      font-family: neulis-neue, sans-serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(1.0625rem, 1.5vw, 1.25rem);
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      color: var(--cc-sand);
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(245, 241, 235, 0.12);
+      margin: 0.75rem 0 0;
+    }
+
+    /* =================== TAKEAWAYS (light, list-style) =================== */
+    .cc-takeaways {
+      max-width: 44rem;
+      margin: 0 auto;
+      display: flex; flex-direction: column;
+      gap: 1.25rem;
+    }
+    .cc-takeaways p { margin: 0; }
+    .cc-takeaways-cta {
+      margin-top: 2.5rem;
+      display: flex; flex-wrap: wrap;
+      gap: 1.25rem 1.75rem;
+      align-items: center;
+    }
+
+    /* =================== ABOUT LEAPYEAR =================== */
+    .cc-product {
+      max-width: 44rem;
+      margin: 0 auto;
+      display: flex; flex-direction: column;
+      gap: 1.25rem;
+    }
+    .cc-product p { margin: 0; }
+
+    /* =================== HOST (split) =================== */
+    .cc-about-grid {
+      display: grid; grid-template-columns: 1fr; gap: 2.5rem;
+      align-items: center;
+    }
+    @media (min-width: 860px) {
+      .cc-about-grid {
+        grid-template-columns: minmax(260px, 340px) 1fr;
+        gap: clamp(3rem, 5vw, 5rem);
+      }
+    }
+    .cc-portrait {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      border-radius: 1rem;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 28% 24%, rgba(241, 170, 95, 0.18), transparent 62%),
+        linear-gradient(160deg, var(--cc-brunswick) 0%, var(--cc-night) 100%);
+      position: relative;
+    }
+    .cc-portrait img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .cc-about-grid + .cc-about-grid { margin-top: clamp(3rem, 5vw, 5rem); }
+    .cc-about-copy { display: flex; flex-direction: column; gap: 1.25rem; max-width: 34em; }
+
+    /* =================== TESTIMONIALS (organic scroll carousel) =================== */
+    .cc-testimonials-outer {
+      padding: var(--cc-sp-section-tight) 0;
+      max-width: 1488px;
+      margin: 0 auto;
+    }
+    .cc-testimonials-head {
+      max-width: 38rem;
+      margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+      padding: 0 var(--cc-sp-gutter);
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+      gap: 0.875rem;
+    }
+    .cc-testimonials-head h2 { margin: 0; }
+
+    .cc-testimonials-track {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 96%;
+      gap: clamp(1rem, 2vw, 1.75rem);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding: 0.5rem var(--cc-sp-gutter) 1.5rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(7, 20, 17, 0.18) transparent;
+    }
+    @media (min-width: 720px) {
+      .cc-testimonials-track { grid-auto-columns: 60%; }
+    }
+    @media (min-width: 1080px) {
+      .cc-testimonials-track { grid-auto-columns: 46%; }
+    }
+    .cc-testimonials-track::-webkit-scrollbar { height: 4px; }
+    .cc-testimonials-track::-webkit-scrollbar-thumb {
+      background: rgba(7, 20, 17, 0.16);
+      border-radius: 2px;
+    }
+    .cc-testimonials-track::-webkit-scrollbar-thumb:hover {
+      background: rgba(7, 20, 17, 0.32);
+    }
+
+    .cc-testimonial {
+      scroll-snap-align: center;
+      position: relative;
+      overflow: hidden;
+      color: var(--cc-alabaster);
+      min-height: clamp(420px, 50vh, 520px);
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      isolation: isolate;
+      border-top-left-radius: clamp(2rem, 4vw, 3.5rem);
+      border-bottom-right-radius: clamp(2rem, 4vw, 3.5rem);
+      border-top-right-radius: clamp(0.625rem, 1vw, 0.875rem);
+      border-bottom-left-radius: clamp(0.625rem, 1vw, 0.875rem);
+    }
+    .cc-testimonial:nth-child(even) {
+      border-top-left-radius: clamp(0.625rem, 1vw, 0.875rem);
+      border-bottom-right-radius: clamp(0.625rem, 1vw, 0.875rem);
+      border-top-right-radius: clamp(2rem, 4vw, 3.5rem);
+      border-bottom-left-radius: clamp(2rem, 4vw, 3.5rem);
+    }
+
+    .cc-testimonial-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 25%;
+      z-index: 0;
+    }
+    .cc-testimonial::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(7, 20, 17, 0) 0%,
+        rgba(7, 20, 17, 0) 32%,
+        rgba(7, 20, 17, 0.55) 62%,
+        rgba(7, 20, 17, 0.94) 100%
+      );
+      z-index: 1;
+      pointer-events: none;
+    }
+    .cc-testimonial-body {
+      position: relative;
+      z-index: 2;
+      padding: clamp(2rem, 3.5vw, 3rem);
+      display: flex; flex-direction: column;
+      gap: clamp(1.25rem, 2vw, 1.75rem);
+    }
+    .cc-testimonial-text {
+      font-family: area-normal, sans-serif;
+      font-weight: 400;
+      font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+      line-height: 1.5;
+      letter-spacing: -0.005em;
+      color: var(--cc-alabaster);
+      text-wrap: pretty;
+      margin: 0;
+      text-shadow: 0 1px 12px rgba(7, 20, 17, 0.35);
+    }
+    .cc-testimonial-attr {
+      padding-top: clamp(0.75rem, 1.5vw, 1rem);
+      border-top: 1px solid rgba(245, 241, 235, 0.20);
+    }
+    .cc-testimonial-attr h5 {
+      font-family: neulis-neue, sans-serif;
+      font-weight: 700;
+      font-size: 1.0625rem;
+      letter-spacing: -0.015em;
+      color: var(--cc-alabaster);
+      margin: 0 0 0.3rem;
+    }
+    .cc-testimonial-attr span {
+      font-family: area-normal, sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cc-alab-70);
+    }
+
+    .cc-testimonials-dots {
+      display: flex; justify-content: center; align-items: center;
+      gap: 0.5rem;
+      margin-top: clamp(1.25rem, 2vw, 2rem);
+      padding: 0 var(--cc-sp-gutter);
+    }
+    .cc-testimonials-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      border: 0;
+      padding: 0;
+      background: rgba(7, 20, 17, 0.18);
+      cursor: pointer;
+      transition: background 0.2s ease, width 0.25s ease, border-radius 0.25s ease;
+    }
+    .cc-testimonials-dot:hover { background: rgba(7, 20, 17, 0.36); }
+    .cc-testimonials-dot.is-active {
+      background: var(--cc-flame);
+      width: 28px;
+      border-radius: 5px;
+    }
+    .cc-testimonials-dot.is-active:hover { background: var(--cc-flame); }
+
+    /* =================== DATE CARDS =================== */
+    .cc-dates-grid {
+      display: grid; grid-template-columns: 1fr; gap: 1rem;
+      max-width: 1120px; margin: 0 auto;
+    }
+    @media (min-width: 820px) {
+      .cc-dates-grid { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    }
+    .cc-date-card {
+      background: var(--cc-alabaster);
+      border: 1px solid var(--cc-ink-10);
+      border-radius: 1rem;
+      padding: 2.25rem 2rem;
+      display: flex; flex-direction: column;
+      gap: 0.25rem;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .cc-date-card:hover {
+      border-color: var(--cc-flame);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 36px rgba(7, 20, 17, 0.06);
+    }
+    .cc-date-day {
+      font-family: area-normal, sans-serif;
+      font-size: 0.875rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--cc-ink-60);
+      margin-bottom: 0.75rem;
+    }
+    .cc-date-date {
+      font-family: neulis-neue, sans-serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 2.6vw, 2.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--cc-night);
+      margin: 0;
+    }
+    .cc-date-time {
+      font-family: area-normal, sans-serif;
+      font-size: 1.25rem; line-height: 1.4;
+      font-weight: 500;
+      color: var(--cc-night);
+      margin: 0.5rem 0 2rem;
+    }
+    .cc-date-card .button {
+      margin-top: auto;
+      align-self: flex-start;
+    }
+    .cc-dates-alt {
+      text-align: center;
+      font-size: 1rem;
+      color: var(--cc-ink-60);
+      margin-top: 2.5rem;
+    }
+    .cc-dates-alt a {
+      color: var(--cc-night);
+      font-weight: 600;
+      text-decoration: none;
+      border-bottom: 1px solid var(--cc-ink-10);
+      padding-bottom: 2px;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .cc-dates-alt a:hover { color: var(--cc-flame); border-bottom-color: var(--cc-flame); }
+
+    /* =================== FAQ (native <details>) =================== */
+    .cc-faq {
+      max-width: 44rem;
+      margin: 0 auto;
+      display: flex; flex-direction: column;
+      gap: 0.75rem;
+    }
+    .cc-faq details {
+      background: var(--cc-alabaster);
+      border: 1px solid var(--cc-ink-10);
+      border-radius: 0.875rem;
+      padding: 1.25rem 1.5rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .cc-faq details[open] {
+      border-color: rgba(7, 20, 17, 0.18);
+      box-shadow: 0 10px 28px rgba(7, 20, 17, 0.04);
+    }
+    .cc-faq summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem;
+      font-family: neulis-neue, sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.0625rem, 1.4vw, 1.1875rem);
+      line-height: 1.4;
+      letter-spacing: -0.015em;
+      color: var(--cc-night);
+    }
+    .cc-faq summary::-webkit-details-marker { display: none; }
+    .cc-faq summary::after {
+      content: '+';
+      font-family: neulis-neue, sans-serif;
+      font-weight: 400;
+      font-size: 1.5rem;
+      line-height: 1;
+      color: var(--cc-flame);
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+    .cc-faq details[open] summary::after {
+      content: '–';
+    }
+    .cc-faq-body {
+      margin-top: 1rem;
+      font-family: area-normal, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--cc-ink-60);
+    }
+    .cc-faq-body p { margin: 0; }
+    .cc-faq-body p + p { margin-top: 0.875em; }
+
+    /* =================== FINAL CTA =================== */
+    .cc-final { text-align: center; }
+    .cc-final .cc-head { margin-left: auto; margin-right: auto; text-align: center; align-items: center; }
+    .cc-final-ctas {
+      display: inline-flex; flex-wrap: wrap; gap: 1.25rem 1.75rem;
+      justify-content: center; align-items: center;
+    }
+    .cc-final-meta {
+      margin-top: 2rem;
+      font-family: area-normal, sans-serif;
+      font-size: 0.875rem;
+      color: var(--cc-ink-60);
+    }
+
+    /* =================== STICKY MOBILE CTA =================== */
+    .cc-sticky-cta { display: none; }
+    @media (max-width: 720px) {
+      .cc-sticky-cta {
+        display: flex;
+        position: fixed;
+        left: 0; right: 0; bottom: 0;
+        padding: 0.75rem var(--cc-sp-gutter) calc(0.75rem + env(safe-area-inset-bottom));
+        background: rgba(245, 241, 235, 0.94);
+        -webkit-backdrop-filter: blur(14px);
+        backdrop-filter: blur(14px);
+        border-top: 1px solid var(--cc-ink-10);
+        z-index: 60;
+        transform: translateY(110%);
+        transition: transform 0.3s ease;
+      }
+      .cc-sticky-cta.is-visible { transform: translateY(0); }
+      .cc-sticky-cta .button { width: 100%; }
+      .cc-sticky-cta.is-visible ~ .cc-footer { padding-bottom: calc(2.5rem + 4.5rem + env(safe-area-inset-bottom)); }
+    }
+
+    /* =================== FOOTER =================== */
+    .cc-footer {
+      background: var(--cc-night);
+      color: var(--cc-alab-40);
+      padding: 2.5rem var(--cc-sp-gutter);
+      text-align: center;
+      font-family: area-normal, sans-serif;
+      font-size: 0.75rem;
+    }
+    .cc-footer a { color: rgba(245, 241, 235, 0.72); text-decoration: none; }
+    .cc-footer a:hover { color: var(--cc-alabaster); }
+
+    .button { text-decoration: none; }
+    .button .button-text { line-height: 1; }
+
+    .cc-reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .cc-reveal.is-visible { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) {
+      .cc-reveal { opacity: 1; transform: none; transition: none; }
+    }
+  </style>
+</head>
+<body class="body-parents">
+
+  <!-- ======= NAV ======= -->
+  <nav class="cc-nav">
+    <a href="https://startleapyear.com" aria-label="LeapYear home">
+      <img src="https://cdn.prod.website-files.com/67d4936e49a6f8c99c6f200f/67d49d06a4ad6f9d4ce0c917_logo-dark.svg" alt="LeapYear">
+    </a>
+    <a href="#register" class="button button-primary button-small w-inline-block">
+      <div class="button-text">Save my seat</div>
+    </a>
+  </nav>
+
+  <!-- ======= HERO ======= -->
+  <header class="cc-hero">
+    <div class="cc-wrap">
+      <div class="cc-hero-grid">
+        <div class="cc-hero-copy cc-reveal">
+          <div class="cc-tag">A Live Webinar for Christian Parents</div>
+          <h1 class="text-h1 text-balanced">Your senior may be college-accepted. <span class="highlight-flame">But are they ready to launch?</span></h1>
+          <div class="text-lg">A free 45-minute live conversation for parents of high school juniors and seniors who want to help their student take their next step with clarity, maturity, and deep faith.</div>
+          <p class="cc-hero-sub">Whether your student is headed to college, considering a gap year, or still unsure what comes next, this webinar will help you think clearly about one of the most formative transitions of their life.</p>
+          <div class="cc-hero-ctas">
+            <a href="#register" class="button button-primary button-lg w-inline-block" data-cta="hero">
+              <div class="button-text">Save my seat</div>
+            </a>
+            <a href="https://startleapyear.com" class="button button-tertiary">
+              <div class="button-text">Learn more about LeapYear →</div>
+            </a>
+          </div>
+          <p class="cc-hero-meta">Live sessions: May 16, May 18, and May 20.</p>
+        </div>
+
+        <div class="cc-hero-media cc-reveal" id="cc-video" data-video-url="https://pspxjyy2sekic5a3.public.blob.vercel-storage.com/Landing%20Page%20vid%20with%20Subs.mp4">
+          <div class="cc-hero-media-fallback">
+            <div class="cc-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+            <div>Note from the founder</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======= FOUNDER NOTE ======= -->
+  <section class="cc-section cc-theme-cream">
+    <div class="cc-wrap">
+      <div class="cc-note cc-reveal">
+        <div class="cc-tag">A note from Riley</div>
+        <h2 class="text-h2 text-balanced">When I was 18, I had no idea what I was doing.</h2>
+        <p class="text-lg">I was burned out. I was tired of performing. And every time someone asked me, "So, what are you going to do?" I felt this quiet panic.</p>
+        <p class="text-lg">I knew how to get good grades. I knew how to look capable. But I did not know who I was becoming. I did not know what I was built for. And I was not ready to choose a path with confidence.</p>
+        <p class="text-lg">By the grace of God, my parents gave me time. Not time to drift. <span class="highlight-sand">Time to explore.</span></p>
+        <p class="text-lg">I spent two years trying real things: real estate, mediation, film, youth ministry. Those two years changed the whole trajectory of my life.</p>
+        <p class="text-lg">Later, while working in education venture capital, I saw the bigger pattern. Most students are being asked to make major life decisions before they've had enough formation, exposure, or self-knowledge to make those decisions well.</p>
+        <p class="text-lg">That's why I started LeapYear. And that's why I'm hosting this webinar.</p>
+        <p class="text-lg">Even if LeapYear is not the right fit for your family, I want you to leave with a better way to think about the year after high school.</p>
+        <div class="cc-note-sign">
+          Riley Simpson
+          <span>Founder, LeapYear</span>
+        </div>
+        <div class="cc-note-cta">
+          <a href="#register" class="button button-primary button-lg w-inline-block" data-cta="founder-note">
+            <div class="button-text">Save my seat</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= PROBLEM ======= -->
+  <section class="cc-section cc-theme-alab">
+    <div class="cc-wrap">
+      <div class="cc-problem cc-reveal">
+        <div class="cc-tag" style="margin-bottom: 1rem;">The bigger question</div>
+        <h2 class="text-h2 text-balanced">The college decision is not the only decision.</h2>
+        <p class="text-lg">For a lot of families, senior year becomes a race to answer one question:</p>
+        <p class="cc-problem-pull"><span class="highlight-flame">Where are they going next?</span></p>
+        <p class="text-lg">That question matters. But it is not the whole question.</p>
+        <p class="text-lg">A better question is:</p>
+        <p class="cc-problem-pull"><span class="highlight-flame">Are they ready for what comes next?</span></p>
+        <p class="text-lg">Because a student can be smart, accepted, talented, and loved by God, and still not be ready for the level of freedom, pressure, distraction, and responsibility waiting for them after high school.</p>
+        <p class="text-lg">This is especially true for Christian families.</p>
+        <p class="text-lg">You have spent years caring about formation, not just achievement. You have prayed, invested, taught, sacrificed, and tried to help your student become the kind of person who can live faithfully in the world.</p>
+        <p class="text-lg">Then, suddenly, the system asks them to choose a school, a major, a path, and a future — and everyone acts like that is normal.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= WHO IT'S FOR ======= -->
+  <section class="cc-section cc-theme-cream">
+    <div class="cc-wrap">
+      <div class="cc-head cc-reveal">
+        <div class="cc-tag">The audience</div>
+        <h2 class="text-h2">This webinar is for you if…</h2>
+      </div>
+      <div class="cc-who cc-reveal">
+        <ul class="cc-who-list">
+          <li>Your senior is capable, but still unclear about what they want to do.</li>
+          <li>They are accepted to college, but you wonder whether they are ready for the freedom of it.</li>
+          <li>They are spiritually sincere, but you're concerned about what will form them next.</li>
+          <li>They are bright, thoughtful, or high-potential, but they need more ownership.</li>
+          <li>They are considering a gap year, but you do not want a year of drifting.</li>
+          <li>They are not considering a gap year, but you want a better framework for helping them launch well.</li>
+          <li>You're the parent of a junior, and you don't want to wait until next spring to start thinking about this.</li>
+        </ul>
+        <p class="text-lg" style="margin-top: 2rem;">You may have homeschooled. You may have chosen a classical Christian school. You may have been the intentional Christian family inside a public school system.</p>
+        <p class="text-lg">Whatever your path, this conversation is for parents who sense that <span class="highlight-sand">the year after high school is too important to handle by default</span>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= FRAMEWORK (3 pillars) ======= -->
+  <section class="cc-section cc-theme-dark">
+    <div class="cc-wrap">
+      <div class="cc-framework-intro cc-reveal">
+        <div class="cc-tag">The framework</div>
+        <h2 class="text-h2 text-balanced">The Launch Readiness Framework</h2>
+        <p class="text-lg">Most families ask, "What should my senior do next?" The Launch Readiness Framework asks a different question.</p>
+        <p class="text-lg" style="font-style: italic;">What needs to be true of them <em>before</em> they launch?</p>
+        <p class="text-lg">In the webinar, I'll walk you through the three areas we use at LeapYear to think about this transition.</p>
+      </div>
+
+      <div class="cc-pillars">
+        <article class="cc-pillar cc-reveal">
+          <div class="cc-pillar-num">01 · Career Clarity</div>
+          <h3 class="text-h3">What am I built for, and what should I explore next?</h3>
+          <p class="text-reg">Not a locked-in career plan. Not a forced major. Not pressure to have life figured out at 18.</p>
+          <p class="text-reg">Career clarity means your student has enough self-knowledge, exposure, and real-world feedback to begin making wise next-step decisions. They need to understand what they're naturally good at. They need to see real work up close. They need to test their assumptions. They need adults who can help them interpret what they're noticing.</p>
+        </article>
+
+        <article class="cc-pillar cc-reveal">
+          <div class="cc-pillar-num">02 · Leadership Capacity</div>
+          <h3 class="text-h3">Can I take responsibility for the life God has given me?</h3>
+          <p class="text-reg">A student can be academically ready and still not be ready to lead their own life. Leadership capacity is about ownership.</p>
+          <p class="text-reg">Can they manage their time? Can they communicate with adults? Can they take responsibility without constant reminders? Can they move toward hard things instead of avoiding them? Can they make a plan, follow through, reflect, and try again?</p>
+          <p class="text-reg">This is not about becoming impressive. It is about becoming the kind of person who can be trusted with freedom.</p>
+        </article>
+
+        <article class="cc-pillar cc-reveal">
+          <div class="cc-pillar-num">03 · Spiritual Formation</div>
+          <h3 class="text-h3">Who will they become when they get there?</h3>
+          <p class="text-reg">This is the deepest layer. Your senior is not just choosing a college, major, or job path. They are becoming someone.</p>
+          <p class="text-reg">After high school, the pace of that formation often speeds up. New freedoms. New friends. New ideas. New temptations. New pressure. New loneliness. New opportunity.</p>
+          <p class="text-reg">For Christian parents, the question cannot only be, "Where will they go?" It also has to be who they will become when they get there — and what it will take to help them build conviction, practice faithfulness, and integrate their life with God before they step into the next season.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= WHAT YOU'LL WALK AWAY WITH ======= -->
+  <section class="cc-section cc-theme-alab">
+    <div class="cc-wrap">
+      <div class="cc-head cc-head--center cc-reveal">
+        <div class="cc-tag">What you'll walk away with</div>
+        <h2 class="text-h2 text-balanced">By the end of 45 minutes, you'll have…</h2>
+      </div>
+      <div class="cc-takeaways cc-reveal">
+        <p class="text-lg">A clearer way to think about your student's next step — and why <span class="highlight-sand">"college-ready" and "launch-ready" are not always the same thing</span>.</p>
+        <p class="text-lg">The ability to name the areas where your student may need more growth, clarity, or support.</p>
+        <p class="text-lg">A practical framework for discerning whether your student is ready to move straight into college, take a structured gap year, or pursue another path.</p>
+        <p class="text-lg">Time to ask questions about LeapYear, the cohort, the rhythm of the program, and whether it could be the right fit for your family.</p>
+        <div class="cc-takeaways-cta">
+          <a href="#register" class="button button-primary button-lg w-inline-block" data-cta="takeaways">
+            <div class="button-text">Save my seat</div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= TESTIMONIALS ======= -->
+  <section class="cc-theme-cream">
+    <div class="cc-testimonials-outer">
+      <div class="cc-testimonials-head cc-reveal">
+        <div class="cc-tag">From the cohort</div>
+        <h2 class="text-h2 text-balanced">What students and parents are saying</h2>
+      </div>
+      <div class="cc-testimonials-track" id="cc-testimonials" role="region" aria-label="Testimonials">
+        <article class="cc-testimonial">
+          <img class="cc-testimonial-photo" src="assets/testimonial-dominic.png" alt="Dominic Johnson">
+          <div class="cc-testimonial-body">
+            <p class="cc-testimonial-text">"LeapYear helped my application to St. John's College stand out, and my coach was instrumental in helping me secure an 80% scholarship for all four years. I came into LeapYear without a plan for college, and I've narrowed down my personal curiosities and orientation to a career."</p>
+            <div class="cc-testimonial-attr">
+              <h5>Dominic Johnson</h5>
+              <span>LeapYear Founding Cohort</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="cc-testimonial">
+          <img class="cc-testimonial-photo" src="assets/testimonial-will-walker.png" alt="Will Walker">
+          <div class="cc-testimonial-body">
+            <p class="cc-testimonial-text">"Within the first month, my son called me after the opening retreat and we had one of the best conversations we've ever had — I don't know that anyone had ever encouraged him that intentionally outside of our family. Before he wouldn't order food from a waiter, and by the end of the year he was walking up to music industry executives, introducing himself, and walking away with their phone number. We've watched him grow in confidence, faith, and direction."</p>
+            <div class="cc-testimonial-attr">
+              <h5>Will Walker</h5>
+              <span>Parent of LeapYear Founding Cohort</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="cc-testimonial">
+          <img class="cc-testimonial-photo" src="assets/testimonial-founding-cohort.png" alt="LeapYear founding cohort member">
+          <div class="cc-testimonial-body">
+            <p class="cc-testimonial-text">"I went from someone who was depressed, anxious, lost, confused, and totally stuck to someone who finds the joy in life, someone who is motivated and excited about their future, and someone who has grown to love people and love God."</p>
+            <div class="cc-testimonial-attr">
+              <h5>Founding Cohort Member</h5>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="cc-testimonials-dots" id="cc-testimonials-dots" role="tablist" aria-label="Testimonial navigation"></div>
+    </div>
+  </section>
+
+  <!-- ======= ABOUT LEAPYEAR ======= -->
+  <section class="cc-section cc-theme-alab">
+    <div class="cc-wrap">
+      <div class="cc-head cc-head--center cc-reveal">
+        <div class="cc-tag">About LeapYear</div>
+        <h2 class="text-h2 text-balanced">The program behind the framework</h2>
+      </div>
+      <div class="cc-product cc-reveal">
+        <p class="text-lg">LeapYear is a 12-month leadership accelerator for students after high school. We built it because students need more than a pause — they need structure, coaching, real-world exposure, and spiritual formation, all in a serious environment where they can grow up before being asked to choose a path.</p>
+        <p class="text-lg">Students spend the year discovering how they're built, testing career paths through real work, building durable life skills, growing in faith with mentors and peers, and stepping into adulthood with more courage and direction than they could ever develop in a classroom alone.</p>
+        <p class="text-lg">The founding cohort includes students who deferred offers from <span class="highlight-sand">Stanford, Purdue, and Texas A&amp;M</span>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= HOST ======= -->
+  <section class="cc-section cc-theme-cream">
+    <div class="cc-wrap">
+      <div class="cc-head cc-head--center cc-reveal">
+        <div class="cc-tag">Your host</div>
+        <h2 class="text-h2">Who's leading the conversation</h2>
+      </div>
+
+      <div class="cc-about-grid">
+        <div class="cc-portrait cc-reveal">
+          <img src="assets/riley-headshot.jpg" alt="Riley Simpson">
+        </div>
+        <div class="cc-about-copy cc-reveal">
+          <div class="cc-tag">Founder &amp; Host</div>
+          <h3 class="text-h3">Riley Simpson</h3>
+          <p class="text-reg">Riley is the founder of LeapYear. Before starting it, he spent years in education venture capital at Learn Capital, where he saw firsthand that most students are being asked to choose a future before they have been formed enough to choose wisely. LeapYear is the program he wishes he'd had at 18.</p>
+          <p class="text-reg">He lives in the Austin area with his wife Molly.</p>
+        </div>
+      </div>
+
+      <div class="cc-about-grid">
+        <div class="cc-portrait cc-reveal">
+          <img src="assets/tami-headshot.png" alt="Tami Peterson">
+        </div>
+        <div class="cc-about-copy cc-reveal">
+          <div class="cc-tag">Lead Coach</div>
+          <h3 class="text-h3">Tami Peterson</h3>
+          <p class="text-reg">Tami Peterson is the founder of Life Architects and LeapYear's lead coach. She has spent more than two decades coaching young adults and their families through the transition from high school to whatever comes next, including twelve years at Covenant Christian Academy in Dallas.</p>
+          <p class="text-reg">She holds dual coaching certifications (ACC-ICF and CCC-CCNI) and is a certified Highlands Ability Battery consultant with over fourteen years of experience helping students discover how they're built.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= REGISTER (dates) ======= -->
+  <section class="cc-section cc-theme-alab" id="register">
+    <div class="cc-wrap">
+      <div class="cc-head cc-head--center cc-reveal">
+        <div class="cc-tag">Register</div>
+        <h2 class="text-h2 text-balanced">Choose your live session</h2>
+        <div class="text-lg">This is a live conversation, not a recording. Each session covers the same material and includes time for Q&amp;A. Pick the time that works best for your family.</div>
+      </div>
+
+      <div class="cc-dates-grid">
+        <article class="cc-date-card cc-reveal">
+          <div class="cc-date-day">Saturday</div>
+          <h4 class="cc-date-date">May 16</h4>
+          <div class="cc-date-time">10:00 AM CT</div>
+          <a href="https://us06web.zoom.us/meeting/register/-dzoggguTimoPOFAtaqnhA#/registration" target="_blank" rel="noopener" class="button button-primary button-small button-flame w-inline-block" data-cta="date-1">
+            <div class="button-text">Save my seat →</div>
+          </a>
+        </article>
+        <article class="cc-date-card cc-reveal">
+          <div class="cc-date-day">Monday</div>
+          <h4 class="cc-date-date">May 18</h4>
+          <div class="cc-date-time">7:30 PM CT</div>
+          <a href="https://us06web.zoom.us/meeting/register/fVD9Awm4Rc28zOyk84DXgw" target="_blank" rel="noopener" class="button button-primary button-small button-flame w-inline-block" data-cta="date-2">
+            <div class="button-text">Save my seat →</div>
+          </a>
+        </article>
+        <article class="cc-date-card cc-reveal">
+          <div class="cc-date-day">Wednesday</div>
+          <h4 class="cc-date-date">May 20</h4>
+          <div class="cc-date-time">12:00 PM CT</div>
+          <a href="https://us06web.zoom.us/meeting/register/huZ0ucQbQ-el6ZcHFZYauw" target="_blank" rel="noopener" class="button button-primary button-small button-flame w-inline-block" data-cta="date-3">
+            <div class="button-text">Save my seat →</div>
+          </a>
+        </article>
+      </div>
+
+      <p class="cc-dates-alt cc-reveal">
+        Can't make any of these? <a href="https://www.startleapyear.com/book-a-call" target="_blank" rel="noopener">Book a call with Riley instead →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ======= FAQ ======= -->
+  <section class="cc-section cc-theme-cream">
+    <div class="cc-wrap">
+      <div class="cc-head cc-head--center cc-reveal">
+        <div class="cc-tag">Common questions</div>
+        <h2 class="text-h2">A few things parents ask</h2>
+      </div>
+      <div class="cc-faq cc-reveal">
+        <details>
+          <summary>Is this only for families already interested in LeapYear?</summary>
+          <div class="cc-faq-body">
+            <p>No. This is for Christian parents who want to think wisely about their student's next step. We'll talk about LeapYear, but the main goal is to give you a framework you can use either way.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>My student is a junior — is this for us?</summary>
+          <div class="cc-faq-body">
+            <p>Yes. Junior year is actually a great time to start thinking about launch readiness. The framework is most useful when you have time to act on it — and the year before senior year is when families have the most space to be intentional about it.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Is this anti-college?</summary>
+          <div class="cc-faq-body">
+            <p>No. College can be a wonderful next step. The question is whether your student is ready to use that opportunity well.</p>
+            <p>Some students should go straight to college. Some would benefit from a structured year first. The point is to make that decision with wisdom instead of pressure.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Is this a sales pitch?</summary>
+          <div class="cc-faq-body">
+            <p>We'll explain LeapYear and answer questions about the program. But the webinar is designed to be useful even if LeapYear is not the right fit for your family.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Is this for parents or students?</summary>
+          <div class="cc-faq-body">
+            <p>Primarily parents. Students are welcome to join, especially if they're part of the decision. But the conversation is designed for parents who are carrying the weight of helping their student launch well.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>What if my student already knows where they're going?</summary>
+          <div class="cc-faq-body">
+            <p>This may still be worth your time. A college decision does not automatically answer the deeper questions of maturity, ownership, faith, and direction. If your student is headed to college, this framework can help you think about what they still need before they go.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= FINAL CTA ======= -->
+  <section class="cc-section cc-theme-alab cc-final">
+    <div class="cc-wrap">
+      <div class="cc-head cc-reveal">
+        <h2 class="text-h2 text-balanced">Before they choose a path, help them get ready to launch.</h2>
+        <div class="text-lg">The year after high school can become a default step. Or it can become one of the most formative years of your student's life.</div>
+      </div>
+      <div class="cc-final-ctas cc-reveal">
+        <a href="#register" class="button button-primary button-lg w-inline-block" data-cta="final">
+          <div class="button-text">Save my seat</div>
+        </a>
+        <a href="https://startleapyear.com" class="button button-tertiary">
+          <div class="button-text">Learn more about LeapYear →</div>
+        </a>
+      </div>
+      <p class="cc-final-meta">Free 45-minute live training for Christian parents. Multiple sessions available.</p>
+    </div>
+  </section>
+
+  <!-- ======= STICKY MOBILE CTA ======= -->
+  <div class="cc-sticky-cta" aria-hidden="true">
+    <a href="#register" class="button button-primary w-inline-block" data-cta="sticky-mobile">
+      <div class="button-text">Save my seat</div>
+    </a>
+  </div>
+
+  <!-- ======= FOOTER ======= -->
+  <footer class="cc-footer">
+    © 2026 LeapYear · <a href="https://startleapyear.com">startleapyear.com</a>
+  </footer>
+
+  <script>
+    // Lazy-load hero video
+    (function () {
+      const el = document.getElementById('cc-video');
+      if (!el) return;
+      const url = (el.getAttribute('data-video-url') || '').trim();
+      if (!url || url.charAt(0) === '[') return;
+
+      const isDirectVideo = /\.(mp4|webm|mov|m4v)(\?|$)/i.test(url);
+
+      function embedUrl(raw) {
+        try {
+          const u = new URL(raw);
+          const host = u.hostname.replace(/^www\./, '');
+          if (host.indexOf('youtu') !== -1) {
+            const id = host === 'youtu.be' ? u.pathname.slice(1) : (u.searchParams.get('v') || '');
+            if (!id) return null;
+            return 'https://www.youtube.com/embed/' + id + '?autoplay=1&mute=1&cc_load_policy=1&modestbranding=1&rel=0&playsinline=1';
+          }
+          if (host.indexOf('vimeo') !== -1) {
+            const id = u.pathname.split('/').filter(Boolean).pop();
+            return 'https://player.vimeo.com/video/' + id + '?autoplay=1&muted=1&texttrack=en&dnt=1';
+          }
+        } catch (e) {}
+        return raw;
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          if (isDirectVideo) {
+            const fallback = el.querySelector('.cc-hero-media-fallback');
+            if (fallback) {
+              fallback.classList.add('is-clickable');
+              fallback.addEventListener('click', () => {
+                const video = document.createElement('video');
+                video.src = url;
+                video.poster = 'assets/hero-poster.jpg';
+                video.playsInline = true;
+                video.preload = 'auto';
+                video.controls = true;
+                video.setAttribute('title', 'LeapYear webinar introduction');
+                el.insertBefore(video, el.firstChild);
+                const playAttempt = video.play();
+                if (playAttempt && typeof playAttempt.catch === 'function') {
+                  playAttempt.catch(() => {});
+                }
+                fallback.classList.add('is-hidden');
+                setTimeout(() => fallback.remove(), 400);
+              }, { once: true });
+            }
+          } else {
+            const src = embedUrl(url);
+            if (!src) return;
+            const iframe = document.createElement('iframe');
+            iframe.src = src;
+            iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+            iframe.setAttribute('allowfullscreen', '');
+            iframe.setAttribute('loading', 'lazy');
+            iframe.setAttribute('title', 'LeapYear webinar introduction');
+            el.innerHTML = '';
+            el.appendChild(iframe);
+          }
+          io.disconnect();
+        });
+      }, { rootMargin: '200px' });
+      io.observe(el);
+    })();
+
+    // Sticky mobile CTA
+    (function () {
+      const sticky = document.querySelector('.cc-sticky-cta');
+      const hero = document.querySelector('.cc-hero');
+      if (!sticky || !hero || !('IntersectionObserver' in window)) return;
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          sticky.classList.toggle('is-visible', !entry.isIntersecting);
+          sticky.setAttribute('aria-hidden', entry.isIntersecting ? 'true' : 'false');
+        });
+      }, { threshold: 0 });
+      io.observe(hero);
+    })();
+
+    // Testimonials carousel
+    (function () {
+      const track = document.getElementById('cc-testimonials');
+      const dotsContainer = document.getElementById('cc-testimonials-dots');
+      if (!track || !dotsContainer) return;
+      const cards = Array.from(track.querySelectorAll('.cc-testimonial'));
+      if (cards.length === 0) return;
+
+      cards.forEach((card, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'cc-testimonials-dot' + (i === 0 ? ' is-active' : '');
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
+        dot.addEventListener('click', () => {
+          card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        });
+        dotsContainer.appendChild(dot);
+      });
+
+      if ('IntersectionObserver' in window) {
+        const dots = Array.from(dotsContainer.querySelectorAll('.cc-testimonials-dot'));
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.intersectionRatio >= 0.55) {
+              const idx = cards.indexOf(entry.target);
+              if (idx === -1) return;
+              dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+            }
+          });
+        }, { root: track, threshold: [0.4, 0.55, 0.7] });
+        cards.forEach((c) => io.observe(c));
+      }
+    })();
+
+    // Fade-in reveal
+    (function () {
+      const els = document.querySelectorAll('.cc-reveal');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach((e) => e.classList.add('is-visible'));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        });
+      }, { threshold: 0.14, rootMargin: '0px 0px -40px 0px' });
+      els.forEach((el) => io.observe(el));
+    })();
+  </script>
+</body>
+</html>

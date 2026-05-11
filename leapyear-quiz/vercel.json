@@ -9,6 +9,12 @@
   ],
   "rewrites": [
     {
+      "source": "/parents",
+      "has": [{ "type": "host", "value": "webinar.startleapyear.com" }],
+      "destination": "/ads-webinar.html"
+    },
+    { "source": "/parents", "destination": "/ads-webinar.html" },
+    {
       "source": "/((?!api/|css/|assets/|.*\\..*).*)",
       "has": [{ "type": "host", "value": "webinar.startleapyear.com" }],
       "destination": "/classical-christian.html"
