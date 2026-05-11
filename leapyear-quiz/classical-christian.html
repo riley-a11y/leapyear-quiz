@@ -157,13 +157,17 @@
     .cc-play {
       width: 30px; height: 30px;
       border-radius: 50%;
-      background: var(--cc-alabaster);
+      background: var(--cc-flame);
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
-      transition: transform 0.2s ease;
+      box-shadow: 0 6px 16px rgba(221, 94, 50, 0.36);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .cc-hero-media-fallback.is-clickable:hover .cc-play { transform: scale(1.08); }
-    .cc-play svg { width: 12px; height: 12px; fill: var(--cc-night); margin-left: 1.5px; }
+    .cc-hero-media-fallback.is-clickable:hover .cc-play {
+      transform: scale(1.08);
+      box-shadow: 0 8px 22px rgba(221, 94, 50, 0.45);
+    }
+    .cc-play svg { width: 12px; height: 12px; fill: var(--cc-alabaster); margin-left: 1.5px; }
 
     /* =================== SECTION HEADERS =================== */
     .cc-head {
