@@ -315,14 +315,14 @@
 
     .cc-testimonial {
       scroll-snap-align: center;
-      background:
-        linear-gradient(180deg, rgba(7, 20, 17, 0.52), rgba(7, 20, 17, 0.72)),
-        linear-gradient(135deg, var(--cc-brunswick), var(--cc-night));
+      position: relative;
+      overflow: hidden;
       color: var(--cc-alabaster);
-      padding: clamp(2.5rem, 4vw, 3.5rem);
+      aspect-ratio: 3 / 4;
+      min-height: clamp(440px, 56vh, 580px);
       display: flex; flex-direction: column;
-      gap: clamp(1.75rem, 3vw, 2.5rem);
-      min-height: clamp(360px, 42vh, 460px);
+      justify-content: flex-end;
+      isolation: isolate;
       /* Brand corner treatment — heavy round on one diagonal, soft on the other */
       border-top-left-radius: clamp(2rem, 4vw, 3.5rem);
       border-bottom-right-radius: clamp(2rem, 4vw, 3.5rem);
@@ -335,52 +335,97 @@
       border-bottom-right-radius: clamp(0.625rem, 1vw, 0.875rem);
       border-top-right-radius: clamp(2rem, 4vw, 3.5rem);
       border-bottom-left-radius: clamp(2rem, 4vw, 3.5rem);
+    }
+
+    /* Photo layer fills the entire card; favor faces with the focal point */
+    .cc-testimonial-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 25%;
+      z-index: 0;
+    }
+    /* Placeholder treatment when the photo isn't loaded yet */
+    .cc-testimonial-photo[data-placeholder] {
       background:
-        linear-gradient(180deg, rgba(7, 20, 17, 0.55), rgba(7, 20, 17, 0.74)),
-        linear-gradient(225deg, var(--cc-brunswick), var(--cc-night));
+        radial-gradient(circle at 32% 26%, rgba(241, 170, 95, 0.26), transparent 58%),
+        linear-gradient(135deg, var(--cc-brunswick) 0%, var(--cc-night) 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cc-testimonial:nth-child(even) .cc-testimonial-photo[data-placeholder] {
+      background:
+        radial-gradient(circle at 68% 26%, rgba(241, 170, 95, 0.26), transparent 58%),
+        linear-gradient(225deg, var(--cc-brunswick) 0%, var(--cc-night) 100%);
+    }
+    .cc-testimonial-monogram {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: neulis-neue, sans-serif;
+      font-weight: 700;
+      font-size: clamp(4.5rem, 9vw, 7rem);
+      letter-spacing: -0.04em;
+      color: var(--cc-alab-40);
+      pointer-events: none;
+    }
+
+    /* Gradient drop that fades from transparent to near-black at the bottom
+       so the quote stays legible no matter what the photo looks like */
+    .cc-testimonial::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(7, 20, 17, 0) 0%,
+        rgba(7, 20, 17, 0) 32%,
+        rgba(7, 20, 17, 0.55) 62%,
+        rgba(7, 20, 17, 0.94) 100%
+      );
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .cc-testimonial-body {
+      position: relative;
+      z-index: 2;
+      padding: clamp(2rem, 3.5vw, 3rem);
+      display: flex; flex-direction: column;
+      gap: clamp(1.25rem, 2vw, 1.75rem);
     }
     .cc-testimonial-text {
       font-family: area-normal, sans-serif;
       font-weight: 400;
-      font-size: clamp(1.125rem, 1.5vw, 1.375rem);
-      line-height: 1.55;
+      font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+      line-height: 1.5;
       letter-spacing: -0.005em;
       color: var(--cc-alabaster);
       text-wrap: pretty;
       margin: 0;
+      text-shadow: 0 1px 12px rgba(7, 20, 17, 0.35);
     }
     .cc-testimonial-attr {
-      display: flex; align-items: center; gap: 1rem;
-      margin-top: auto;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(245, 241, 235, 0.14);
+      padding-top: clamp(0.75rem, 1.5vw, 1rem);
+      border-top: 1px solid rgba(245, 241, 235, 0.20);
     }
-    .cc-testimonial-avatar {
-      width: 56px; height: 56px;
-      border-radius: 50%;
-      overflow: hidden;
-      flex-shrink: 0;
-      background: linear-gradient(135deg, rgba(241, 170, 95, 0.45), rgba(221, 94, 50, 0.32));
-      display: flex; align-items: center; justify-content: center;
+    .cc-testimonial-attr h5 {
       font-family: neulis-neue, sans-serif;
       font-weight: 700;
       font-size: 1.0625rem;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.015em;
       color: var(--cc-alabaster);
+      margin: 0 0 0.3rem;
     }
-    .cc-testimonial-avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .cc-testimonial-attr-text { display: flex; flex-direction: column; line-height: 1.3; }
-    .cc-testimonial-attr-text h5 {
-      font-family: neulis-neue, sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      letter-spacing: -0.02em;
-      color: var(--cc-alabaster);
-      margin: 0 0 0.125rem;
-    }
-    .cc-testimonial-attr-text span {
+    .cc-testimonial-attr span {
       font-family: area-normal, sans-serif;
-      font-size: 0.875rem;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
       color: var(--cc-alab-70);
     }
 
@@ -658,13 +703,14 @@
       </div>
       <div class="cc-testimonials-track" id="cc-testimonials" role="region" aria-label="Testimonials">
         <article class="cc-testimonial">
-          <p class="cc-testimonial-text">“LeapYear helped my application to St. John's College stand out, and my coach was instrumental in helping me secure an 80% scholarship for all four years. I came into LeapYear without a plan for college, and I've narrowed down my personal curiosities and orientation to a career.”</p>
-          <div class="cc-testimonial-attr">
-            <div class="cc-testimonial-avatar" aria-hidden="true">
-              <!-- Swap to <img src="assets/testimonial-dominic.jpg" alt="Dominic Johnson"> when photo lands -->
-              DJ
-            </div>
-            <div class="cc-testimonial-attr-text">
+          <!-- When real photo lands, replace this <div> with:
+               <img class="cc-testimonial-photo" src="assets/testimonial-dominic.jpg" alt="Dominic Johnson"> -->
+          <div class="cc-testimonial-photo" data-placeholder aria-hidden="true">
+            <span class="cc-testimonial-monogram">DJ</span>
+          </div>
+          <div class="cc-testimonial-body">
+            <p class="cc-testimonial-text">“LeapYear helped my application to St. John's College stand out, and my coach was instrumental in helping me secure an 80% scholarship for all four years. I came into LeapYear without a plan for college, and I've narrowed down my personal curiosities and orientation to a career.”</p>
+            <div class="cc-testimonial-attr">
               <h5>Dominic Johnson</h5>
               <span>LeapYear Founding Cohort</span>
             </div>
@@ -672,13 +718,14 @@
         </article>
 
         <article class="cc-testimonial">
-          <p class="cc-testimonial-text">“[Parent quote — 2–3 sentences. Focus on the specific anxiety that got resolved, what changed for their senior, or why LeapYear was the right next step. Specific outcome beats vague praise.]”</p>
-          <div class="cc-testimonial-attr">
-            <div class="cc-testimonial-avatar" aria-hidden="true">
-              <!-- Swap to <img src="assets/testimonial-parent.jpg" alt="[Parent Name]"> when photo lands -->
-              [P]
-            </div>
-            <div class="cc-testimonial-attr-text">
+          <!-- When real photo lands, replace this <div> with:
+               <img class="cc-testimonial-photo" src="assets/testimonial-parent.jpg" alt="[Parent Name]"> -->
+          <div class="cc-testimonial-photo" data-placeholder aria-hidden="true">
+            <span class="cc-testimonial-monogram">[P]</span>
+          </div>
+          <div class="cc-testimonial-body">
+            <p class="cc-testimonial-text">“[Parent quote — 2–3 sentences. Focus on the specific anxiety that got resolved, what changed for their senior, or why LeapYear was the right next step. Specific outcome beats vague praise.]”</p>
+            <div class="cc-testimonial-attr">
               <h5>[Parent Name]</h5>
               <span>Parent of LeapYear Founding Cohort</span>
             </div>
@@ -686,13 +733,14 @@
         </article>
 
         <article class="cc-testimonial">
-          <p class="cc-testimonial-text">“[Student quote — 2–3 sentences from a current or recent LeapYear student. Focus on the transformation: how the program changed their direction, helped them understand themselves, or set them up for what's next.]”</p>
-          <div class="cc-testimonial-attr">
-            <div class="cc-testimonial-avatar" aria-hidden="true">
-              <!-- Swap to <img src="assets/testimonial-student.jpg" alt="[Student Name]"> when photo lands -->
-              [S]
-            </div>
-            <div class="cc-testimonial-attr-text">
+          <!-- When real photo lands, replace this <div> with:
+               <img class="cc-testimonial-photo" src="assets/testimonial-student.jpg" alt="[Student Name]"> -->
+          <div class="cc-testimonial-photo" data-placeholder aria-hidden="true">
+            <span class="cc-testimonial-monogram">[S]</span>
+          </div>
+          <div class="cc-testimonial-body">
+            <p class="cc-testimonial-text">“[Student quote — 2–3 sentences from a current or recent LeapYear student. Focus on the transformation: how the program changed their direction, helped them understand themselves, or set them up for what's next.]”</p>
+            <div class="cc-testimonial-attr">
               <h5>[Student Name]</h5>
               <span>LeapYear Founding Cohort</span>
             </div>
