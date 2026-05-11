@@ -104,13 +104,46 @@
     .cc-hero-copy .text-lg { margin: 0; max-width: 30em; line-height: 1.55; }
     .cc-hero-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem 1.75rem; margin-top: 0.5rem; }
 
+    .cc-hero-media-wrap {
+      position: relative;
+      width: 100%;
+    }
+    .cc-hero-media-wrap::before,
+    .cc-hero-media-wrap::after {
+      content: '';
+      position: absolute;
+      width: clamp(60px, 8vw, 110px);
+      height: 1.75px;
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .cc-hero-media-wrap::before {
+      /* Top-right accent — brunswick, leaping up-right */
+      top: clamp(18px, 3vw, 36px);
+      right: 0;
+      background: var(--cc-brunswick);
+      transform: translateX(100%) rotate(-32deg);
+      transform-origin: left center;
+    }
+    .cc-hero-media-wrap::after {
+      /* Bottom-left accent — flame, leaping down-left */
+      bottom: clamp(18px, 3vw, 36px);
+      left: 0;
+      background: var(--cc-flame);
+      transform: translateX(-100%) rotate(-32deg);
+      transform-origin: right center;
+    }
     .cc-hero-media {
       position: relative;
       width: 100%;
       aspect-ratio: 4 / 5;
-      border-top-right-radius: clamp(2rem, 4vw, 4rem);
-      border-bottom-left-radius: clamp(1rem, 2vw, 2rem);
+      border-top-left-radius: clamp(2rem, 4vw, 4rem);
+      border-bottom-right-radius: clamp(2rem, 4vw, 4rem);
+      border-top-right-radius: 0;
+      border-bottom-left-radius: 0;
       overflow: hidden;
+      z-index: 1;
       background:
         radial-gradient(circle at 28% 22%, rgba(241, 170, 95, 0.18), transparent 62%),
         linear-gradient(135deg, var(--cc-brunswick) 0%, var(--cc-night) 100%);
@@ -454,10 +487,12 @@
           </div>
         </div>
 
-        <div class="cc-hero-media cc-reveal" id="cc-video" data-video-url="https://pspxjyy2sekic5a3.public.blob.vercel-storage.com/Webinar%20Sample%20-%20good%20audio.mp4">
-          <div class="cc-hero-media-fallback">
-            <div class="cc-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-            <div>Note from the founder</div>
+        <div class="cc-hero-media-wrap cc-reveal">
+          <div class="cc-hero-media" id="cc-video" data-video-url="https://pspxjyy2sekic5a3.public.blob.vercel-storage.com/Webinar%20Sample%20-%20good%20audio.mp4">
+            <div class="cc-hero-media-fallback">
+              <div class="cc-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+              <div>Note from the founder</div>
+            </div>
           </div>
         </div>
       </div>
