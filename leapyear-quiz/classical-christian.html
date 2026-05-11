@@ -3,14 +3,19 @@
 <head>
   <meta charset="utf-8">
   <title>LeapYear — Parent Webinar</title>
-  <meta name="description" content="A free 45-minute webinar for Christian parents of high school juniors and seniors. Walk away with a clearer plan for your senior's next year.">
+  <meta name="description" content="A free 45-minute live conversation for Christian parents. Help your senior launch with clarity, confidence, and conviction.">
   <meta content="width=device-width, initial-scale=1" name="viewport">
 
   <meta property="og:type" content="website">
-  <meta property="og:title" content="How to give your senior the clarity, confidence, and conviction college won't | A LeapYear webinar for Christian parents.">
-  <meta property="og:description" content="A free 45-minute webinar for Christian parents of high school juniors and seniors. Walk away with a clearer plan for your senior's next year.">
-  <meta property="og:image" content="https://leapyear-quiz.vercel.app/assets/riley-headshot.jpg">
+  <meta property="og:title" content="LeapYear — Webinar for Parents">
+  <meta property="og:description" content="A free 45-minute live conversation for Christian parents. Help your senior launch with clarity, confidence, and conviction.">
+  <meta property="og:image" content="https://leapyear-quiz.vercel.app/assets/social-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LeapYear — Webinar for Parents">
+  <meta name="twitter:description" content="A free 45-minute live conversation for Christian parents. Help your senior launch with clarity, confidence, and conviction.">
+  <meta name="twitter:image" content="https://leapyear-quiz.vercel.app/assets/social-preview.png">
   <!-- cache-bust: 2026-05-10 host-rewrite refresh -->
 
   <!-- Webflow design system (fonts, tokens, typography classes, button base) -->
@@ -119,27 +124,46 @@
     }
     .cc-hero-media video { object-fit: cover; background: #000; }
     .cc-hero-media-fallback {
-      position: absolute; inset: 0;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 1rem;
-      color: var(--cc-alab-70);
-      text-align: center; padding: 2rem;
+      position: absolute;
+      inset: auto 1rem 1rem 1rem;
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.625rem;
+      width: max-content;
+      max-width: calc(100% - 2rem);
+      padding: 0.5rem 1.125rem 0.5rem 0.5rem;
+      background: rgba(7, 20, 17, 0.42);
+      backdrop-filter: blur(14px) saturate(140%);
+      -webkit-backdrop-filter: blur(14px) saturate(140%);
+      border: 1px solid rgba(245, 241, 235, 0.16);
+      border-radius: 999px;
+      color: var(--cc-alabaster);
+      font-family: area-normal, sans-serif;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      letter-spacing: -0.005em;
+      text-align: left;
       z-index: 2;
-      transition: opacity 0.35s ease;
+      transition: opacity 0.35s ease, transform 0.2s ease, background 0.2s ease;
     }
     .cc-hero-media-fallback.is-clickable { cursor: pointer; }
+    .cc-hero-media-fallback.is-clickable:hover {
+      background: rgba(7, 20, 17, 0.62);
+      transform: translateY(-1px);
+    }
     .cc-hero-media-fallback.is-hidden { opacity: 0; pointer-events: none; }
     .cc-play {
-      width: 72px; height: 72px;
+      width: 30px; height: 30px;
       border-radius: 50%;
-      background: var(--cc-flame);
+      background: var(--cc-alabaster);
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 14px 32px rgba(221, 94, 50, 0.32);
+      flex-shrink: 0;
       transition: transform 0.2s ease;
     }
-    .cc-hero-media-fallback.is-clickable:hover .cc-play { transform: scale(1.06); }
-    .cc-play svg { width: 24px; height: 24px; fill: var(--cc-alabaster); margin-left: 3px; }
+    .cc-hero-media-fallback.is-clickable:hover .cc-play { transform: scale(1.08); }
+    .cc-play svg { width: 12px; height: 12px; fill: var(--cc-night); margin-left: 1.5px; }
 
     /* =================== SECTION HEADERS =================== */
     .cc-head {
@@ -429,7 +453,7 @@
         <div class="cc-hero-media cc-reveal" id="cc-video" data-video-url="https://pspxjyy2sekic5a3.public.blob.vercel-storage.com/Webinar%20Sample%20-%20good%20audio.mp4">
           <div class="cc-hero-media-fallback">
             <div class="cc-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-            <div>A 3-minute introduction from Riley</div>
+            <div>Note from the founder</div>
           </div>
         </div>
       </div>
