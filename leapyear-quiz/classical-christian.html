@@ -841,18 +841,27 @@
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           if (isDirectVideo) {
-            const video = document.createElement('video');
-            video.src = url;
-            video.playsInline = true;
-            video.preload = 'metadata';
-            video.setAttribute('title', 'LeapYear webinar introduction');
+            // Defer the <video> element until the user clicks play. Mobile
+            // browsers (iOS Safari especially) render an inserted <video>
+            // as a black box if no first frame is loaded — preload="metadata"
+            // doesn't reliably pull a poster frame. Keeping the gradient
+            // background + play pill visible until click avoids the black
+            // flash and also delays any network cost until intent.
             const fallback = el.querySelector('.cc-hero-media-fallback');
-            el.insertBefore(video, el.firstChild);
             if (fallback) {
               fallback.classList.add('is-clickable');
               fallback.addEventListener('click', () => {
+                const video = document.createElement('video');
+                video.src = url;
+                video.playsInline = true;
+                video.preload = 'auto';
                 video.controls = true;
-                video.play();
+                video.setAttribute('title', 'LeapYear webinar introduction');
+                el.insertBefore(video, el.firstChild);
+                const playAttempt = video.play();
+                if (playAttempt && typeof playAttempt.catch === 'function') {
+                  playAttempt.catch(() => {});
+                }
                 fallback.classList.add('is-hidden');
                 setTimeout(() => fallback.remove(), 400);
               }, { once: true });
