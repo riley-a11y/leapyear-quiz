@@ -19,6 +19,13 @@
     },
     {
       "source": "/(.*)",
+      "has": [{ "type": "host", "value": "webinar.startleapyear.com" }],
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=60, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600" }
       ]
