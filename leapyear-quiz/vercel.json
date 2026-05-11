@@ -1,4 +1,12 @@
 {
+  "redirects": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "webinar.startleapyear.com" }],
+      "destination": "/webinar",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/((?!api/|css/|assets/|.*\\..*).*)",
