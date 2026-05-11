@@ -264,63 +264,107 @@
     .cc-about-grid + .cc-about-grid { margin-top: clamp(3rem, 5vw, 5rem); }
     .cc-about-copy { display: flex; flex-direction: column; gap: 1.25rem; max-width: 34em; }
 
-    /* =================== TESTIMONIALS (3-up with photos) =================== */
+    /* =================== TESTIMONIALS (organic scroll carousel) =================== */
     .cc-testimonials-outer {
-      padding: var(--cc-sp-section-tight) var(--cc-sp-gutter);
+      padding: var(--cc-sp-section-tight) 0;
       max-width: 1488px;
       margin: 0 auto;
     }
     .cc-testimonials-head {
       max-width: 38rem;
       margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+      padding: 0 var(--cc-sp-gutter);
       display: flex; flex-direction: column; align-items: center;
       text-align: center;
       gap: 0.875rem;
     }
     .cc-testimonials-head h2 { margin: 0; }
-    .cc-testimonials-grid {
+
+    /* The track is a horizontal scroller with snap-to-center cards.
+       Side padding equals the gutter so the first/last card aligns
+       to the same column as the rest of the page. */
+    .cc-testimonials-track {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: clamp(1rem, 2vw, 1.5rem);
+      grid-auto-flow: column;
+      grid-auto-columns: 86%;
+      gap: clamp(1rem, 2vw, 1.75rem);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding: 0.5rem var(--cc-sp-gutter) 1.5rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(7, 20, 17, 0.18) transparent;
     }
-    @media (min-width: 880px) {
-      .cc-testimonials-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (min-width: 720px) {
+      .cc-testimonials-track { grid-auto-columns: 60%; }
     }
+    @media (min-width: 1080px) {
+      .cc-testimonials-track { grid-auto-columns: 46%; }
+    }
+    .cc-testimonials-track::-webkit-scrollbar {
+      height: 4px;
+    }
+    .cc-testimonials-track::-webkit-scrollbar-thumb {
+      background: rgba(7, 20, 17, 0.16);
+      border-radius: 2px;
+    }
+    .cc-testimonials-track::-webkit-scrollbar-thumb:hover {
+      background: rgba(7, 20, 17, 0.32);
+    }
+
     .cc-testimonial {
+      scroll-snap-align: center;
       background:
-        linear-gradient(180deg, rgba(7, 20, 17, 0.55), rgba(7, 20, 17, 0.72)),
+        linear-gradient(180deg, rgba(7, 20, 17, 0.52), rgba(7, 20, 17, 0.72)),
         linear-gradient(135deg, var(--cc-brunswick), var(--cc-night));
       color: var(--cc-alabaster);
-      border-radius: clamp(1.25rem, 2.5vw, 2rem);
-      padding: clamp(2rem, 3.5vw, 2.75rem);
-      display: flex; flex-direction: column; gap: 1.75rem;
+      padding: clamp(2.5rem, 4vw, 3.5rem);
+      display: flex; flex-direction: column;
+      gap: clamp(1.75rem, 3vw, 2.5rem);
+      min-height: clamp(360px, 42vh, 460px);
+      /* Brand corner treatment — heavy round on one diagonal, soft on the other */
+      border-top-left-radius: clamp(2rem, 4vw, 3.5rem);
+      border-bottom-right-radius: clamp(2rem, 4vw, 3.5rem);
+      border-top-right-radius: clamp(0.625rem, 1vw, 0.875rem);
+      border-bottom-left-radius: clamp(0.625rem, 1vw, 0.875rem);
+    }
+    .cc-testimonial:nth-child(even) {
+      /* Mirror the corner treatment on alternate cards — organic, less grid-y */
+      border-top-left-radius: clamp(0.625rem, 1vw, 0.875rem);
+      border-bottom-right-radius: clamp(0.625rem, 1vw, 0.875rem);
+      border-top-right-radius: clamp(2rem, 4vw, 3.5rem);
+      border-bottom-left-radius: clamp(2rem, 4vw, 3.5rem);
+      background:
+        linear-gradient(180deg, rgba(7, 20, 17, 0.55), rgba(7, 20, 17, 0.74)),
+        linear-gradient(225deg, var(--cc-brunswick), var(--cc-night));
     }
     .cc-testimonial-text {
       font-family: area-normal, sans-serif;
       font-weight: 400;
-      font-size: 1.0625rem;
+      font-size: clamp(1.125rem, 1.5vw, 1.375rem);
       line-height: 1.55;
-      letter-spacing: -0.003em;
+      letter-spacing: -0.005em;
       color: var(--cc-alabaster);
       text-wrap: pretty;
       margin: 0;
     }
     .cc-testimonial-attr {
-      display: flex; align-items: center; gap: 0.875rem;
+      display: flex; align-items: center; gap: 1rem;
       margin-top: auto;
-      padding-top: 1.25rem;
-      border-top: 1px solid rgba(245, 241, 235, 0.12);
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(245, 241, 235, 0.14);
     }
     .cc-testimonial-avatar {
-      width: 48px; height: 48px;
+      width: 56px; height: 56px;
       border-radius: 50%;
       overflow: hidden;
       flex-shrink: 0;
-      background: linear-gradient(135deg, rgba(241, 170, 95, 0.45), rgba(221, 94, 50, 0.35));
+      background: linear-gradient(135deg, rgba(241, 170, 95, 0.45), rgba(221, 94, 50, 0.32));
       display: flex; align-items: center; justify-content: center;
       font-family: neulis-neue, sans-serif;
       font-weight: 700;
-      font-size: 0.9375rem;
+      font-size: 1.0625rem;
       letter-spacing: -0.02em;
       color: var(--cc-alabaster);
     }
@@ -329,16 +373,40 @@
     .cc-testimonial-attr-text h5 {
       font-family: neulis-neue, sans-serif;
       font-weight: 700;
-      font-size: 0.9375rem;
+      font-size: 1rem;
       letter-spacing: -0.02em;
       color: var(--cc-alabaster);
       margin: 0 0 0.125rem;
     }
     .cc-testimonial-attr-text span {
       font-family: area-normal, sans-serif;
-      font-size: 0.8125rem;
+      font-size: 0.875rem;
       color: var(--cc-alab-70);
     }
+
+    /* Pagination dots — click-through */
+    .cc-testimonials-dots {
+      display: flex; justify-content: center; align-items: center;
+      gap: 0.5rem;
+      margin-top: clamp(1.25rem, 2vw, 2rem);
+      padding: 0 var(--cc-sp-gutter);
+    }
+    .cc-testimonials-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      border: 0;
+      padding: 0;
+      background: rgba(7, 20, 17, 0.18);
+      cursor: pointer;
+      transition: background 0.2s ease, width 0.25s ease, border-radius 0.25s ease;
+    }
+    .cc-testimonials-dot:hover { background: rgba(7, 20, 17, 0.36); }
+    .cc-testimonials-dot.is-active {
+      background: var(--cc-flame);
+      width: 28px;
+      border-radius: 5px;
+    }
+    .cc-testimonials-dot.is-active:hover { background: var(--cc-flame); }
 
     /* =================== DATE CARDS (3 standalone cards) =================== */
     .cc-dates-grid {
@@ -581,15 +649,15 @@
     </div>
   </section>
 
-  <!-- ======= TESTIMONIALS (3-up with photos) ======= -->
+  <!-- ======= TESTIMONIALS (organic scroll carousel) ======= -->
   <section class="cc-theme-alab">
     <div class="cc-testimonials-outer">
       <div class="cc-testimonials-head cc-reveal">
         <div class="cc-tag">From the cohort</div>
         <h2 class="text-h2 text-balanced">What students and parents are saying</h2>
       </div>
-      <div class="cc-testimonials-grid">
-        <article class="cc-testimonial cc-reveal">
+      <div class="cc-testimonials-track" id="cc-testimonials" role="region" aria-label="Testimonials">
+        <article class="cc-testimonial">
           <p class="cc-testimonial-text">“LeapYear helped my application to St. John's College stand out, and my coach was instrumental in helping me secure an 80% scholarship for all four years. I came into LeapYear without a plan for college, and I've narrowed down my personal curiosities and orientation to a career.”</p>
           <div class="cc-testimonial-attr">
             <div class="cc-testimonial-avatar" aria-hidden="true">
@@ -603,7 +671,7 @@
           </div>
         </article>
 
-        <article class="cc-testimonial cc-reveal">
+        <article class="cc-testimonial">
           <p class="cc-testimonial-text">“[Parent quote — 2–3 sentences. Focus on the specific anxiety that got resolved, what changed for their senior, or why LeapYear was the right next step. Specific outcome beats vague praise.]”</p>
           <div class="cc-testimonial-attr">
             <div class="cc-testimonial-avatar" aria-hidden="true">
@@ -617,7 +685,7 @@
           </div>
         </article>
 
-        <article class="cc-testimonial cc-reveal">
+        <article class="cc-testimonial">
           <p class="cc-testimonial-text">“[Student quote — 2–3 sentences from a current or recent LeapYear student. Focus on the transformation: how the program changed their direction, helped them understand themselves, or set them up for what's next.]”</p>
           <div class="cc-testimonial-attr">
             <div class="cc-testimonial-avatar" aria-hidden="true">
@@ -631,6 +699,7 @@
           </div>
         </article>
       </div>
+      <div class="cc-testimonials-dots" id="cc-testimonials-dots" role="tablist" aria-label="Testimonial navigation"></div>
     </div>
   </section>
 
@@ -783,6 +852,41 @@
         });
       }, { threshold: 0 });
       io.observe(hero);
+    })();
+
+    // Testimonials carousel — build click-through dots + sync active dot to scroll
+    (function () {
+      const track = document.getElementById('cc-testimonials');
+      const dotsContainer = document.getElementById('cc-testimonials-dots');
+      if (!track || !dotsContainer) return;
+      const cards = Array.from(track.querySelectorAll('.cc-testimonial'));
+      if (cards.length === 0) return;
+
+      cards.forEach((card, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'cc-testimonials-dot' + (i === 0 ? ' is-active' : '');
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', 'Go to testimonial ' + (i + 1));
+        dot.addEventListener('click', () => {
+          card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        });
+        dotsContainer.appendChild(dot);
+      });
+
+      if ('IntersectionObserver' in window) {
+        const dots = Array.from(dotsContainer.querySelectorAll('.cc-testimonials-dot'));
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.intersectionRatio >= 0.55) {
+              const idx = cards.indexOf(entry.target);
+              if (idx === -1) return;
+              dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+            }
+          });
+        }, { root: track, threshold: [0.4, 0.55, 0.7] });
+        cards.forEach((c) => io.observe(c));
+      }
     })();
 
     // Fade-in reveal on scroll
