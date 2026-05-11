@@ -264,49 +264,79 @@
     .cc-about-grid + .cc-about-grid { margin-top: clamp(3rem, 5vw, 5rem); }
     .cc-about-copy { display: flex; flex-direction: column; gap: 1.25rem; max-width: 34em; }
 
-    /* =================== BIG QUOTE (program-page pattern) =================== */
-    .cc-bigquote-outer {
+    /* =================== TESTIMONIALS (3-up with photos) =================== */
+    .cc-testimonials-outer {
       padding: var(--cc-sp-section-tight) var(--cc-sp-gutter);
       max-width: 1488px;
       margin: 0 auto;
     }
-    .cc-bigquote {
+    .cc-testimonials-head {
+      max-width: 38rem;
+      margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+      gap: 0.875rem;
+    }
+    .cc-testimonials-head h2 { margin: 0; }
+    .cc-testimonials-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(1rem, 2vw, 1.5rem);
+    }
+    @media (min-width: 880px) {
+      .cc-testimonials-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    .cc-testimonial {
       background:
         linear-gradient(180deg, rgba(7, 20, 17, 0.55), rgba(7, 20, 17, 0.72)),
         linear-gradient(135deg, var(--cc-brunswick), var(--cc-night));
       color: var(--cc-alabaster);
-      border-radius: clamp(1.5rem, 3vw, 3rem);
-      padding: clamp(3rem, 6vw, 6rem) clamp(2rem, 5vw, 5rem);
-      display: flex; flex-direction: column;
-      align-items: flex-start;
-      gap: clamp(1.75rem, 3vw, 3rem);
+      border-radius: clamp(1.25rem, 2.5vw, 2rem);
+      padding: clamp(2rem, 3.5vw, 2.75rem);
+      display: flex; flex-direction: column; gap: 1.75rem;
     }
-    .cc-bigquote-text {
+    .cc-testimonial-text {
       font-family: area-normal, sans-serif;
       font-weight: 400;
-      font-size: clamp(1.25rem, 2vw, 1.75rem);
+      font-size: 1.0625rem;
       line-height: 1.55;
-      letter-spacing: -0.005em;
+      letter-spacing: -0.003em;
       color: var(--cc-alabaster);
-      text-wrap: balance;
+      text-wrap: pretty;
       margin: 0;
-      max-width: 56ch;
     }
-    .cc-bigquote-footer {
-      display: flex; flex-wrap: wrap; gap: 0.5rem 1rem;
-      align-items: baseline;
+    .cc-testimonial-attr {
+      display: flex; align-items: center; gap: 0.875rem;
+      margin-top: auto;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(245, 241, 235, 0.12);
     }
-    .cc-bigquote-footer h5 {
+    .cc-testimonial-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, rgba(241, 170, 95, 0.45), rgba(221, 94, 50, 0.35));
+      display: flex; align-items: center; justify-content: center;
       font-family: neulis-neue, sans-serif;
       font-weight: 700;
-      font-size: 1.125rem;
+      font-size: 0.9375rem;
       letter-spacing: -0.02em;
       color: var(--cc-alabaster);
-      margin: 0;
     }
-    .cc-bigquote-footer span {
+    .cc-testimonial-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .cc-testimonial-attr-text { display: flex; flex-direction: column; line-height: 1.3; }
+    .cc-testimonial-attr-text h5 {
+      font-family: neulis-neue, sans-serif;
+      font-weight: 700;
+      font-size: 0.9375rem;
+      letter-spacing: -0.02em;
+      color: var(--cc-alabaster);
+      margin: 0 0 0.125rem;
+    }
+    .cc-testimonial-attr-text span {
       font-family: area-normal, sans-serif;
-      font-size: 1rem;
+      font-size: 0.8125rem;
       color: var(--cc-alab-70);
     }
 
@@ -551,26 +581,56 @@
     </div>
   </section>
 
-  <!-- ======= BIG QUOTE (Program page pattern) ======= -->
+  <!-- ======= TESTIMONIALS (3-up with photos) ======= -->
   <section class="cc-theme-alab">
-    <div class="cc-bigquote-outer">
-      <div class="cc-bigquote cc-reveal">
-        <div class="cc-bigquote-text">“LeapYear helped my application to St. John's College stand out, and my coach was instrumental in helping me secure an 80% scholarship for all four years. I came into LeapYear without a plan for college, and I've narrowed down my personal curiosities and orientation to a career.”</div>
-        <div class="cc-bigquote-footer">
-          <h5>— Dominic Johnson,</h5>
-          <span>LeapYear Founding Cohort</span>
-        </div>
+    <div class="cc-testimonials-outer">
+      <div class="cc-testimonials-head cc-reveal">
+        <div class="cc-tag">From the cohort</div>
+        <h2 class="text-h2 text-balanced">What students and parents are saying</h2>
       </div>
+      <div class="cc-testimonials-grid">
+        <article class="cc-testimonial cc-reveal">
+          <p class="cc-testimonial-text">“LeapYear helped my application to St. John's College stand out, and my coach was instrumental in helping me secure an 80% scholarship for all four years. I came into LeapYear without a plan for college, and I've narrowed down my personal curiosities and orientation to a career.”</p>
+          <div class="cc-testimonial-attr">
+            <div class="cc-testimonial-avatar" aria-hidden="true">
+              <!-- Swap to <img src="assets/testimonial-dominic.jpg" alt="Dominic Johnson"> when photo lands -->
+              DJ
+            </div>
+            <div class="cc-testimonial-attr-text">
+              <h5>Dominic Johnson</h5>
+              <span>LeapYear Founding Cohort</span>
+            </div>
+          </div>
+        </article>
 
-      <!-- ====== PARENT TESTIMONIAL SLOT — enable when copy is cleared ======
-      <div class="cc-bigquote cc-reveal" style="margin-top: clamp(1.5rem, 3vw, 2.5rem);">
-        <div class="cc-bigquote-text">"[Parent quote goes here.]"</div>
-        <div class="cc-bigquote-footer">
-          <h5>— [Parent Name],</h5>
-          <span>Parent of LeapYear Founding Cohort</span>
-        </div>
+        <article class="cc-testimonial cc-reveal">
+          <p class="cc-testimonial-text">“[Parent quote — 2–3 sentences. Focus on the specific anxiety that got resolved, what changed for their senior, or why LeapYear was the right next step. Specific outcome beats vague praise.]”</p>
+          <div class="cc-testimonial-attr">
+            <div class="cc-testimonial-avatar" aria-hidden="true">
+              <!-- Swap to <img src="assets/testimonial-parent.jpg" alt="[Parent Name]"> when photo lands -->
+              [P]
+            </div>
+            <div class="cc-testimonial-attr-text">
+              <h5>[Parent Name]</h5>
+              <span>Parent of LeapYear Founding Cohort</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="cc-testimonial cc-reveal">
+          <p class="cc-testimonial-text">“[Student quote — 2–3 sentences from a current or recent LeapYear student. Focus on the transformation: how the program changed their direction, helped them understand themselves, or set them up for what's next.]”</p>
+          <div class="cc-testimonial-attr">
+            <div class="cc-testimonial-avatar" aria-hidden="true">
+              <!-- Swap to <img src="assets/testimonial-student.jpg" alt="[Student Name]"> when photo lands -->
+              [S]
+            </div>
+            <div class="cc-testimonial-attr-text">
+              <h5>[Student Name]</h5>
+              <span>LeapYear Founding Cohort</span>
+            </div>
+          </div>
+        </article>
       </div>
-      ============================================================ -->
     </div>
   </section>
 
