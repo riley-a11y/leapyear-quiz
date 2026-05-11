@@ -318,8 +318,10 @@
       position: relative;
       overflow: hidden;
       color: var(--cc-alabaster);
-      aspect-ratio: 5 / 6;
-      min-height: clamp(380px, 46vh, 480px);
+      /* No fixed aspect-ratio — let content determine height so long
+         quotes don't clip on narrow widths. Grid track stretches every
+         card to match the tallest one, keeping the row visually even. */
+      min-height: clamp(420px, 50vh, 520px);
       display: flex; flex-direction: column;
       justify-content: flex-end;
       isolation: isolate;
