@@ -115,7 +115,7 @@
       overflow: hidden;
       isolation: isolate;
       background:
-        radial-gradient(circle at 28% 22%, rgba(241, 170, 95, 0.18), transparent 62%),
+        url('assets/hero-poster.jpg') center / cover no-repeat,
         linear-gradient(135deg, var(--cc-brunswick) 0%, var(--cc-night) 100%);
     }
     @media (min-width: 960px) {
@@ -853,6 +853,7 @@
               fallback.addEventListener('click', () => {
                 const video = document.createElement('video');
                 video.src = url;
+                video.poster = 'assets/hero-poster.jpg';
                 video.playsInline = true;
                 video.preload = 'auto';
                 video.controls = true;
