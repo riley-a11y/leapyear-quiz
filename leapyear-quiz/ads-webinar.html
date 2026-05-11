@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   <title>LeapYear — Parent Webinar</title>
-  <meta name="description" content="A free 45-minute live conversation for Christian parents of juniors and seniors. Help your student launch with clarity, confidence, and conviction.">
+  <meta name="description" content="A free 45-minute live conversation for Christian parents of juniors and seniors. Everyone asks where your senior is going. We're asking who they're becoming.">
   <meta content="width=device-width, initial-scale=1" name="viewport">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="LeapYear — Webinar for Parents">
-  <meta property="og:description" content="A free 45-minute live conversation for Christian parents of juniors and seniors. Help your student launch with clarity, confidence, and conviction.">
+  <meta property="og:description" content="A free 45-minute live conversation for Christian parents of juniors and seniors. Everyone asks where your senior is going. We're asking who they're becoming.">
   <meta property="og:image" content="https://leapyear-quiz.vercel.app/assets/social-preview.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="LeapYear — Webinar for Parents">
-  <meta name="twitter:description" content="A free 45-minute live conversation for Christian parents of juniors and seniors. Help your student launch with clarity, confidence, and conviction.">
+  <meta name="twitter:description" content="A free 45-minute live conversation for Christian parents of juniors and seniors. Everyone asks where your senior is going. We're asking who they're becoming.">
   <meta name="twitter:image" content="https://leapyear-quiz.vercel.app/assets/social-preview.png">
 
   <link href="css/webflow/normalize.css" rel="stylesheet" type="text/css">
@@ -255,6 +255,45 @@
       margin: 2rem auto !important;
     }
     .cc-problem-pull .highlight-flame { color: var(--cc-flame); }
+    .cc-stats {
+      max-width: 32rem;
+      margin: 2.5rem auto !important;
+      padding: 1.75rem 2rem;
+      border-left: 3px solid var(--cc-flame);
+      background: rgba(7, 20, 17, 0.03);
+      border-radius: 0 0.625rem 0.625rem 0;
+      text-align: left;
+      display: flex; flex-direction: column;
+      gap: 1.25rem;
+    }
+    .cc-stat {
+      display: flex; align-items: baseline;
+      gap: 0.875rem;
+    }
+    .cc-stat-num {
+      font-family: neulis-neue, sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.75rem, 3vw, 2.25rem);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--cc-flame);
+      flex-shrink: 0;
+    }
+    .cc-stat-text {
+      font-family: area-normal, sans-serif;
+      font-size: 0.9375rem;
+      line-height: 1.45;
+      color: var(--cc-night);
+      margin: 0;
+    }
+    .cc-stat-text span {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--cc-ink-60);
+      margin-top: 0.25rem;
+    }
 
     /* =================== WHO IT'S FOR (bullet list) =================== */
     .cc-who { max-width: 46rem; }
@@ -733,9 +772,9 @@
       <div class="cc-hero-grid">
         <div class="cc-hero-copy cc-reveal">
           <div class="cc-tag">A Live Webinar for Christian Parents</div>
-          <h1 class="text-h1 text-balanced">Your senior may be college-accepted. <span class="highlight-flame">But are they ready to launch?</span></h1>
-          <div class="text-lg">A free 45-minute live conversation for parents of high school juniors and seniors who want to help their student take their next step with clarity, maturity, and deep faith.</div>
-          <p class="cc-hero-sub">Whether your student is headed to college, considering a gap year, or still unsure what comes next, this webinar will help you think clearly about one of the most formative transitions of their life.</p>
+          <h1 class="text-h1 text-balanced">Everyone asks where your senior is going. <span class="highlight-flame">We're asking who they're becoming.</span></h1>
+          <div class="text-lg">A free 45-minute live conversation for Christian parents of juniors and seniors — about helping your student launch grounded in faith, equipped to lead, and clear on who they're becoming.</div>
+          <p class="cc-hero-sub">Whether your student is headed to college, considering a gap year, or still unsure what comes next, you'll leave with a framework for thinking clearly about one of the most formative transitions of their life.</p>
           <div class="cc-hero-ctas">
             <a href="#register" class="button button-primary button-lg w-inline-block" data-cta="hero">
               <div class="button-text">Save my seat</div>
@@ -762,14 +801,13 @@
     <div class="cc-wrap">
       <div class="cc-note cc-reveal">
         <div class="cc-tag">A note from Riley</div>
-        <h2 class="text-h2 text-balanced">When I was 18, I had no idea what I was doing.</h2>
-        <p class="text-lg">I was burned out. I was tired of performing. And every time someone asked me, "So, what are you going to do?" I felt this quiet panic.</p>
-        <p class="text-lg">I knew how to get good grades. I knew how to look capable. But I did not know who I was becoming. I did not know what I was built for. And I was not ready to choose a path with confidence.</p>
-        <p class="text-lg">By the grace of God, my parents gave me time. Not time to drift. <span class="highlight-sand">Time to explore.</span></p>
-        <p class="text-lg">I spent two years trying real things: real estate, mediation, film, youth ministry. Those two years changed the whole trajectory of my life.</p>
-        <p class="text-lg">Later, while working in education venture capital, I saw the bigger pattern. Most students are being asked to make major life decisions before they've had enough formation, exposure, or self-knowledge to make those decisions well.</p>
-        <p class="text-lg">That's why I started LeapYear. And that's why I'm hosting this webinar.</p>
-        <p class="text-lg">Even if LeapYear is not the right fit for your family, I want you to leave with a better way to think about the year after high school.</p>
+        <h2 class="text-h2 text-balanced">At 18, I knew how to look capable. I had no idea who I was becoming.</h2>
+        <p class="text-lg">I was burned out. I was tired of performing. And every time someone asked me, "So, what are you going to do?" I felt a quiet panic.</p>
+        <p class="text-lg">I knew how to get good grades. I knew how to look like I had it together. But I didn't know what I was built for, what I actually believed under pressure, or what kind of man I was becoming.</p>
+        <p class="text-lg">By the grace of God, my parents gave me time. Not time to drift — <span class="highlight-sand">time to explore</span>. I spent two years trying real things: real estate, mediation, film, youth ministry. Those two years changed the whole trajectory of my life.</p>
+        <p class="text-lg">Later, working in education venture capital, I saw the bigger pattern. Most students are being asked to make major life decisions before they've had enough formation, exposure, or self-knowledge to make them well. The system is built around one question — <em>"Where are you going?"</em> — and it's the wrong question to lead with.</p>
+        <p class="text-lg">That's why I started LeapYear. And it's why I'm hosting this webinar.</p>
+        <p class="text-lg">Even if LeapYear isn't the right fit for your family, I want you to leave with a clearer way to think about the year after high school — and a sharper set of questions to ask your student before they pick a path.</p>
         <div class="cc-note-sign">
           Riley Simpson
           <span>Founder, LeapYear</span>
@@ -788,16 +826,23 @@
     <div class="cc-wrap">
       <div class="cc-problem cc-reveal">
         <div class="cc-tag" style="margin-bottom: 1rem;">The bigger question</div>
-        <h2 class="text-h2 text-balanced">The college decision is not the only decision.</h2>
-        <p class="text-lg">For a lot of families, senior year becomes a race to answer one question:</p>
+        <h2 class="text-h2 text-balanced">Senior year keeps asking the wrong question.</h2>
+        <p class="text-lg">For most families, senior year collapses into one question:</p>
         <p class="cc-problem-pull"><span class="highlight-flame">Where are they going next?</span></p>
-        <p class="text-lg">That question matters. But it is not the whole question.</p>
-        <p class="text-lg">A better question is:</p>
-        <p class="cc-problem-pull"><span class="highlight-flame">Are they ready for what comes next?</span></p>
-        <p class="text-lg">Because a student can be smart, accepted, talented, and loved by God, and still not be ready for the level of freedom, pressure, distraction, and responsibility waiting for them after high school.</p>
-        <p class="text-lg">This is especially true for Christian families.</p>
-        <p class="text-lg">You have spent years caring about formation, not just achievement. You have prayed, invested, taught, sacrificed, and tried to help your student become the kind of person who can live faithfully in the world.</p>
-        <p class="text-lg">Then, suddenly, the system asks them to choose a school, a major, a path, and a future — and everyone acts like that is normal.</p>
+        <p class="text-lg">That question matters. But by the time it gets answered — applications, deposits, decisions — your student is usually past the point of asking the deeper one:</p>
+        <p class="cc-problem-pull"><span class="highlight-flame">Who are they becoming?</span></p>
+        <p class="text-lg">A student can be smart, accepted, talented, and loved by God, and still not be ready for the freedom, pressure, distraction, and quiet identity-shaping that waits for them after high school. The pattern isn't that students are unintelligent. It's that they're being asked to commit to a direction before they know who they are.</p>
+        <div class="cc-stats">
+          <div class="cc-stat">
+            <div class="cc-stat-num">52%</div>
+            <p class="cc-stat-text">of college graduates are underemployed one year after college.<span>Federal Reserve Bank of New York</span></p>
+          </div>
+          <div class="cc-stat">
+            <div class="cc-stat-num">61%</div>
+            <p class="cc-stat-text">say they'd choose a different major if they could do it again.<span>Strada Education Foundation</span></p>
+          </div>
+        </div>
+        <p class="text-lg">For Christian families, the stakes are higher. You've spent years caring about formation, not just achievement — praying, teaching, investing, trying to help your student become the kind of person who can live faithfully in the world. Then, suddenly, the system asks them to pick a school, a major, a path, and a future — and everyone acts like that's normal.</p>
       </div>
     </div>
   </section>
@@ -811,16 +856,16 @@
       </div>
       <div class="cc-who cc-reveal">
         <ul class="cc-who-list">
-          <li>Your senior is capable, but still unclear about what they want to do.</li>
-          <li>They are accepted to college, but you wonder whether they are ready for the freedom of it.</li>
-          <li>They are spiritually sincere, but you're concerned about what will form them next.</li>
-          <li>They are bright, thoughtful, or high-potential, but they need more ownership.</li>
-          <li>They are considering a gap year, but you do not want a year of drifting.</li>
-          <li>They are not considering a gap year, but you want a better framework for helping them launch well.</li>
-          <li>You're the parent of a junior, and you don't want to wait until next spring to start thinking about this.</li>
+          <li>Your senior is capable, but still unclear about what they actually want.</li>
+          <li>They're accepted to college, but you wonder whether they're ready for the freedom of it.</li>
+          <li>Their faith is sincere, but you're not sure what will form it next.</li>
+          <li>They're bright, thoughtful, high-potential — and still need more ownership.</li>
+          <li>They're considering a gap year, but you don't want a year of drifting.</li>
+          <li>They're not considering a gap year, but you want a better framework for launching them well.</li>
+          <li>You're the parent of a junior, and you don't want to wait until next spring to start thinking clearly about this.</li>
         </ul>
         <p class="text-lg" style="margin-top: 2rem;">You may have homeschooled. You may have chosen a classical Christian school. You may have been the intentional Christian family inside a public school system.</p>
-        <p class="text-lg">Whatever your path, this conversation is for parents who sense that <span class="highlight-sand">the year after high school is too important to handle by default</span>.</p>
+        <p class="text-lg">Whatever your path, this conversation is for parents who sense that <span class="highlight-sand">the year after high school is too formative to leave to default</span>.</p>
       </div>
     </div>
   </section>
@@ -831,33 +876,34 @@
       <div class="cc-framework-intro cc-reveal">
         <div class="cc-tag">The framework</div>
         <h2 class="text-h2 text-balanced">The Launch Readiness Framework</h2>
-        <p class="text-lg">Most families ask, "What should my senior do next?" The Launch Readiness Framework asks a different question.</p>
-        <p class="text-lg" style="font-style: italic;">What needs to be true of them <em>before</em> they launch?</p>
-        <p class="text-lg">In the webinar, I'll walk you through the three areas we use at LeapYear to think about this transition.</p>
+        <p class="text-lg">Most families ask, "What should my senior do next?" The Launch Readiness Framework asks a different question entirely:</p>
+        <p class="text-lg" style="font-style: italic; font-size: 1.375rem;">What needs to be true of them <em>before</em> they launch?</p>
+        <p class="text-lg">In the webinar, we walk through the three areas every 18-year-old has to develop before they step into the freedom of what comes next.</p>
       </div>
 
       <div class="cc-pillars">
         <article class="cc-pillar cc-reveal">
           <div class="cc-pillar-num">01 · Career Clarity</div>
-          <h3 class="text-h3">What am I built for, and what should I explore next?</h3>
-          <p class="text-reg">Not a locked-in career plan. Not a forced major. Not pressure to have life figured out at 18.</p>
-          <p class="text-reg">Career clarity means your student has enough self-knowledge, exposure, and real-world feedback to begin making wise next-step decisions. They need to understand what they're naturally good at. They need to see real work up close. They need to test their assumptions. They need adults who can help them interpret what they're noticing.</p>
+          <h3 class="text-h3">What am I built for — and what should I actually try next?</h3>
+          <p class="text-reg">Not a locked-in major. Not a forced career plan. Not pressure to have life figured out at 18. Career clarity is the difference between picking a path because the system asks you to and choosing one because you've actually tested it.</p>
+          <p class="text-reg">It means your student understands how they're wired. It means they've seen real work up close — not in a brochure, in a room. It means they've talked to real practitioners and tested their own assumptions against reality. And it means there are adults around them who can interpret what they're noticing back to them.</p>
+          <p class="text-reg">The students who land well after high school usually have one thing in common: by the time they pick a direction, they've already ruled out two or three others — with <em>evidence</em>, not anxiety.</p>
         </article>
 
         <article class="cc-pillar cc-reveal">
           <div class="cc-pillar-num">02 · Leadership Capacity</div>
-          <h3 class="text-h3">Can I take responsibility for the life God has given me?</h3>
-          <p class="text-reg">A student can be academically ready and still not be ready to lead their own life. Leadership capacity is about ownership.</p>
-          <p class="text-reg">Can they manage their time? Can they communicate with adults? Can they take responsibility without constant reminders? Can they move toward hard things instead of avoiding them? Can they make a plan, follow through, reflect, and try again?</p>
-          <p class="text-reg">This is not about becoming impressive. It is about becoming the kind of person who can be trusted with freedom.</p>
+          <h3 class="text-h3">Can they take responsibility for the life God has given them?</h3>
+          <p class="text-reg">A student can be academically excellent and still not be ready to lead their own life. Leadership capacity is about ownership — the daily, unglamorous kind that no GPA ever measures.</p>
+          <p class="text-reg">Can they manage their own time without being told? Can they walk into a room with adults and hold their own? Can they make a plan, follow through, reflect, and try again — when nobody is checking? Can they move toward hard conversations instead of around them?</p>
+          <p class="text-reg">This isn't about becoming impressive. It's about becoming the kind of person who <em>can be trusted with freedom</em>. The world is full of capable students who don't yet know how. After high school, no one tells them — they just hand them the keys.</p>
         </article>
 
         <article class="cc-pillar cc-reveal">
           <div class="cc-pillar-num">03 · Spiritual Formation</div>
           <h3 class="text-h3">Who will they become when they get there?</h3>
-          <p class="text-reg">This is the deepest layer. Your senior is not just choosing a college, major, or job path. They are becoming someone.</p>
-          <p class="text-reg">After high school, the pace of that formation often speeds up. New freedoms. New friends. New ideas. New temptations. New pressure. New loneliness. New opportunity.</p>
-          <p class="text-reg">For Christian parents, the question cannot only be, "Where will they go?" It also has to be who they will become when they get there — and what it will take to help them build conviction, practice faithfulness, and integrate their life with God before they step into the next season.</p>
+          <p class="text-reg">This is the deepest layer. Your senior isn't just choosing a college, a major, or a job path. They're becoming someone — and after high school, that becoming gets faster.</p>
+          <p class="text-reg">New freedoms. New friends. New temptations. New loneliness. New pressure to perform. New ideas about what their life is for. Most students step into all of it without a rule of life, without spiritual practices that can hold weight, without adults around them whose faith is integrated with their work.</p>
+          <p class="text-reg">For Christian parents, the question can't only be, "Where will they go?" It has to be who they will be when they get there — and what it will take to help them build conviction, practice faithfulness, and stay rooted in God as the pace picks up.</p>
         </article>
       </div>
     </div>
@@ -871,10 +917,11 @@
         <h2 class="text-h2 text-balanced">By the end of 45 minutes, you'll have…</h2>
       </div>
       <div class="cc-takeaways cc-reveal">
-        <p class="text-lg">A clearer way to think about your student's next step — and why <span class="highlight-sand">"college-ready" and "launch-ready" are not always the same thing</span>.</p>
-        <p class="text-lg">The ability to name the areas where your student may need more growth, clarity, or support.</p>
-        <p class="text-lg">A practical framework for discerning whether your student is ready to move straight into college, take a structured gap year, or pursue another path.</p>
-        <p class="text-lg">Time to ask questions about LeapYear, the cohort, the rhythm of the program, and whether it could be the right fit for your family.</p>
+        <p class="text-lg">A clearer way to see your student's next step — and language for the difference between <span class="highlight-sand">"college-ready" and "launch-ready"</span>.</p>
+        <p class="text-lg">The vocabulary to name where your student is already strong and where they still need to grow before launch.</p>
+        <p class="text-lg">A practical way to discern between college, a structured gap year, and another path — without panic and without defaulting.</p>
+        <p class="text-lg">Sharper questions to bring to your student in the conversations you're already having about next year.</p>
+        <p class="text-lg">Time to ask questions about LeapYear — the cohort, the rhythm, the cost, and whether it could be the right fit for your family.</p>
         <div class="cc-takeaways-cta">
           <a href="#register" class="button button-primary button-lg w-inline-block" data-cta="takeaways">
             <div class="button-text">Save my seat</div>
@@ -933,12 +980,20 @@
     <div class="cc-wrap">
       <div class="cc-head cc-head--center cc-reveal">
         <div class="cc-tag">About LeapYear</div>
-        <h2 class="text-h2 text-balanced">The program behind the framework</h2>
+        <h2 class="text-h2 text-balanced">Forming the next generation of leaders</h2>
       </div>
       <div class="cc-product cc-reveal">
-        <p class="text-lg">LeapYear is a 12-month leadership accelerator for students after high school. We built it because students need more than a pause — they need structure, coaching, real-world exposure, and spiritual formation, all in a serious environment where they can grow up before being asked to choose a path.</p>
-        <p class="text-lg">Students spend the year discovering how they're built, testing career paths through real work, building durable life skills, growing in faith with mentors and peers, and stepping into adulthood with more courage and direction than they could ever develop in a classroom alone.</p>
-        <p class="text-lg">The founding cohort includes students who deferred offers from <span class="highlight-sand">Stanford, Purdue, and Texas A&amp;M</span>.</p>
+        <p class="text-lg">LeapYear is a 9-month leadership accelerator for students after high school. It exists because formation doesn't come from a syllabus — and the year after high school, when most of the real becoming happens, is the year families have the least visibility into.</p>
+        <p class="text-lg">The program is built on five counter-cultural commitments:</p>
+        <ul class="cc-who-list" style="margin: 0;">
+          <li><strong>Formation &gt; Information.</strong> Wisdom, not just knowledge.</li>
+          <li><strong>Exemplars over Experts.</strong> Lives worth imitating, not lectures to take notes on.</li>
+          <li><strong>Learn by doing.</strong> Real experiments, real stakes, real feedback.</li>
+          <li><strong>Community is the curriculum.</strong> A cohort that knows you and calls you up.</li>
+          <li><strong>High expectations + high support.</strong> A bar worthy of who they could become — and someone walking next to them the whole way.</li>
+        </ul>
+        <p class="text-lg" style="margin-top: 1.5rem;">Students spend the year discovering how they're built, testing career paths through real work, building a rule of life and spiritual practices that can hold weight, and stepping into adulthood with more clarity, courage, and direction than a classroom alone can give them.</p>
+        <p class="text-lg">The founding cohort included students who deferred offers from <span class="highlight-sand">Stanford, Purdue, and Texas A&amp;M</span>.</p>
       </div>
     </div>
   </section>
@@ -1030,14 +1085,14 @@
         <details>
           <summary>Is this only for families already interested in LeapYear?</summary>
           <div class="cc-faq-body">
-            <p>No. This is for Christian parents who want to think wisely about their student's next step. We'll talk about LeapYear, but the main goal is to give you a framework you can use either way.</p>
+            <p>No. This is for Christian parents who want to think clearly about their student's next step. We'll talk about LeapYear, but the main goal is to give you a framework you can use either way.</p>
           </div>
         </details>
 
         <details>
           <summary>My student is a junior — is this for us?</summary>
           <div class="cc-faq-body">
-            <p>Yes. Junior year is actually a great time to start thinking about launch readiness. The framework is most useful when you have time to act on it — and the year before senior year is when families have the most space to be intentional about it.</p>
+            <p>Yes. Junior year is actually the best time to start thinking about launch readiness, because the framework is most useful when you still have time to act on it. The year before senior year is when families have the most space to be intentional about it.</p>
           </div>
         </details>
 
@@ -1045,28 +1100,35 @@
           <summary>Is this anti-college?</summary>
           <div class="cc-faq-body">
             <p>No. College can be a wonderful next step. The question is whether your student is ready to use that opportunity well.</p>
-            <p>Some students should go straight to college. Some would benefit from a structured year first. The point is to make that decision with wisdom instead of pressure.</p>
-          </div>
-        </details>
-
-        <details>
-          <summary>Is this a sales pitch?</summary>
-          <div class="cc-faq-body">
-            <p>We'll explain LeapYear and answer questions about the program. But the webinar is designed to be useful even if LeapYear is not the right fit for your family.</p>
-          </div>
-        </details>
-
-        <details>
-          <summary>Is this for parents or students?</summary>
-          <div class="cc-faq-body">
-            <p>Primarily parents. Students are welcome to join, especially if they're part of the decision. But the conversation is designed for parents who are carrying the weight of helping their student launch well.</p>
+            <p>Some students should go straight to college. Some would benefit from a structured year first. The point is to make that decision with wisdom, not pressure.</p>
           </div>
         </details>
 
         <details>
           <summary>What if my student already knows where they're going?</summary>
           <div class="cc-faq-body">
-            <p>This may still be worth your time. A college decision does not automatically answer the deeper questions of maturity, ownership, faith, and direction. If your student is headed to college, this framework can help you think about what they still need before they go.</p>
+            <p>This is still worth your time. A college decision doesn't automatically answer the deeper questions of maturity, ownership, faith, and direction. If your student is headed to college, this framework will help you think about what they still need to build <em>before</em> they go.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Can't we just give them this at home?</summary>
+          <div class="cc-faq-body">
+            <p>You've been giving them this their whole life — and you should keep doing it. But there's a developmental reality at 18: most students need to hear the same values from an adult who isn't you before they fully internalize them. That's not a failure of your parenting. It's how this stage works. LeapYear (and this webinar) is designed to come alongside what you've already built, not replace it.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Is this a sales pitch?</summary>
+          <div class="cc-faq-body">
+            <p>We'll explain LeapYear and answer questions about the program. But the webinar is designed to be useful even if LeapYear isn't the right fit for your family.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>Is this for parents or students?</summary>
+          <div class="cc-faq-body">
+            <p>Primarily parents. Students are welcome to join, especially if they're part of the decision. But the conversation is designed for parents carrying the weight of helping their student launch well.</p>
           </div>
         </details>
       </div>
@@ -1077,8 +1139,8 @@
   <section class="cc-section cc-theme-alab cc-final">
     <div class="cc-wrap">
       <div class="cc-head cc-reveal">
-        <h2 class="text-h2 text-balanced">Before they choose a path, help them get ready to launch.</h2>
-        <div class="text-lg">The year after high school can become a default step. Or it can become one of the most formative years of your student's life.</div>
+        <h2 class="text-h2 text-balanced">Before they pick a path, help them think clearly about who they're becoming.</h2>
+        <div class="text-lg">The year after high school can become a default step — or one of the most formative years of your student's life. 45 minutes is a small price to pay for clarity on which.</div>
       </div>
       <div class="cc-final-ctas cc-reveal">
         <a href="#register" class="button button-primary button-lg w-inline-block" data-cta="final">
@@ -1088,7 +1150,7 @@
           <div class="button-text">Learn more about LeapYear →</div>
         </a>
       </div>
-      <p class="cc-final-meta">Free 45-minute live training for Christian parents. Multiple sessions available.</p>
+      <p class="cc-final-meta">Free 45-minute live training for Christian parents. Three live sessions — pick the one that works for your family.</p>
     </div>
   </section>
 
