@@ -455,13 +455,17 @@
     }
     .cc-testimonials-dot.is-active:hover { background: var(--cc-flame); }
 
-    /* =================== DATE CARDS (3 standalone cards) =================== */
+    /* =================== DATE CARDS =================== */
     .cc-dates-grid {
       display: grid; grid-template-columns: 1fr; gap: 1rem;
       max-width: 1120px; margin: 0 auto;
     }
     @media (min-width: 820px) {
-      .cc-dates-grid { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+      .cc-dates-grid {
+        grid-template-columns: repeat(2, minmax(0, 340px));
+        gap: 1.5rem;
+        justify-content: center;
+      }
     }
     .cc-date-card {
       background: var(--cc-alabaster);
@@ -887,14 +891,6 @@
 
       <div class="cc-dates-grid">
         <article class="cc-date-card cc-reveal">
-          <div class="cc-date-day">Saturday</div>
-          <h4 class="cc-date-date">May 16</h4>
-          <div class="cc-date-time">10:00 AM CT</div>
-          <a href="https://us06web.zoom.us/meeting/register/-dzoggguTimoPOFAtaqnhA#/registration" target="_blank" rel="noopener" class="button button-primary button-small button-flame w-inline-block" data-cta="date-1">
-            <div class="button-text">Save my seat →</div>
-          </a>
-        </article>
-        <article class="cc-date-card cc-reveal">
           <div class="cc-date-day">Monday</div>
           <h4 class="cc-date-date">May 18</h4>
           <div class="cc-date-time">7:30 PM CT</div>
@@ -999,7 +995,7 @@
         <div class="cc-modal-head">
           <div class="cc-tag">Get the replay</div>
           <h3 id="cc-replay-title">Send me the recording</h3>
-          <p>We'll email the replay after the webinar wraps. No spam, no follow-up sales calls.</p>
+          <p>We'll email the replay after the webinar wraps. We will never sell your data.</p>
         </div>
         <form class="cc-modal-form" id="cc-replay-form" novalidate>
           <div class="cc-modal-field">
