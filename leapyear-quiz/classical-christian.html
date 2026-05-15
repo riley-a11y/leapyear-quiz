@@ -566,6 +566,186 @@
     .button { text-decoration: none; }
     .button .button-text { line-height: 1; }
 
+    /* =================== REPLAY MODAL =================== */
+    body.cc-modal-open { overflow: hidden; }
+    .cc-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(7, 20, 17, 0.62);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(1rem, 3vw, 2rem);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .cc-modal-overlay.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+    .cc-modal-card {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      background: var(--cc-alabaster);
+      color: var(--cc-night);
+      padding: clamp(2rem, 4vw, 2.75rem);
+      border-top-left-radius: clamp(1.5rem, 3vw, 2.25rem);
+      border-bottom-right-radius: clamp(1.5rem, 3vw, 2.25rem);
+      border-top-right-radius: clamp(0.5rem, 1vw, 0.75rem);
+      border-bottom-left-radius: clamp(0.5rem, 1vw, 0.75rem);
+      max-height: calc(100vh - 2rem);
+      overflow-y: auto;
+      transform: translateY(12px);
+      transition: transform 0.3s ease;
+      box-shadow: 0 24px 60px rgba(7, 20, 17, 0.32);
+    }
+    .cc-modal-overlay.is-open .cc-modal-card { transform: translateY(0); }
+    .cc-modal-close {
+      position: absolute;
+      top: 0.875rem; right: 0.875rem;
+      width: 36px; height: 36px;
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      color: var(--cc-ink-60);
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .cc-modal-close:hover {
+      background: var(--cc-ink-10);
+      color: var(--cc-night);
+    }
+    .cc-modal-close svg { width: 18px; height: 18px; }
+    .cc-modal-head {
+      display: flex; flex-direction: column;
+      gap: 0.625rem;
+      margin-bottom: 1.5rem;
+      padding-right: 2.5rem;
+    }
+    .cc-modal-head h3 {
+      font-family: neulis-neue, sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.5rem, 3vw, 1.875rem);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--cc-night);
+      margin: 0;
+    }
+    .cc-modal-head p {
+      font-family: area-normal, sans-serif;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      color: var(--cc-ink-60);
+      margin: 0;
+    }
+    .cc-modal-form {
+      display: flex; flex-direction: column;
+      gap: 1.125rem;
+    }
+    .cc-modal-field {
+      display: flex; flex-direction: column;
+      gap: 0.4rem;
+    }
+    .cc-modal-field label {
+      font-family: area-normal, sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--cc-ink-60);
+    }
+    .cc-modal-field label .opt {
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0.04em;
+      font-size: 0.75rem;
+      color: var(--cc-ink-60);
+      margin-left: 0.4rem;
+      opacity: 0.7;
+    }
+    .cc-modal-input,
+    .cc-modal-select {
+      font-family: area-normal, sans-serif;
+      font-size: 1rem;
+      line-height: 1.4;
+      color: var(--cc-night);
+      padding: 0.7rem 0.875rem;
+      border: 1px solid var(--cc-ink-10);
+      border-radius: 0.5rem;
+      background: #fff;
+      width: 100%;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .cc-modal-input:focus,
+    .cc-modal-select:focus {
+      outline: none;
+      border-color: var(--cc-flame);
+      box-shadow: 0 0 0 3px rgba(221, 94, 50, 0.18);
+    }
+    .cc-modal-select {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3e%3cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23071411' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 0.875rem center;
+      padding-right: 2.25rem;
+    }
+    .cc-modal-error {
+      font-family: area-normal, sans-serif;
+      font-size: 0.875rem;
+      color: var(--cc-flame);
+      margin: 0;
+      min-height: 1.25rem;
+      line-height: 1.4;
+    }
+    .cc-modal-submit {
+      margin-top: 0.25rem;
+      width: 100%;
+      justify-content: center;
+    }
+    .cc-modal-submit[disabled] {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+    .cc-modal-success {
+      display: flex; flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1rem;
+      padding: 1.5rem 0 0.5rem;
+    }
+    .cc-modal-success-icon {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--cc-flame);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 10px 24px rgba(221, 94, 50, 0.32);
+    }
+    .cc-modal-success-icon svg { width: 26px; height: 26px; color: var(--cc-alabaster); }
+    .cc-modal-success h3 {
+      font-family: neulis-neue, sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+      color: var(--cc-night);
+      margin: 0;
+    }
+    .cc-modal-success p {
+      font-family: area-normal, sans-serif;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      color: var(--cc-ink-60);
+      max-width: 28em;
+      margin: 0;
+    }
+    .cc-modal-success strong { color: var(--cc-night); font-weight: 600; }
+
     /* =================== REVEAL on scroll =================== */
     .cc-reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .cc-reveal.is-visible { opacity: 1; transform: translateY(0); }
@@ -733,7 +913,7 @@
       </div>
 
       <p class="cc-dates-alt cc-reveal">
-        Can't make any of these? <a href="https://www.startleapyear.com/book-a-call" target="_blank" rel="noopener">Book a call with Riley instead →</a>
+        Can't make any of these? <a href="#replay" data-cc-open-replay>Send me the replay instead →</a>
       </p>
     </div>
   </section>
@@ -805,6 +985,65 @@
     <a href="#register" class="button button-primary w-inline-block" data-cta="sticky-mobile">
       <div class="button-text">Save my seat</div>
     </a>
+  </div>
+
+  <!-- ======= REPLAY MODAL ======= -->
+  <div class="cc-modal-overlay" id="cc-replay-modal" role="dialog" aria-modal="true" aria-labelledby="cc-replay-title" aria-hidden="true">
+    <div class="cc-modal-card">
+      <button type="button" class="cc-modal-close" id="cc-replay-close" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>
+        </svg>
+      </button>
+      <div id="cc-replay-form-view">
+        <div class="cc-modal-head">
+          <div class="cc-tag">Get the replay</div>
+          <h3 id="cc-replay-title">Send me the recording</h3>
+          <p>We'll email the replay after the webinar wraps. No spam, no follow-up sales calls.</p>
+        </div>
+        <form class="cc-modal-form" id="cc-replay-form" novalidate>
+          <div class="cc-modal-field">
+            <label for="cc-replay-name">Your name</label>
+            <input class="cc-modal-input" type="text" id="cc-replay-name" name="name" autocomplete="name" required>
+          </div>
+          <div class="cc-modal-field">
+            <label for="cc-replay-email">Email</label>
+            <input class="cc-modal-input" type="email" id="cc-replay-email" name="email" autocomplete="email" required>
+          </div>
+          <div class="cc-modal-field">
+            <label for="cc-replay-phone">Phone <span class="opt">(optional)</span></label>
+            <input class="cc-modal-input" type="tel" id="cc-replay-phone" name="phone" autocomplete="tel">
+          </div>
+          <div class="cc-modal-field">
+            <label for="cc-replay-grad">Your student's graduation year</label>
+            <select class="cc-modal-select" id="cc-replay-grad" name="gradYear" required>
+              <option value="" disabled selected hidden>Select year</option>
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+              <option value="2028">2028</option>
+              <option value="2029">2029</option>
+              <option value="2030">2030</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <p class="cc-modal-error" id="cc-replay-error" role="alert" aria-live="polite"></p>
+          <button type="submit" class="button button-primary button-lg w-inline-block cc-modal-submit" id="cc-replay-submit">
+            <div class="button-text">Send me the replay</div>
+          </button>
+        </form>
+      </div>
+      <div id="cc-replay-success-view" hidden>
+        <div class="cc-modal-success">
+          <div class="cc-modal-success-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="5 12 10 17 19 8"/>
+            </svg>
+          </div>
+          <h3>You're on the list.</h3>
+          <p>We'll email the replay to <strong id="cc-replay-success-email"></strong> right after the webinar wraps.</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ======= FOOTER ======= -->
@@ -934,6 +1173,105 @@
         }, { root: track, threshold: [0.4, 0.55, 0.7] });
         cards.forEach((c) => io.observe(c));
       }
+    })();
+
+    // Replay request modal — open from data-cc-open-replay links, POST to
+    // /api/classical-christian, show success state on completion.
+    (function () {
+      const overlay = document.getElementById('cc-replay-modal');
+      const triggers = document.querySelectorAll('[data-cc-open-replay]');
+      if (!overlay || triggers.length === 0) return;
+
+      const closeBtn = document.getElementById('cc-replay-close');
+      const form = document.getElementById('cc-replay-form');
+      const formView = document.getElementById('cc-replay-form-view');
+      const successView = document.getElementById('cc-replay-success-view');
+      const errorEl = document.getElementById('cc-replay-error');
+      const submitBtn = document.getElementById('cc-replay-submit');
+      const submitText = submitBtn.querySelector('.button-text');
+      const successEmail = document.getElementById('cc-replay-success-email');
+      let lastFocus = null;
+
+      function openModal(e) {
+        if (e) e.preventDefault();
+        lastFocus = document.activeElement;
+        overlay.classList.add('is-open');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('cc-modal-open');
+        setTimeout(() => {
+          const firstField = document.getElementById('cc-replay-name');
+          if (firstField && !successView.hidden === false) firstField.focus();
+        }, 120);
+      }
+
+      function closeModal() {
+        overlay.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('cc-modal-open');
+        if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+        // After the close transition, reset the form so a re-open is fresh.
+        setTimeout(() => {
+          if (overlay.classList.contains('is-open')) return;
+          formView.hidden = false;
+          successView.hidden = true;
+          form.reset();
+          errorEl.textContent = '';
+          submitBtn.disabled = false;
+          submitText.textContent = 'Send me the replay';
+        }, 350);
+      }
+
+      function showError(msg) {
+        errorEl.textContent = msg;
+      }
+
+      triggers.forEach((t) => t.addEventListener('click', openModal));
+      closeBtn.addEventListener('click', closeModal);
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeModal();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorEl.textContent = '';
+        const name = form.elements.name.value.trim();
+        const email = form.elements.email.value.trim();
+        const phone = form.elements.phone.value.trim();
+        const gradYear = form.elements.gradYear.value;
+
+        if (!name) return showError('Please tell us your name.');
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          return showError('Please enter a valid email address.');
+        }
+        if (!gradYear) return showError("Please pick your student's graduation year.");
+
+        submitBtn.disabled = true;
+        submitText.textContent = 'Sending…';
+
+        try {
+          const res = await fetch('/api/classical-christian', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, phone: phone || undefined, gradYear }),
+          });
+          if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            submitBtn.disabled = false;
+            submitText.textContent = 'Send me the replay';
+            return showError(data.error || 'Something went wrong. Please try again.');
+          }
+          successEmail.textContent = email;
+          formView.hidden = true;
+          successView.hidden = false;
+        } catch (err) {
+          submitBtn.disabled = false;
+          submitText.textContent = 'Send me the replay';
+          showError('Network error. Please check your connection and try again.');
+        }
+      });
     })();
 
     // Fade-in reveal on scroll

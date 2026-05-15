@@ -2,11 +2,10 @@
  * LeapYear — Classical Christian Webinar Lead Capture
  * POST /api/classical-christian
  *
- * Accepts { email, name?, phone? } and writes to Airtable People table with
- * "Classical Christian Webinar" Lead Source attribution. Deduplicates by email.
- * Unused by the landing page today — the page drives directly to Zoom for
- * anonymous clicks. Kept wired up so a future form (e.g. "not ready, keep me
- * posted") can post here without additional backend work.
+ * Accepts { email, name?, phone?, gradYear? } and writes to Airtable People
+ * table with "Classical Christian Webinar" Lead Source attribution.
+ * Deduplicates by email. Powers the in-page "Send me the replay" modal on
+ * the webinar landing page for parents who can't attend any live session.
  */
 
 const AIRTABLE_BASE = process.env.AIRTABLE_BASE_ID || 'app4NpJ7gQZvHpwGe';
@@ -19,6 +18,7 @@ const PPL = {
   firstName:      'fldTXig6K6riXgAdA',
   lastName:       'fldPjhZqYTI22dFZ3',
   phone:          'fldkZBAXm556NUp4g',
+  hsGradYear:     'fld5FhrqX4GoEfnKA',
   type:           'fldjMvmCFoenGP7fF',
   createLead:     'fldLSGxtFg3fG83cr',
   leadSource:     'flddN90lGUeJJGM15',
@@ -58,6 +58,7 @@ async function findPersonByEmail(email) {
     firstName: rec.fields[PPL.firstName] || null,
     lastName: rec.fields[PPL.lastName] || null,
     phone: rec.fields[PPL.phone] || null,
+    gradYear: rec.fields[PPL.hsGradYear]?.name || rec.fields[PPL.hsGradYear] || null,
   };
 }
 
@@ -70,7 +71,7 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { email, name, phone } = req.body || {};
+    const { email, name, phone, gradYear } = req.body || {};
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return res.status(400).json({ error: 'Please enter a valid email address.' });
@@ -78,6 +79,7 @@ module.exports = async function handler(req, res) {
 
     const [firstName = '', ...rest] = (name || '').trim().split(/\s+/);
     const lastName = rest.join(' ');
+    const gradYearClean = (gradYear || '').toString().trim();
 
     const existing = await findPersonByEmail(email);
 
@@ -89,6 +91,7 @@ module.exports = async function handler(req, res) {
       if (firstName && !existing.firstName) updates[PPL.firstName] = firstName;
       if (lastName && !existing.lastName) updates[PPL.lastName] = lastName;
       if (phone && !existing.phone) updates[PPL.phone] = phone;
+      if (gradYearClean && !existing.gradYear) updates[PPL.hsGradYear] = gradYearClean;
 
       if (Object.keys(updates).length > 0) {
         await airtableFetch(PEOPLE_TABLE, 'PATCH', {
@@ -106,6 +109,7 @@ module.exports = async function handler(req, res) {
       if (firstName) fields[PPL.firstName] = firstName;
       if (lastName) fields[PPL.lastName] = lastName;
       if (phone) fields[PPL.phone] = phone;
+      if (gradYearClean) fields[PPL.hsGradYear] = gradYearClean;
 
       await airtableFetch(PEOPLE_TABLE, 'POST', {
         typecast: true,
