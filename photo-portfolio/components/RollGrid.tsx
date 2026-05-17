@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
+import FadeImage from './FadeImage';
 import Lightbox, { type LightboxImage } from './Lightbox';
 
 export default function RollGrid({ images }: { images: LightboxImage[] }) {
@@ -16,13 +16,7 @@ export default function RollGrid({ images }: { images: LightboxImage[] }) {
             onClick={() => setIndex(i)}
             className="relative aspect-square overflow-hidden cursor-zoom-in"
           >
-            <Image
-              src={img.src}
-              alt={img.alt}
-              fill
-              sizes="25vw"
-              className="object-cover"
-            />
+            <FadeImage src={img.src} alt={img.alt} sizes="25vw" />
           </button>
         ))}
       </div>

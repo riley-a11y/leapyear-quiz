@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import type { Block, Story } from '@/data/stories';
+import FadeImage from './FadeImage';
 import Lightbox, { type LightboxImage } from './Lightbox';
 
 type Props = {
@@ -53,40 +53,6 @@ export default function StoryView({ story, images, next }: Props) {
         index={lbIndex}
         onClose={() => setLbIndex(null)}
         onIndexChange={setLbIndex}
-      />
-    </div>
-  );
-}
-
-function FadeImage({
-  src,
-  alt,
-  sizes,
-  onClick,
-  className = '',
-  priority = false,
-}: {
-  src: string;
-  alt: string;
-  sizes: string;
-  onClick?: () => void;
-  className?: string;
-  priority?: boolean;
-}) {
-  const [loaded, setLoaded] = useState(false);
-  return (
-    <div
-      className={`relative w-full h-full overflow-hidden ${onClick ? 'cursor-zoom-in' : ''}`}
-      onClick={onClick}
-    >
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes={sizes}
-        priority={priority}
-        onLoad={() => setLoaded(true)}
-        className={`object-cover transition-opacity duration-200 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
       />
     </div>
   );
