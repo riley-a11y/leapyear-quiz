@@ -3,7 +3,7 @@
  * POST /api/scholarship-interest
  *
  * Keeps Airtable credentials and campaign attribution server-side. This route
- * intentionally does not send email; the website promises personal follow-up.
+ * intentionally leaves staff notifications to the Airtable-backed alert workflow.
  */
 
 const DEFAULT_BASE_ID = 'app4NpJ7gQZvHpwGe';
@@ -46,10 +46,11 @@ const FORM_FIELD = {
   studentEmail: 'fldw5SbQgpEkUopmp',
   studentPhone: 'fldfBwIFhG4MoRDz2',
   sponsorRelationship: 'fld0y7Bo3hmZSKtTT',
+  sponsorRelationshipOther: 'fldLoEKj9dv2L5niP',
   notes: 'fld89FHw9xIngFK39',
 };
 
-const VALID_ROLES = new Set(['student', 'parent', 'family']);
+const VALID_ROLES = new Set(['student', 'parent', 'other']);
 const VALID_COHORTS = new Set(['2026', '2027', 'other']);
 const UTM_FIELDS = [
   ['utm_source', 'utm_source'],
@@ -63,6 +64,22 @@ const normalizeText = (value, maxLength) =>
 
 const sanitizeAttribution = (value) =>
   normalizeText(value, 160).replace(/[\r\n\t]+/g, ' ').replace(/\s{2,}/g, ' ');
+
+const sanitizeSingleLine = (value) =>
+  typeof value === 'string'
+    ? value
+        .replace(/[\u0000-\u001f\u007f]+/g, ' ')
+        .replace(/\s{2,}/g, ' ')
+        .trim()
+    : '';
+
+const sanitizeMultiline = (value) =>
+  typeof value === 'string'
+    ? value
+        .replace(/\r\n?/g, '\n')
+        .replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '')
+        .trim()
+    : '';
 
 const escapeFormulaString = (value) =>
   value.replaceAll('\\', '\\\\').replaceAll('"', '\\"');
@@ -157,19 +174,22 @@ const airtableRequest = async (path, options = {}) => {
   return result;
 };
 
-const buildNotes = ({ cohort, attribution }) => {
+const buildNotes = ({ cohort, attribution, additionalInfo }) => {
   const cohortLabel = cohort === 'other' ? 'Other/future cohort' : `Fall ${cohort}`;
-  const sentences = [
-    `Fall 2026 Scholarship Campaign inquiry. Interested cohort: ${cohortLabel}.`,
+  const metadata = [
+    'Campaign: Fall 2026 Scholarship Campaign inquiry.',
+    `Interested cohort: ${cohortLabel}.`,
   ];
-  if (cohort === '2026') sentences.push('Priority: prompt personal follow-up requested.');
+  if (cohort === '2026') metadata.push('Follow-up: prompt personal follow-up requested.');
 
   const utmNotes = UTM_FIELDS.flatMap(([key, label]) =>
-    attribution[key] ? [`${label}: ${attribution[key]}`] : [],
+    attribution[key] ? [`${label}=${attribution[key]}`] : [],
   );
-  if (utmNotes.length) sentences.push(`Attribution — ${utmNotes.join('; ')}.`);
+  if (utmNotes.length) metadata.push(`Attribution: ${utmNotes.join('; ')}.`);
 
-  return sentences.join(' ');
+  return [additionalInfo ? `Visitor note:\n${additionalInfo}` : '', metadata.join('\n')]
+    .filter(Boolean)
+    .join('\n\n');
 };
 
 module.exports = async function handler(request, response) {
@@ -193,7 +213,10 @@ module.exports = async function handler(request, response) {
   const lastName = normalizeText(body.lastName, 80);
   const email = normalizeText(body.email, 254).toLowerCase();
   const phone = normalizeText(body.phone, 30);
-  const role = normalizeText(body.role, 20).toLowerCase();
+  const submittedRole = normalizeText(body.role, 20).toLowerCase();
+  const role = submittedRole === 'family' ? 'other' : submittedRole;
+  const roleOther = sanitizeSingleLine(body.roleOther);
+  const additionalInfo = sanitizeMultiline(body.additionalInfo);
   const cohort = normalizeText(body.cohort, 20).toLowerCase();
   const website = normalizeText(body.website, 200);
   const startedAt = Number(body.startedAt);
@@ -207,6 +230,16 @@ module.exports = async function handler(request, response) {
   }
   if (Date.now() - startedAt < MIN_FORM_TIME_MS) {
     return response.status(429).json({ message: 'Please wait a moment and try again.' });
+  }
+  if (role === 'other' && (roleOther.length < 2 || roleOther.length > 80)) {
+    return response
+      .status(400)
+      .json({ message: 'Please tell us how you are connected to the student.' });
+  }
+  if (additionalInfo.length > 1000) {
+    return response
+      .status(400)
+      .json({ message: 'Please keep the optional note under 1,000 characters.' });
   }
 
   const phoneDigits = phone.replace(/\D/g, '');
@@ -297,7 +330,7 @@ module.exports = async function handler(request, response) {
       [FORM_FIELD.submitter]: [personId],
       [FORM_FIELD.type]:
         role === 'student' ? 'Website Lead Form (Student)' : 'Website Lead Form (Sponsor)',
-      [FORM_FIELD.notes]: buildNotes({ cohort, attribution }),
+      [FORM_FIELD.notes]: buildNotes({ cohort, attribution, additionalInfo }),
     };
 
     if (cohort !== 'other') formFields[FORM_FIELD.cohort] = cohort;
@@ -312,6 +345,7 @@ module.exports = async function handler(request, response) {
       formFields[FORM_FIELD.sponsorEmail] = email;
       formFields[FORM_FIELD.sponsorPhone] = phone;
       formFields[FORM_FIELD.sponsorRelationship] = role === 'parent' ? 'Parent' : 'Other';
+      if (role === 'other') formFields[FORM_FIELD.sponsorRelationshipOther] = roleOther;
     }
 
     await airtableRequest(formsPath, {
