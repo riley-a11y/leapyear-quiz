@@ -26,9 +26,11 @@ leapyear-quiz/
 │   ├── reveal.js       Loading roulette, type reveal
 │   └── results.js      Results page rendering + Airtable fetch
 ├── api/
-│   ├── submit.js       Vercel Serverless: receive results, write Airtable, send email (Resend), return token
-│   ├── results.js      Vercel Serverless: fetch results from Airtable by token
-│   └── faithdriven.js  Vercel Serverless: capture email with Faith Driven attribution
+│   ├── submit.js                 Vercel Serverless: receive results, write Airtable, send email (Resend), return token
+│   ├── results.js                Vercel Serverless: fetch results from Airtable by token
+│   ├── faithdriven.js            Vercel Serverless: capture email with Faith Driven attribution
+│   ├── thsc-scholarship.js       Vercel Serverless: THSC scholarship campaign lead capture
+│   └── scholarship-interest.js   Vercel Serverless: public scholarship campaign lead capture + UTM attribution
 ├── vercel.json
 └── package.json
 ```
@@ -52,6 +54,7 @@ faithdriven.html → [email capture] → index.html → quiz.html → ... (same 
 - Results page with card dashboard, modal overlays, radar chart, score bars, shadow cards
 - Mobile fixes: scroll jank, hover state, resize-triggered reloads
 - Landing page copy updates
+- Public scholarship campaign API bridge with People deduplication, a fixed Airtable Lead Source, Forms submission records, and per-submission UTM attribution
 
 ## What's Next / Open Work
 
@@ -89,7 +92,7 @@ A dispatch task exists (`.dispatch/tasks/reveal-redesign/plan.md`) for cinematic
 - **Canvas 2D > SVG** for constellation/radar chart animations
 - **`scroll-behavior: smooth` on `<html>` blocks `window.scrollTo()`** — use `behavior: 'instant'`
 - Quiz progress persists to localStorage (resume if page reloads)
-- Environment vars needed: `AIRTABLE_API_KEY`, `AIRTABLE_BASE_ID`, `AIRTABLE_TABLE_NAME`, `RESEND_API_KEY`
+- Environment vars needed: `AIRTABLE_API_KEY`, `AIRTABLE_BASE_ID`, `PEOPLE_TABLE_ID`, `FORMS_TABLE_ID`, `QUIZ_RESULTS_TABLE_ID`, `RESEND_API_KEY`
 
 ## The 8 Archetypes
 
